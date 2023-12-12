@@ -16,7 +16,8 @@ the data content improving its usefulness.
 **Content-Process**
 : Is the pairing of the data structures with their pertaining
 modifying process.
+
 ## Roadmap
 
-[![Data Content](https://i.imgur.com/TkvlFir.png)](data_content.md)
-[![Information Processing](_media/supy.png)](data_content.md)
+| [Data Content](data_content.md) | [Information Processing](data_content.md) | [Element Map](map.md) |
+|---------------------------------|-------------------------------------------|-----------------------|

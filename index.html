@@ -6,35 +6,59 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/_media/supy.png" type="image/x-icon"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/buble.css" />
+    <!--
+    <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
+    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython.min.js "></script>
+    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython_stdlib.js "></script>
+    <script type=" text/javascript " src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.29.0/ace.js"></script>
+    <script type=" text/javascript " src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.29.0/theme-cobalt.min.js">
+    </script>
+    -->
     <style>
         img[alt="Data Content"] { width: 200px; }
     </style>
 </head>
 <body>
     <div id="app"></div>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    //mermaid.initialize({ startOnLoad: true });
+    window.mermaid = mermaid;
+  </script>
+  <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
     <script>
+        //var num = 0;
+      mermaid.initialize({ startOnLoad: false });
       window.$docsify = {
-       name: 'SuPyPerson',
-       coverpage: true,
+      mermaidConfig: {
+        querySelector: ".mermaid"
+      },
+        name: 'SuPyPerson',
+        coverpage: true,
 
 
-      // Sidebar Configuration
-      auto2top: true,
-      loadSidebar: true,
-      maxLevel: 0,
-      // Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
-      subMaxLevel: 3,
+        // Sidebar Configuration
+        auto2top: true,
+        loadSidebar: true,
+        maxLevel: 0,
+        // Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
+        subMaxLevel: 3,
 
-      // Search Plugin Configuration
-      search: {
+        // Search Plugin Configuration
+        search: {
         placeholder: 'Type to search',
         noData: 'No matches found.',
         // Headline depth, 1 - 6
         depth: 2,
-      }
+        },
       };
+
     </script>
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 </body>
