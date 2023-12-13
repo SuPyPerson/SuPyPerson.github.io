@@ -4,9 +4,10 @@
 
 > Learn Python with games.
 
-- Follow the adventure
-- Solve the puzzles with code
-- Workout new levels and games
-
+### Follow the adventure
+### Solve the puzzles with code
+### Workout new levels and games
 [GitHub](https://github.com/SuPyPerson/SuPyPerson.github.io)
 [Get Started](#Super-Python-Persons)
+
+

@@ -3,6 +3,7 @@
 
 ```mermaid
 graph LR
+    Data[<a href='index.html#data_content'>Data</a>]
     App --> Data
     App --> Process
     App --> Content/Proc
@@ -33,5 +34,4 @@ graph LR
     Class --> Custom
 ```
 
-| [Data Content](data_content.md) | [Information Processing](data_content.md) | [home](README.md) |
-|---------------------------------|-------------------------------------------|-------------------|
+[footer](footer.md ':include')
