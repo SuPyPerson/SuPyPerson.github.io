@@ -8,6 +8,6 @@
 ### Solve the puzzles with code
 ### Workout new levels and games
 [GitHub](https://github.com/SuPyPerson/SuPyPerson.github.io)
-[Get Started](#Super-Python-Persons)
+[Get Started](#The-Python-Programming-Flying-Circus)
 
 

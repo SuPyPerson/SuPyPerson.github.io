@@ -4,6 +4,9 @@
 ```mermaid
 graph LR
     Data[<a href='index.html#data_content'>Data</a>]
+    App[<a href='index.html#README'>App</a>]
+    Process[<a href='index.html#info_process'>Process</a>]
+    Content/Proc[<a href='index.html#content_process'>Capsule</a>]
     App --> Data
     App --> Process
     App --> Content/Proc
@@ -30,8 +33,11 @@ graph LR
     Selection --> If/Else/Elif
     Selection --> Inline_If
     Content/Proc --> Class
+    Content/Proc --> Module
     Class --> RunTime
     Class --> Custom
+    Module --> RunTime
+    Module --> Custom
 ```
 
 [footer](footer.md ':include')
