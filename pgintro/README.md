@@ -1,10 +1,8 @@
-# The Python Programming Flying Circus
+# Kwarwp the Beginning
 > And now for something completely different! <br>
 > Learn Python by solving, modifying and creating game puzzles
 
-![Python Programming Flying Circus](_media/PPFC.jpg)
-
-### Developing Applications
+### Discover Names
 Application is a piece of software conveying a purpose. 
 It contains and manages a given information and permits
 some processes to manipulate it.
@@ -28,7 +26,5 @@ modifying process.
 ## Roadmap
 
 Work in progress..
-
-<a href="#/pgintro/">Python Kwarwp</a>
 
 [footer](footer.md ':include')
