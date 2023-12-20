@@ -9,5 +9,6 @@
 ### Workout new levels and games
 [GitHub](https://github.com/SuPyPerson/SuPyPerson.github.io)
 [Get Started](#The-Python-Programming-Flying-Circus)
+[Kwarwp](/pintro)
 
 

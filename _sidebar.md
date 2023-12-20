@@ -3,4 +3,4 @@
 - [Information Processing](info_process)
 - [Content/Process](content_process)
 - [Element Map](map.md)
-- [Python Kwarwp](#/pgintro/)
+- [Python Kwarwp](/pintro)

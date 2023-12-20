@@ -12,7 +12,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/A5yncX/docsify-theme-darcula@v1.0/darcula.css">
     <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython.min.js "></script>
     <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython_stdlib.js "></script>
+    <link rel="stylesheet" href="//unpkg.com/docsify-accordion/src/style.css">
+    <link rel="stylesheet" href="//unpkg.com/docsify-accordify/src/assets/ugly-dark-theme.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"
+            integrity="sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-python.min.js"
+        integrity="sha512-DUdq0nHbbCHQMqQNALNivk5tAdpFWOpm3mplXDwBqIpXD6/vfgXp8fESbfsnePQT3jZKVI3mCbEQumz/S4IHPA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/theme-dracula.min.js"
+            integrity="sha512-Uo9Lu5ebeR+BvhmnAYT4FbW+0/a85TfeWmeMkg//AzcqTrQBbTWIR0BDW+AsJw/i4kdkPcewBHUncKZng4ASEQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--
+    <link rel="stylesheet" href="//unpkg.com/docsify-accordify/src/assets/default.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/buble.css" />
     <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
@@ -28,6 +40,30 @@
   <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
     -->
     <style>
+        .accordion {
+          background-color: #222322;
+          color: #ccc;
+        }
+        .accordion.active {
+          background: rgba(0, 0, 0, 0.1);
+          border-left: 3px solid #014f17;
+        }
+        ul.accordion-wrapper > li > .accordion-content-container {
+          display: block;
+          margin: 0 20px 20px 20px;
+          padding: 0 15px 20px;
+          background: #333433;
+          cursor: default;
+          overflow: hidden;
+        }
+
+        .panel {
+            display: none;
+        }
+        .panel.opened {
+            display: block;
+            background-color: #333;
+        }
         img[alt="Data Content"] { width: 200px; }
         .cover-main blockquote {
             color: #6b0584;
@@ -62,7 +98,7 @@
 
     </style>
 </head>
-<body onload="brython({cache:'browser', static_stdlib_import:true})">
+<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./_core', './_prog', './']})">
     <div id="app"></div>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
     <script src="//cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
@@ -72,7 +108,19 @@
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
       window.$docsify = {
+        accordify: {
+            prerenderComments: true,                    // default
+            selectors: ['h1','h2','h3','h4','h5','h6'], // default value
+            debug: false,                               // default value
+        },
 
+          alias: {
+            '/pyi/(.*)': '/pgintro/$1', // supports regexp
+            '/pintro': '/pgintro/README',
+            '/changelog':
+              'https://raw.githubusercontent.com/docsifyjs/docsify/master/CHANGELOG',
+            '/.*/_sidebar.md': '/_sidebar.md', // See #301
+          },
         markdown: {
           smartypants: false,
           renderer: {
@@ -85,7 +133,8 @@
           },
         },
         name: 'Python Circus',
-        coverpage: {"/":'_coverpage.md', "/pgintro/":'_coverpage.md'},
+        // coverpage: {"/":'_coverpage.md', "/pgintro/":'_coverpage.md'},
+        coverpage: ["/", "/pgintro/"],
 
 
         // Sidebar Configuration
@@ -105,10 +154,31 @@
       };
 
     </script>
+    <script src="//unpkg.com/docsify-accordify/src/index.js"></script>
+    <script src="//unpkg.com/docsify-accordion/src/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/docsify/4.13.1/docsify.min.js"></script>
     <script type="text/python">
-            from browser import document, alert, html
-            document["dr0"].html = "This tutorial will have dynamic and interactive content"
+        from browser import window, document, alert, html, timer
+        h = "100px"
+        def set_svg():
+            #_ = document[self.console_pre_id] <= strn
+            editor = window.ace.edit("dr0")
+            editor.container.style.height = h
+            editor.setReadOnly(False)
+            editor.setTheme("ace/theme/dracula")
+            editor.getSession().setMode("ace/mode/python")
+
+
+            document["dr0"].style.height = h
+            print ("done")
+        timer.set_timeout(set_svg, 100)
+
+        document["dr0"].html = "print('hello')"
+        print ("did")
+        #from ScriptWidget import ScriptWidget
+        #sw2 = ScriptWidget(script_name='forest_0.py', main_div_id='dr0', )
+
+
     </script>
 
 

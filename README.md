@@ -29,6 +29,12 @@ modifying process.
 
 Work in progress..
 
+[Python Introduction](/pyi/README)
+
+[Python Intro](/pintro)
+
+[Changelog](/changelog)
+
 <a href="#/pgintro/">Python Kwarwp</a>
 
 [footer](footer.md ':include')
