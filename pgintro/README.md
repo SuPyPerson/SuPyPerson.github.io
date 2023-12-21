@@ -5,7 +5,6 @@
 + Discover Names +
 
   <img id="dr3" src onerror="__did_got__(this.id)"></img>
-
   
   Application is a piece of software conveying a purpose. 
   It contains and manages a given information and permits
@@ -13,7 +12,7 @@
 
 + Roadmap +
 
-    <div id="dr2"><img src onerror="__widget__(this.parentNode.id)"/></div>
+    <img id="dr2" src onerror="__did_got__(this.id)"></img>
 
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

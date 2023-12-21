@@ -2,6 +2,16 @@ import sys
 from json import loads
 
 from browser import window, ajax, document, html, timer, run_script as python_runner
+from collections import namedtuple
+from vitollino import Cena, Elemento
+import vitollino
+
+vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
+
+# STYLE.update(width="600px", height="200px")
+# STYLE["width"] = "100%"
+# STYLE["height"] = "200px"
+W_text = namedtuple("W_text", "text")
 
 widget_code_lr = """
   <div class="script-title" id="title-%s"></div>
@@ -25,28 +35,50 @@ widget_code_tb = """
   <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
 """
 WGT = {}
-def show(did=0):
+SRC = {}
+def show(did="0"):
     # document[did].unbind("click")
     if did not in WGT.keys():
         WGT[did] = Widget(did)
 
-def build(did=0):
-    _did = f"_{did}"
-    edi= html.DIV(Id=_did)
-    ht = window.location.host
-    _ = document[did].src = "_media/sky.gif"
+def build(did=0, name="forest_0.py"):
+    def go():
+        global STYLE
+        # STYLE.update(width="600px", height="200px")
+        h = "300px"
+        vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h,'left': 0, 'top': 0}
 
-    print("build", _did, ht + "/_media/sky.gif")
-    _ = document[did].parentNode <= edi
-    if _did not in WGT.keys():
-        WGT[_did] = Widget(_did)
+        _did = f"_{did}"
+        edi= html.DIV(Id=_did)
+        vit= html.DIV(Id=_did+"_", style={"min-height": h})
+        # _ = document[did].src = "_media/sky.gif"
+
+        _ = document[did].parentNode <= vit
+        _ = document[did].parentNode <= edi
+        c = Cena(img="_media/sky.gif", tela=vit)
+        c.elt.style.width = "100%"
+        c.img.style.width = "100%"
+        '''
+        c.elt.style.height = "150px"
+        c.elt.style.minHeight = "150px"
+        c.img.style.minHeight = "150px"
+        c.elt.style.position = "relative"
+        c.img.height = 150
+        '''
+        c.vai()
+        e = Elemento(img="_media/sun.gif", cena=c)
+        # print("build", _did, "/_media/sky.gif", c.elt, e.elt)
+        if _did not in WGT.keys():
+            WGT[_did] = ScriptWidget(script_name=name,main_div_id=_did,
+                                     height=150, title="Forest")
+    timer.set_timeout(go, 100)
 
 class Widget:
 
     def __init__(self, did=""):
         div_id = did
         h = "100px"
-        print("Widget", div_id)
+        # print("Widget", div_id)
         document[div_id].html = ""
         def set_svg():
             #_ = document[self.console_pre_id] <= strn
@@ -56,6 +88,11 @@ class Widget:
             editor.setTheme("ace/theme/gruvbox")
             editor.getSession().setMode("ace/mode/python")
             editor.setValue("print('hello')")
+            editor.setOptions({
+                "enableBasicAutocompletion": True,
+                "enableSnippets": True,
+                "enableLiveAutocompletion": True
+            })
 
 
             document[div_id].style.height = h
@@ -144,6 +181,7 @@ class ScriptBuilder:
         editor.setTheme("ace/theme/solarized_light")
         editor.getSession().setMode("ace/mode/python")'''
 
+    # noinspection PyArgumentList
     def get_script(self, _):
         req = ajax.ajax()
         req.open('GET', self.script_path + self.script_name, True)
@@ -228,7 +266,7 @@ class ScriptWidget:
 
     def run_script(self, _):
         editor = window.ace.edit(self.script_div_id)
-        document[self.console_pre_id].style.color = "black"
+        document[self.console_pre_id].style.color = "dimgrey"
         sys.stdout = self
         sys.stderr = ScriptStderr(self.console_pre_id)
         if self.name_to_run is None:
@@ -237,12 +275,21 @@ class ScriptWidget:
             python_runner(editor.getValue(), self.name_to_run)
 
     def get_script_callback(self, request):
+        SRC[self.script_name] = request.text
         editor = window.ace.edit(self.script_div_id)
-        editor.setValue(request.text, -1)
-        editor.setTheme("ace/theme/dracula")
+        editor.setTheme("ace/theme/gruvbox")
         editor.getSession().setMode("ace/mode/python")
+        editor.setOptions({
+            "enableBasicAutocompletion": True,
+            "enableSnippets": True,
+            "enableLiveAutocompletion": True
+        })
+        editor.setValue(request.text, -1)
 
     def get_script(self, _):
+        if self.script_name in SRC:
+            self.get_script_callback(W_text(SRC[self.script_name]))
+            return True
         req = ajax.ajax()
         req.open('GET', self.script_path + self.script_name, True)
         req.set_header('content-type', "application/x-www-form-urlencoded;charset=UTF-8")
