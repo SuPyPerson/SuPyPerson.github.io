@@ -4,11 +4,16 @@
 
 + Discover Names +
 
+  <img id="dr3" src onerror="__did_got__(this.id)"></img>
+
+  
   Application is a piece of software conveying a purpose. 
   It contains and manages a given information and permits
   some processes to manipulate it.
 
 + Roadmap +
+
+    <div id="dr2"><img src onerror="__widget__(this.parentNode.id)"/></div>
 
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -18,10 +23,10 @@
 : challenges
 
 <hr/>
-<div id="dr1"></div>
-<script type="text/python">
-    from ScriptWidget import ScriptBuilder
-    sw2 = ScriptBuilder("forest_0.py", height=200, title="dojo esquenta 0")
+<!--div id="dr1" onclick="__widget__()" style="background-color: blue; min-height: 10px"></div>
+<div id="dr1" onclick="__widget__(this.id)"><i class="fa-solid fa-play"></i></div -->
+<script>
+    console.log(2333);
 </script>
     
 

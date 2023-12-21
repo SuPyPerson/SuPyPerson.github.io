@@ -1,7 +1,7 @@
 import sys
 from json import loads
 
-from browser import window, ajax, document, timer, run_script as python_runner
+from browser import window, ajax, document, html, timer, run_script as python_runner
 
 widget_code_lr = """
   <div class="script-title" id="title-%s"></div>
@@ -24,6 +24,47 @@ widget_code_tb = """
   <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
   <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
 """
+WGT = {}
+def show(did=0):
+    # document[did].unbind("click")
+    if did not in WGT.keys():
+        WGT[did] = Widget(did)
+
+def build(did=0):
+    _did = f"_{did}"
+    edi= html.DIV(Id=_did)
+    ht = window.location.host
+    _ = document[did].src = "_media/sky.gif"
+
+    print("build", _did, ht + "/_media/sky.gif")
+    _ = document[did].parentNode <= edi
+    if _did not in WGT.keys():
+        WGT[_did] = Widget(_did)
+
+class Widget:
+
+    def __init__(self, did=""):
+        div_id = did
+        h = "100px"
+        print("Widget", div_id)
+        document[div_id].html = ""
+        def set_svg():
+            #_ = document[self.console_pre_id] <= strn
+            editor = window.ace.edit(div_id)
+            editor.container.style.height = h
+            editor.setReadOnly(False)
+            editor.setTheme("ace/theme/gruvbox")
+            editor.getSession().setMode("ace/mode/python")
+            editor.setValue("print('hello')")
+
+
+            document[div_id].style.height = h
+            print ("done")
+        timer.set_timeout(set_svg, 100)
+
+        print ("did")
+        #from ScriptWidget import ScriptWidget
+        #sw2 = ScriptWidget(script_name='forest_0.py', main_div_id=divid)
 
 
 class ScriptStderr:

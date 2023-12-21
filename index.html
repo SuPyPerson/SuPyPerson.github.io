@@ -23,6 +23,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/theme-dracula.min.js"
             integrity="sha512-Uo9Lu5ebeR+BvhmnAYT4FbW+0/a85TfeWmeMkg//AzcqTrQBbTWIR0BDW+AsJw/i4kdkPcewBHUncKZng4ASEQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/theme-gruvbox.min.js"
+        integrity="sha512-csAdQ+MAmg252+rlVpEgxnAzlzPBBEDzi8QSoaMyV1lJqMZuzASQUDyTpT1W2gGqrRLioKPaX0ylDwkMXxzDsw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!--
     <link rel="stylesheet" href="//unpkg.com/docsify-accordify/src/assets/default.css">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css" />
@@ -102,17 +105,27 @@
     <div id="app"></div>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
     <script src="//cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+    <script type="text/python">
+        from browser import window, document, alert, html, timer
+        from ScriptWidget import show, build
+        window.__widget__ = show
+        window.__did_got__ = build
+        # Widget()
+
+
+    </script>
     <script>
       var num = 0;
       mermaid.initialize({ startOnLoad: false });
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
       window.$docsify = {
-        accordify: {
-            prerenderComments: true,                    // default
-            selectors: ['h1','h2','h3','h4','h5','h6'], // default value
-            debug: false,                               // default value
-        },
+            executeScript: true,
+            accordify: {
+                prerenderComments: true,                    // default
+                selectors: ['h1','h2','h3','h4','h5','h6'], // default value
+                debug: false,                               // default value
+            },
 
           alias: {
             '/pyi/(.*)': '/pgintro/$1', // supports regexp
@@ -157,29 +170,6 @@
     <script src="//unpkg.com/docsify-accordify/src/index.js"></script>
     <script src="//unpkg.com/docsify-accordion/src/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/docsify/4.13.1/docsify.min.js"></script>
-    <script type="text/python">
-        from browser import window, document, alert, html, timer
-        h = "100px"
-        def set_svg():
-            #_ = document[self.console_pre_id] <= strn
-            editor = window.ace.edit("dr0")
-            editor.container.style.height = h
-            editor.setReadOnly(False)
-            editor.setTheme("ace/theme/dracula")
-            editor.getSession().setMode("ace/mode/python")
-
-
-            document["dr0"].style.height = h
-            print ("done")
-        timer.set_timeout(set_svg, 100)
-
-        document["dr0"].html = "print('hello')"
-        print ("did")
-        #from ScriptWidget import ScriptWidget
-        #sw2 = ScriptWidget(script_name='forest_0.py', main_div_id='dr0', )
-
-
-    </script>
 
 
 </body>
