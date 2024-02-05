@@ -67,6 +67,11 @@ def build(did=0, name="forest_0.py"):
         '''
         c.vai()
         e = Elemento(img="_media/sun.gif", cena=c)
+        e = Elemento(img="_media/terra.jpg", y=100, w=695, h=200, cena=c)
+        e = Elemento(img="_media/animais.png", y=90, x=50, w=200, h=200, cena=c,
+                     style={"background-size":"200% 300%", "background-position":"100% 50%", 'backdrop-filter': 'hue-rotate(240deg)'})
+        e = Elemento(img="_media/capangas.png", y=90, x=250, w=150, h=200, cena=c,
+                     style={"background-size":"200% 100%", "background-position":"100% 50%"})
         # print("build", _did, "/_media/sky.gif", c.elt, e.elt)
         if _did not in WGT.keys():
             WGT[_did] = ScriptWidget(script_name=name,main_div_id=_did,

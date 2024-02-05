@@ -102,6 +102,11 @@
     </style>
 </head>
 <body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./_core', './_prog', './']})">
+
+  <nav>
+    <a href="#/">IN</a>
+    <a href="#/pgintro/">KW</a>
+  </nav>
     <div id="pydiv"></div>
     <div id="app"></div>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
@@ -121,6 +126,7 @@
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
       window.$docsify = {
+            coverpage: ["/", "/pgintro/"],
             executeScript: true,
             accordify: {
                 prerenderComments: true,                    // default
@@ -148,7 +154,6 @@
         },
         name: 'Python Circus',
         // coverpage: {"/":'_coverpage.md', "/pgintro/":'_coverpage.md'},
-        coverpage: ["/", "/pgintro/"],
 
 
         // Sidebar Configuration
