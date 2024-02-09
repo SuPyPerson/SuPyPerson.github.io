@@ -36,21 +36,32 @@ widget_code_tb = """
 """
 WGT = {}
 SRC = {}
+DIV = []
+
+
 def show(did="0"):
     # document[did].unbind("click")
-    if did not in WGT.keys():
-        WGT[did] = Widget(did)
+    if did not in DIV:
+        DIV.append(did)
+    print("show", did, DIV)
 
-def build(did=0, name="forest_0.py"):
+
+def build(name="forest_0.py"):
+    print("build", name)
+
+    ScriptBuilder(script_name=name).get_script(name)
+
+
+def build_(did=0, name="forest_0.py"):
     def go():
-        global STYLE
+        # global STYLE
         # STYLE.update(width="600px", height="200px")
         h = "300px"
-        vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h,'left': 0, 'top': 0}
+        vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h, 'left': 0, 'top': 0}
 
         _did = f"_{did}"
-        edi= html.DIV(Id=_did)
-        vit= html.DIV(Id=_did+"_", style={"min-height": h})
+        edi = html.DIV(Id=_did)
+        vit = html.DIV(Id=_did + "_", style={"min-height": h})
         # _ = document[did].src = "_media/sky.gif"
 
         _ = document[did].parentNode <= vit
@@ -68,15 +79,17 @@ def build(did=0, name="forest_0.py"):
         c.vai()
         e = Elemento(img="_media/sun.gif", cena=c)
         e = Elemento(img="_media/terra.jpg", y=100, w=695, h=200, cena=c)
-        e = Elemento(img="_media/animais.png", y=90, x=50, w=200, h=200, cena=c,
-                     style={"background-size":"200% 300%", "background-position":"100% 50%", 'backdrop-filter': 'hue-rotate(240deg)'})
+        e = Elemento(img="_media/animais.png", y=90, x=50, w=200, h=200, cena=c, style={
+            "background-size": "200% 300%", "background-position": "100% 50%", 'backdrop-filter': 'hue-rotate(240deg)'})
         e = Elemento(img="_media/capangas.png", y=90, x=250, w=150, h=200, cena=c,
-                     style={"background-size":"200% 100%", "background-position":"100% 50%"})
+                     style={"background-size": "200% 100%", "background-position": "100% 50%"})
         # print("build", _did, "/_media/sky.gif", c.elt, e.elt)
         if _did not in WGT.keys():
-            WGT[_did] = ScriptWidget(script_name=name,main_div_id=_did,
+            WGT[_did] = ScriptWidget(script_name=name, main_div_id=_did,
                                      height=150, title="Forest")
+
     timer.set_timeout(go, 100)
+
 
 class Widget:
 
@@ -85,8 +98,9 @@ class Widget:
         h = "100px"
         # print("Widget", div_id)
         document[div_id].html = ""
+
         def set_svg():
-            #_ = document[self.console_pre_id] <= strn
+            # _ = document[self.console_pre_id] <= strn
             editor = window.ace.edit(div_id)
             editor.container.style.height = h
             editor.setReadOnly(False)
@@ -99,14 +113,14 @@ class Widget:
                 "enableLiveAutocompletion": True
             })
 
-
             document[div_id].style.height = h
-            print ("done")
+            print("done")
+
         timer.set_timeout(set_svg, 100)
 
-        print ("did")
-        #from ScriptWidget import ScriptWidget
-        #sw2 = ScriptWidget(script_name='forest_0.py', main_div_id=divid)
+        print("did")
+        # from ScriptWidget import ScriptWidget
+        # sw2 = ScriptWidget(script_name='forest_0.py', main_div_id=divid)
 
 
 class ScriptStderr:
@@ -121,7 +135,7 @@ class ScriptStderr:
 class ScriptBuilder:
 
     def __init__(self, script_name, **params):
-        """ Creates a collecton of widgets in decibed DIVs
+        """ Creates a collection of widgets in described DIVs
         @param params :
           - height: integer in pixels
           - editor_width: in the case of side-by-side arrangement of windows *editor_width* property defines
@@ -137,7 +151,7 @@ class ScriptBuilder:
         self.code = ""
         self.params = params
         self.name_to_run = params.get("name", None)
-        self.script_path = "_static/"
+        self.script_path = "_core/"
         self.get_script(None)
         '''
         # Set title (number and name) of the script
@@ -163,12 +177,15 @@ class ScriptBuilder:
         self.code = code
         self.params.pop('script_name') if 'script_name' in params else None
         sw = ScriptWidget(script_name=None, main_div_id=script_div_id, **self.params)
-        editor = window.ace.edit(sw.script_div_id)
-        editor.setValue(code, -1)
-        editor.setTheme("ace/theme/solarized_light")
-        editor.getSession().setMode("ace/mode/python")
-        # document["reset-%s" % script_div_id].unbind("click")
-        document["reset-%s" % script_div_id].bind("click", lambda *_: editor.setValue(code, -1))
+        WGT[script_div_id] = sw
+        sw.run_script(0)
+        print("get_scripts_callback", script_div_id, params, DIV)
+        # editor = window.ace.edit(sw.script_div_id)
+        # editor.setValue(code, -1)
+        # editor.setTheme("ace/theme/solarized_light")
+        # editor.getSession().setMode("ace/mode/python")
+        # # document["reset-%s" % script_div_id].unbind("click")
+        # document["reset-%s" % script_div_id].bind("click", lambda *_: editor.setValue(code, -1))
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
@@ -217,6 +234,7 @@ class ScriptWidget:
         self.console_pre_id = "result_pre-%s" % main_div_id
         self.script_path = "_core/"
         self.main_div_id = main_div_id
+        print("SW", self.script_name, self.script_div_id)
         self.get_script(None) if script_name else None
 
         if "alignment" in params and params["alignment"] == 'top-bottom':

@@ -2,9 +2,11 @@
 > And now for something completely different! <br>
 > Learn Python by solving, modifying and creating game puzzles
 
+<img src onerror="__did_got__('forest_0.py')"></img>
+
 + Discover Names +
 
-  <img id="dr3" src onerror="__did_got__(this.id)"></img>
+  <img id="dr0" src onerror="__widget__(this.id)"></img>
   
   Application is a piece of software conveying a purpose. 
   It contains and manages a given information and permits
@@ -12,7 +14,7 @@
 
 + Roadmap +
 
-    <img id="dr2" src onerror="__did_got__(this.id)"></img>
+    <img id="dr1" src onerror="__widget__(this.id)"></img>
 
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

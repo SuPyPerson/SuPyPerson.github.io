@@ -5,4 +5,11 @@ _SET0_ = {
 print(type(True))
 print(type(False))
 print(type(1 == 1))
-
+_SET1_ = {
+    "script_name": "dr1", "script_div_id": "dr1",
+    "height": 150, "title": "Tipo String"
+}  # _SEC_
+texto = "um texto"
+print(type(texto))
+print(type("texto"))
+print(type("texto".capitalize()))
