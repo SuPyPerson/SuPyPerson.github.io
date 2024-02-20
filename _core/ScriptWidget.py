@@ -50,8 +50,8 @@ def build(name="forest_0.py"):
     ScriptBuilder(script_name=name).get_script(name)
 
 
-def build_(did="0", name="forest_0.py"):
-    def go():
+class ScriptVito:
+    def __init__(self, did="0"):
         h = "300px"
         vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h, 'left': 0, 'top': 0}
 
@@ -71,8 +71,12 @@ def build_(did="0", name="forest_0.py"):
         Elemento(img="_media/capangas.png", y=90, x=250, w=150, h=200, cena=c,
                      style={"background-size": "200% 100%", "background-position": "100% 50%"})
 
-        if _did not in WGT.keys():
-            WGT[_did] = ScriptWidget(script_name=name, main_div_id=_did,
+
+
+def build_(did="0", name="forest_0.py"):
+    def go():
+        _did = f"_{did}"
+        ScriptWidget(script_name=name, main_div_id=did,
                                      height=150, title="Forest")
 
     timer.set_timeout(go, 100)
@@ -154,7 +158,7 @@ class ScriptWidget:
           - name: name of the module to run; by default this widget just runs the whole script; use
             the ``name`` keyword to run ``__main__`` section of a Python script
         """
-        m = main_div_id
+        m = main_div_id = f"_{main_div_id}"
         self.script_name = script_name
         self.script_div_id = "script-%s" % main_div_id
         self.name_to_run = params.get("name", None)
@@ -162,6 +166,8 @@ class ScriptWidget:
         self.script_path = "_core/"
         self.main_div_id = main_div_id
         self.code_text = COD[main_div_id[1:]]
+        ScriptVito(did=main_div_id[1:])
+
 
         if "alignment" in params and params["alignment"] == 'top-bottom':
             document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
