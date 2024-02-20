@@ -1,3 +1,26 @@
+"""Accessory classes to integrate widgets with docsify.
+
+Classes neste módulo:
+    - :py:class:`ScriptVito` include Vitollino scenes in the programming.
+    - :py:func:`show` Called when dojo window is opened.
+    - :py:func:`build` Called to collect scripts from side script file.
+    - :py:class:`ScripStErr` Error Handler Class.
+    - :py:class:`ScriptBuilder` Collect scripts from side script file.
+    - :py:class:`ScriptWidget` Display Dojo elements in a window.
+
+.. codeauthor:: Carlo Oliveira <carlo@nce.ufrj.br>
+.. codeauthor:: Dominik Gront <dgront@gmail.com>
+
+Changelog
+---------
+.. versionadded::    24.04
+   |br| Classes ScriptVito, ScriptWidget, CartaAlagamento (20).
+
+|   **Open Source Notification:** This file is part of open source program **Pynoplia**
+|   **Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
+|   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
+|   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
+"""
 import sys
 from json import loads
 
@@ -7,11 +30,6 @@ from vitollino import Cena, Elemento
 import vitollino
 
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
-
-# STYLE.update(width="600px", height="200px")
-# STYLE["width"] = "100%"
-# STYLE["height"] = "200px"
-W_text = namedtuple("W_text", "text")
 
 widget_code_lr = """
   <div class="script-title" id="title-%s"></div>
@@ -34,15 +52,10 @@ widget_code_tb = """
   <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
   <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
 """
-WGT = {}
-SRC = {}
 COD = {}
-DIV = []
 
 
 def show(did="0"):
-    if did not in DIV:
-        DIV.append(did)
     build_(did=did, name="forest_0.py")
 
 
@@ -52,6 +65,14 @@ def build(name="forest_0.py"):
 
 class ScriptVito:
     def __init__(self, did="0"):
+        self.scene = None
+        self.e = Elemento
+        self.vit = ''
+        if "# _VIT_" in COD[did]:
+            self.vit, COD[did] = COD[did].split("# _VIT_")
+        self.scenario(did=did)
+
+    def scenario(self, did="0", sky="_media/sky.gif", sun="_media/sun.gif", soil="_media/terra.jpg", ground=200):
         h = "300px"
         vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h, 'left': 0, 'top': 0}
 
@@ -60,17 +81,13 @@ class ScriptVito:
         vit = html.DIV(Id=_did + "_", style={"min-height": h})
         _ = document[did].parentNode <= vit
         _ = document[did].parentNode <= edi
-        c = Cena(img="_media/sky.gif", tela=vit)
+        self.scene = c = Cena(img=sky, tela=vit)
         c.elt.style.width = "100%"
         c.img.style.width = "100%"
         c.vai()
-        Elemento(img="_media/sun.gif", cena=c)
-        Elemento(img="_media/terra.jpg", y=100, w=695, h=200, cena=c)
-        Elemento(img="_media/animais.png", y=90, x=50, w=200, h=200, cena=c, style={
-            "background-size": "200% 300%", "background-position": "100% 50%", 'backdrop-filter': 'hue-rotate(240deg)'})
-        Elemento(img="_media/capangas.png", y=90, x=250, w=150, h=200, cena=c,
-                     style={"background-size": "200% 100%", "background-position": "100% 50%"})
-
+        Elemento(img=sun, cena=c)
+        Elemento(img=soil, y=100, w=695, h=ground, cena=c)
+        exec(self.vit, dict(c__=c, v__=vitollino))
 
 
 def build_(did="0", name="forest_0.py"):
@@ -158,6 +175,7 @@ class ScriptWidget:
           - name: name of the module to run; by default this widget just runs the whole script; use
             the ``name`` keyword to run ``__main__`` section of a Python script
         """
+        mid = main_div_id
         m = main_div_id = f"_{main_div_id}"
         self.script_name = script_name
         self.script_div_id = "script-%s" % main_div_id
@@ -165,8 +183,8 @@ class ScriptWidget:
         self.console_pre_id = "result_pre-%s" % main_div_id
         self.script_path = "_core/"
         self.main_div_id = main_div_id
-        self.code_text = COD[main_div_id[1:]]
-        ScriptVito(did=main_div_id[1:])
+        ScriptVito(did=mid)
+        self.code_text = COD[mid]
 
 
         if "alignment" in params and params["alignment"] == 'top-bottom':
@@ -178,7 +196,7 @@ class ScriptWidget:
 
         document["run-%s" % main_div_id].bind("click", self.run_script)
         document["clear-%s" % main_div_id].bind("click", self.clear_console)
-        document["reset-%s" % main_div_id].bind("click", self.get_script) if script_name else None
+        document["reset-%s" % main_div_id].bind("click", self.get_script)
 
         # Set title (number and name) of the script
         index = params.get("index", None)
