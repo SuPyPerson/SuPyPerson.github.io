@@ -36,20 +36,17 @@ widget_code_tb = """
 """
 WGT = {}
 SRC = {}
+COD = {}
 DIV = []
 
 
 def show(did="0"):
-    # document[did].unbind("click")
     if did not in DIV:
         DIV.append(did)
-    print("show", did, DIV)
     build_(did=did, name="forest_0.py")
 
 
 def build(name="forest_0.py"):
-    print("build", name)
-
     ScriptBuilder(script_name=name).get_script(name)
 
 
@@ -61,20 +58,11 @@ def build_(did="0", name="forest_0.py"):
         _did = f"_{did}"
         edi = html.DIV(Id=_did)
         vit = html.DIV(Id=_did + "_", style={"min-height": h})
-        # _ = document[did].src = "_media/sky.gif"
-
         _ = document[did].parentNode <= vit
         _ = document[did].parentNode <= edi
         c = Cena(img="_media/sky.gif", tela=vit)
         c.elt.style.width = "100%"
         c.img.style.width = "100%"
-        '''
-        c.elt.style.height = "150px"
-        c.elt.style.minHeight = "150px"
-        c.img.style.minHeight = "150px"
-        c.elt.style.position = "relative"
-        c.img.height = 150
-        '''
         c.vai()
         Elemento(img="_media/sun.gif", cena=c)
         Elemento(img="_media/terra.jpg", y=100, w=695, h=200, cena=c)
@@ -82,44 +70,12 @@ def build_(did="0", name="forest_0.py"):
             "background-size": "200% 300%", "background-position": "100% 50%", 'backdrop-filter': 'hue-rotate(240deg)'})
         Elemento(img="_media/capangas.png", y=90, x=250, w=150, h=200, cena=c,
                      style={"background-size": "200% 100%", "background-position": "100% 50%"})
-        # print("build", _did, "/_media/sky.gif", c.elt, e.elt)
+
         if _did not in WGT.keys():
             WGT[_did] = ScriptWidget(script_name=name, main_div_id=_did,
                                      height=150, title="Forest")
 
     timer.set_timeout(go, 100)
-
-
-class Widget:
-
-    def __init__(self, did=""):
-        div_id = did
-        h = "100px"
-        # print("Widget", div_id)
-        document[div_id].html = ""
-
-        def set_svg():
-            # _ = document[self.console_pre_id] <= strn
-            editor = window.ace.edit(div_id)
-            editor.container.style.height = h
-            editor.setReadOnly(False)
-            editor.setTheme("ace/theme/gruvbox")
-            editor.getSession().setMode("ace/mode/python")
-            editor.setValue("print('hello')")
-            editor.setOptions({
-                "enableBasicAutocompletion": True,
-                "enableSnippets": True,
-                "enableLiveAutocompletion": True
-            })
-
-            document[div_id].style.height = h
-            print("done")
-
-        timer.set_timeout(set_svg, 100)
-
-        print("did")
-        # from ScriptWidget import ScriptWidget
-        # sw2 = ScriptWidget(script_name='forest_0.py', main_div_id=divid)
 
 
 class ScriptStderr:
@@ -152,39 +108,15 @@ class ScriptBuilder:
         self.name_to_run = params.get("name", None)
         self.script_path = "_core/"
         self.get_script(None)
-        '''
-        # Set title (number and name) of the script
-        index = params.get("index", None)
-        title = params.get("title", None)
-        if "height" in params:
-            h = "%dpx" % (params["height"])
-        else:
-            h = "200px"
 
-        if "console_height" in params:
-            console_height = "%dpx" % (params["console_height"])
-        else:
-            console_height = h
-
-        # --- Hide buttons (or not)
-        if params.get("hide_buttons", False):
-            hide_buttons = False'''
 
     def set_script_editor(self, code,
                           script_div_id="", **params):
         self.params.update(params)
         self.code = code
         self.params.pop('script_name') if 'script_name' in params else None
-        print("get_scripts_callback", script_div_id, params, DIV, code)
-        sw = ScriptWidget(script_name=None, main_div_id=script_div_id, code=code, **self.params)
-        WGT[script_div_id] = sw
-        # sw.run_script(0)
-        # editor = window.ace.edit(sw.script_div_id)
-        # editor.setValue(code, -1)
-        # editor.setTheme("ace/theme/solarized_light")
-        # editor.getSession().setMode("ace/mode/python")
-        # # document["reset-%s" % script_div_id].unbind("click")
-        # document["reset-%s" % script_div_id].bind("click", lambda *_: editor.setValue(code, -1))
+        COD[script_div_id] = code
+
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
@@ -195,13 +127,8 @@ class ScriptBuilder:
 
         multi = request.text.split("_SET")[1:]
         #
-        print(multi, "\n", multi[0].split("  # _SEC_\n\n"))
+        # print(multi, "\n", multi[0].split("  # _SEC_\n\n"))
         [do_tup(*reference.split("  # _SEC_")) for reference in multi]
-        '''
-        editor = window.ace.edit(self.script_div_id)
-        editor.setValue(request.text, -1)
-        editor.setTheme("ace/theme/solarized_light")
-        editor.getSession().setMode("ace/mode/python")'''
 
     # noinspection PyArgumentList
     def get_script(self, _):
@@ -234,6 +161,7 @@ class ScriptWidget:
         self.console_pre_id = "result_pre-%s" % main_div_id
         self.script_path = "_core/"
         self.main_div_id = main_div_id
+        self.code_text = COD[main_div_id[1:]]
 
         if "alignment" in params and params["alignment"] == 'top-bottom':
             document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
@@ -257,7 +185,7 @@ class ScriptWidget:
 
         # Set the height of the editor's window
         self.editor = window.ace.edit(self.script_div_id)
-        self.get_script(code)
+        self.get_script(COD[main_div_id[1:]])
 
         if "height" in params:
             h = "%dpx" % (params["height"])
@@ -298,14 +226,7 @@ class ScriptWidget:
             python_runner(editor.getValue(), self.name_to_run)
 
     def get_script(self, code=None):
-        print("SW get_script", self.script_name, self.script_div_id, code)
-
-        def get_params(script_name, script_div_id, height=150, title=""):
-            self.script_name = script_name
-            self.script_div_id = script_div_id
-
-        # editor = window.ace.edit(self.script_div_id)
-        self.editor.setValue(code, -1)
+        self.editor.setValue(self.code_text, -1)
         self.editor.setTheme("ace/theme/gruvbox")
         self.editor.getSession().setMode("ace/mode/python")
         self.editor.setOptions({
