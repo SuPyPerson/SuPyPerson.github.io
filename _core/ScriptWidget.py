@@ -44,6 +44,7 @@ def show(did="0"):
     if did not in DIV:
         DIV.append(did)
     print("show", did, DIV)
+    build_(did=did, name="forest_0.py")
 
 
 def build(name="forest_0.py"):
@@ -52,10 +53,8 @@ def build(name="forest_0.py"):
     ScriptBuilder(script_name=name).get_script(name)
 
 
-def build_(did=0, name="forest_0.py"):
+def build_(did="0", name="forest_0.py"):
     def go():
-        # global STYLE
-        # STYLE.update(width="600px", height="200px")
         h = "300px"
         vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h, 'left': 0, 'top': 0}
 
@@ -77,11 +76,11 @@ def build_(did=0, name="forest_0.py"):
         c.img.height = 150
         '''
         c.vai()
-        e = Elemento(img="_media/sun.gif", cena=c)
-        e = Elemento(img="_media/terra.jpg", y=100, w=695, h=200, cena=c)
-        e = Elemento(img="_media/animais.png", y=90, x=50, w=200, h=200, cena=c, style={
+        Elemento(img="_media/sun.gif", cena=c)
+        Elemento(img="_media/terra.jpg", y=100, w=695, h=200, cena=c)
+        Elemento(img="_media/animais.png", y=90, x=50, w=200, h=200, cena=c, style={
             "background-size": "200% 300%", "background-position": "100% 50%", 'backdrop-filter': 'hue-rotate(240deg)'})
-        e = Elemento(img="_media/capangas.png", y=90, x=250, w=150, h=200, cena=c,
+        Elemento(img="_media/capangas.png", y=90, x=250, w=150, h=200, cena=c,
                      style={"background-size": "200% 100%", "background-position": "100% 50%"})
         # print("build", _did, "/_media/sky.gif", c.elt, e.elt)
         if _did not in WGT.keys():
@@ -176,10 +175,10 @@ class ScriptBuilder:
         self.params.update(params)
         self.code = code
         self.params.pop('script_name') if 'script_name' in params else None
-        sw = ScriptWidget(script_name=None, main_div_id=script_div_id, **self.params)
+        print("get_scripts_callback", script_div_id, params, DIV, code)
+        sw = ScriptWidget(script_name=None, main_div_id=script_div_id, code=code, **self.params)
         WGT[script_div_id] = sw
-        sw.run_script(0)
-        print("get_scripts_callback", script_div_id, params, DIV)
+        # sw.run_script(0)
         # editor = window.ace.edit(sw.script_div_id)
         # editor.setValue(code, -1)
         # editor.setTheme("ace/theme/solarized_light")
@@ -191,11 +190,12 @@ class ScriptBuilder:
         def do_tup(refx, codex):
             params = loads(refx[4:])
             div_id = params.pop('script_div_id')
+            # print("XXX>", loads(refx[4:]), div_id, "XXX>", codex)
             self.set_script_editor(codex, div_id, **params)
-            # print("XXX>", loads(refx[4:]))
 
         multi = request.text.split("_SET")[1:]
-        # print(multi, multi[0].split("  # _SEC_\n\n"))
+        #
+        print(multi, "\n", multi[0].split("  # _SEC_\n\n"))
         [do_tup(*reference.split("  # _SEC_")) for reference in multi]
         '''
         editor = window.ace.edit(self.script_div_id)
@@ -214,7 +214,7 @@ class ScriptBuilder:
 
 class ScriptWidget:
 
-    def __init__(self, script_name=None, main_div_id='', **params):
+    def __init__(self, script_name=None, main_div_id='', code="", **params):
         """ Creates a widget in a given DIV
         @param params :
           - height: integer in pixels
@@ -234,8 +234,6 @@ class ScriptWidget:
         self.console_pre_id = "result_pre-%s" % main_div_id
         self.script_path = "_core/"
         self.main_div_id = main_div_id
-        print("SW", self.script_name, self.script_div_id)
-        self.get_script(None) if script_name else None
 
         if "alignment" in params and params["alignment"] == 'top-bottom':
             document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
@@ -257,8 +255,10 @@ class ScriptWidget:
                 title_text += ": %s" % title
             document["title-%s" % main_div_id].innerHTML = title_text
 
-        # Set height of the editor's window
+        # Set the height of the editor's window
         self.editor = window.ace.edit(self.script_div_id)
+        self.get_script(code)
+
         if "height" in params:
             h = "%dpx" % (params["height"])
         else:
@@ -288,7 +288,7 @@ class ScriptWidget:
         document[self.console_pre_id].innerHTML = ""
 
     def run_script(self, _):
-        editor = window.ace.edit(self.script_div_id)
+        editor = self.editor  # window.ace.edit(self.script_div_id)
         document[self.console_pre_id].style.color = "dimgrey"
         sys.stdout = self
         sys.stderr = ScriptStderr(self.console_pre_id)
@@ -297,24 +297,19 @@ class ScriptWidget:
         else:
             python_runner(editor.getValue(), self.name_to_run)
 
-    def get_script_callback(self, request):
-        SRC[self.script_name] = request.text
-        editor = window.ace.edit(self.script_div_id)
-        editor.setTheme("ace/theme/gruvbox")
-        editor.getSession().setMode("ace/mode/python")
-        editor.setOptions({
+    def get_script(self, code=None):
+        print("SW get_script", self.script_name, self.script_div_id, code)
+
+        def get_params(script_name, script_div_id, height=150, title=""):
+            self.script_name = script_name
+            self.script_div_id = script_div_id
+
+        # editor = window.ace.edit(self.script_div_id)
+        self.editor.setValue(code, -1)
+        self.editor.setTheme("ace/theme/gruvbox")
+        self.editor.getSession().setMode("ace/mode/python")
+        self.editor.setOptions({
             "enableBasicAutocompletion": True,
             "enableSnippets": True,
             "enableLiveAutocompletion": True
         })
-        editor.setValue(request.text, -1)
-
-    def get_script(self, _):
-        if self.script_name in SRC:
-            self.get_script_callback(W_text(SRC[self.script_name]))
-            return True
-        req = ajax.ajax()
-        req.open('GET', self.script_path + self.script_name, True)
-        req.set_header('content-type', "application/x-www-form-urlencoded;charset=UTF-8")
-        req.bind('complete', self.get_script_callback)
-        req.send()
