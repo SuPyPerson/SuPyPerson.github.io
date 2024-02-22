@@ -1,6 +1,6 @@
 # Kwarwp - O Início
 > E agora para algo totalmente diferente! <br>
-> Aprenda Python resolvendo, modificando e criando desafios. <br>
+> Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
 > Acompanhe a saga do curumim que fugiu da destruição.
 
 <img src onerror="__did_got__('aldeia_0.py')"></img>
@@ -25,6 +25,7 @@
 
     **Cordel: Manoel Messias Belizario Neto**
 
+
 + Python - O Vaso do Boitatá +
 
   <img id="al1" src onerror="__widget__(this.id)"></img>
@@ -42,33 +43,28 @@
     Curumin lembra que ele pode botar nome e apelido em tudo usando Python.
     Para botar um nome basta usar o símbolo *"="*
 
-    
-**Game section**
-: challenges
 
-<hr/>
-<!--div id="dr1" onclick="__widget__()" style="background-color: blue; min-height: 10px"></div>
-<div id="dr1" onclick="__widget__(this.id)"><i class="fa-solid fa-play"></i></div -->
-<script>
-    console.log(2333);
-</script>
-    
++ Python - Números e coisas +
 
-**Data Content**
-: Is a piece of information the application requires and
-exchanges with the user.
+  <img id="al3" src onerror="__widget__(this.id)"></img>
 
-**Information Processing**
-: Is a collection of operations to exchange and transform
-the data content improving its usefulness.
-
-**Content-Process**
-: Is the pairing of the data structures with their pertaining
-modifying process.
+    Encontrando e contando os animais pelo caminho.
+    * soma: *"+"*
+    * subtrai: *"-"*
+    * multiplica: *"\*"*
+    * divide inteiro: *"//"*
 
 
++ Curumim - Seguindo pelo Caminho +
 
-Work in progress..
+  <img id="al4" src onerror="__widget__(this.id)"></img>
+
+    Caminhe pela cerca até uma oca.
+    Use o comando for do Python.
+    ```python
+    for _cada_na_lista in range(0):
+      # ponha aqui coisas que se repetem
+    ```
 
 #### LABASE
 [footer](footer.md ':include')
