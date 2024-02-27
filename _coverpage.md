@@ -3,7 +3,5 @@
 # Pynoplia <small>24.02</small>
 
 [GitHub](https://github.com/SuPyPerson/SuPyPerson.github.io)
-[Get Started](#The-Python-Programming-Flying-Circus)
+[Get Started](README)
 [Kwarwp](/kwa)
-
-

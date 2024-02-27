@@ -329,7 +329,7 @@ class Inventario:
         self.opacity = 0
         self.style = dict(**ISTYLE)
         self.style["min-height"] = "30px"
-        self.elt = html.DIV(Id="__inv__", style=self.style)
+        self.elt = html.DIV(Id="__inv__") #  , style=self.style)
         self.elt.onclick = self.mostra
         self.limbo = html.DIV(style=self.style)
         self.limbo.style.left = "4000px"
