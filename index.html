@@ -1,11 +1,15 @@
+<!---
+Open Source program Pynoplia - Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
+PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Super Python</title>
+    <title>Pynoplia</title>
     <!-- stylesheets -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/_media/supy.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/_media/pynoplia.png" type="image/x-icon"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -101,11 +105,6 @@
     </style>
 </head>
 <body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./_core', './_prog', './']})">
-
-  <nav>
-    <a href="#/">IN</a>
-    <a href="#/pgintro/">KW</a>
-  </nav>
     <div id="pydiv"></div>
     <div id="app"></div>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
@@ -125,7 +124,7 @@
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
       window.$docsify = {
-            coverpage: ["/", "/pgintro/"],
+            coverpage: ["/", "/kwarwp/"],
             executeScript: true,
             accordify: {
                 prerenderComments: true,                    // default
@@ -152,8 +151,8 @@
             },
           },
         },
-        name: 'Python Circus',
-        // coverpage: {"/":'_coverpage.md', "/pgintro/":'_coverpage.md', "/kwa/":'_coverpage.md'},
+        name: 'Pynóplia',
+        coverpage: {"/":'_coverpage.md', "/pgintro/":'_coverpage.md', "/kwa/":'_coverpage.md'},
 
 
         // Sidebar Configuration

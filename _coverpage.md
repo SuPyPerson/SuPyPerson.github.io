@@ -1,14 +1,7 @@
-![logo](_media/superpython.png)
+![logo](_media/pynoplialg.svg)
 
-# Super Python <small>24.02a</small>
+# Pynoplia <small>24.02</small>
 
-> Learn Python with games.
-
-### Follow the adventure
-### Solve the puzzles with code
-### Workout new levels and games
 [GitHub](https://github.com/SuPyPerson/SuPyPerson.github.io)
-[Get Started](#The-Python-Programming-Flying-Circus)
+[Get Started](README)
 [Kwarwp](/kwa)
-
-
