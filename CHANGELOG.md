@@ -8,26 +8,35 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+# 🛡️ Hoplon - Plataforma primária com quatro aulas
+
 ## [Unreleased]
 
 ### ADDED
+- Aula IV planejada
 
-## [24.02b] - 2024-02-27
+# 🗡️ Kopis - Pré-Entrega para teste de tecnologia
+
+## Kopis [24.02b] - 2024-02-27
 
 ### ADDED
 - Versão em português do site
+- Aula III com o Sonho do Curumim
 
-## [24.02a] - 2024-02-20
-
+## Kopis [24.02a] - 2024-02-20
+- Integração com Vitollino
+- Integração com Kwarwp
 ### FIXED
 - 🚒Conserto Widget Pynoplia
 
-## [24.02] - 2024-02-08
+## Kopis [24.02]  - 2024-02-08
 
 ### ADDED
+- Integration with Brython
+- Integration with Docsify
 - Falhou a integração Kwarwp Supy
 
-[unreleased]: https://github.com/SuPyPerson/SuPyPerson.github.io/releases
-[24.02b]: https://github.com/SuPyPerson/SuPyPerson.github.io/releases
-[24.02a]: https://github.com/SuPyPerson/SuPyPerson.github.io/releases
-[24.02]: https://github.com/SuPyPerson/SuPyPerson.github.io/releases
+[unreleased]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02b...HEAD
+[24.02b]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02a...24.02b
+[24.02a]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02...24.02a
+[24.02]: https://github.com/SuPyPerson/SuPyPerson.github.io/commits/24.02
