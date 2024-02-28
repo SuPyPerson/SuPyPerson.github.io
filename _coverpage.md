@@ -1,6 +1,6 @@
 ![logo](_media/superpython.png)
 
-# Super Python <small>24.02</small>
+# Super Python <small>24.02a</small>
 
 > Learn Python with games.
 
