@@ -1,9 +1,9 @@
 _SET0_ = {
     "script_name": "so0", "script_div_id": "so0",
-    "height": 150, "title": "Aldeia Queimada"
+    "height": 150, "title": "Sonho Revelado", "show_scenario": False, "console_height": 15
 }  # _SEC_
-from browser import document
-document["_so0_"].remove()
+# from browser import document
+# document["_so0_"].remove()
 # _VIT_
 from browser import document, html
 base = document["_sonho_"]
@@ -14,10 +14,10 @@ hero = html.DIV(corpo, Class="hero is-primary")
 _ = base <= hero
 _SET1_ = {
     "script_name": "so1", "script_div_id": "so1",
-    "height": 150, "title": "Aldeia Queimada"
+    "height": 150, "title": "Sinopse do Sonho", "show_scenario": False, "console_height": 15
 }  # _SEC_
-from browser import document
-document["_so1_"].remove()
+# from browser import document
+# document["_so1_"].remove()
 # _VIT_
 from browser import document, html
 base = document["_sonho_"]

@@ -13,8 +13,11 @@ Classes neste módulo:
 
 Changelog
 ---------
-.. versionadded::    24.04
-   |br| Classes ScriptVito, ScriptWidget, CartaAlagamento (20).
+.. versionadded::    24.02c
+   |br| Fix Script Header reader (29).
+
+.. versionadded::    24.02
+   |br| Classes ScriptVito, ScriptWidget (08).
 
 |   **Open Source Notification:** This file is part of open source program **Pynoplia**
 |   **Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
@@ -25,7 +28,6 @@ import sys
 from json import loads
 
 from browser import window, ajax, document, html, timer, run_script as python_runner
-from collections import namedtuple
 from vitollino import Cena, Elemento
 import vitollino
 
@@ -53,6 +55,8 @@ widget_code_tb = """
   <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
 """
 COD = {}
+HEADER = {}
+"""Store the code and header obtained from the script in the Python file"""
 
 
 def show(did="0"):
@@ -64,16 +68,21 @@ def build(name="forest_0.py"):
 
 
 class ScriptVito:
-    def __init__(self, did="0"):
+    def __init__(self, did="0", **params):
         self.scene = None
         self.e = Elemento
         self.vit = ''
         if "# _VIT_" in COD[did]:
-            self.vit, COD[did] = COD[did].split("# _VIT_")
-        self.scenario(did=did)
+            self.vit, COD[did] = COD[did].split("# _VIT_\n")
+        print(params)
+        show_scenario = params.get("show_scenario", True)
+        h = None if show_scenario else 1
+        self.scenario(did=did, show_scenario=show_scenario, h=h) #  if show_scenario else None
 
-    def scenario(self, did="0", sky="_media/sky.gif", sun="_media/sun.gif", soil="_media/terra.jpg", ground=200):
-        h = "300px"
+    def scenario(
+            self, did="0", show_scenario=True, sky="_media/sky.gif", sun="_media/sun.gif", soil="_media/terra.jpg",
+            ground=200, h=None):
+        h = f"{h}px" if h is not None else "300px"
         vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h, 'left': 0, 'top': 0}
 
         _did = f"_{did}"
@@ -81,6 +90,8 @@ class ScriptVito:
         vit = html.DIV(Id=_did + "_", style={"min-height": h})
         _ = document[did].parentNode <= vit
         _ = document[did].parentNode <= edi
+        if not show_scenario:
+            return
         self.scene = c = Cena(img=sky, tela=vit)
         c.elt.style.width = "100%"
         c.img.style.width = "100%"
@@ -93,8 +104,8 @@ class ScriptVito:
 def build_(did="0", name="forest_0.py"):
     def go():
         _did = f"_{did}"
-        ScriptWidget(script_name=name, main_div_id=did,
-                                     height=150, title="Forest")
+        # print(did, HEADER[did])
+        ScriptWidget(script_named=name, main_div_id=did, **HEADER[did])
 
     timer.set_timeout(go, 100)
 
@@ -136,12 +147,15 @@ class ScriptBuilder:
         self.params.update(params)
         self.code = code
         self.params.pop('script_name') if 'script_name' in params else None
-        COD[script_div_id] = code
+        COD[script_div_id] = code.strip()
+        HEADER[script_div_id] = dict(code=code, **params)
 
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
-            params = loads(refx[4:])
+            import ast
+            # params = loads(refx[4:])
+            params = ast.literal_eval(refx[4:])
             div_id = params.pop('script_div_id')
             # print("XXX>", loads(refx[4:]), div_id, "XXX>", codex)
             self.set_script_editor(codex, div_id, **params)
@@ -162,7 +176,7 @@ class ScriptBuilder:
 
 class ScriptWidget:
 
-    def __init__(self, script_name=None, main_div_id='', code="", **params):
+    def __init__(self, script_named=None, main_div_id='', **params):
         """ Creates a widget in a given DIV
         @param params :
           - height: integer in pixels
@@ -177,13 +191,13 @@ class ScriptWidget:
         """
         mid = main_div_id
         m = main_div_id = f"_{main_div_id}"
-        self.script_name = script_name
+        self.script_name = script_named
         self.script_div_id = "script-%s" % main_div_id
         self.name_to_run = params.get("name", None)
         self.console_pre_id = "result_pre-%s" % main_div_id
         self.script_path = "_core/"
         self.main_div_id = main_div_id
-        ScriptVito(did=mid)
+        ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
 
 
