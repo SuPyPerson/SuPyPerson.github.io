@@ -17,6 +17,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 # 🗡️ Kopis - Pré-Entrega para teste de tecnologia
 
+## Kopis [24.02c] - 2024-02-29
+
+### ADDED
+- ⛲ Comando fala funcionando.
+### FIXED
+- 🚒 Conserta parâmetros de roteiro,
+- 🚒 Conserta Sol Kwarwp 🪶 Zera o índio
+
 ## Kopis [24.02b] - 2024-02-27
 
 ### ADDED
@@ -37,6 +45,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Falhou a integração Kwarwp Supy
 
 [unreleased]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02b...HEAD
+[24.02c]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02b...24.02c
 [24.02b]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02a...24.02b
 [24.02a]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02...24.02a
 [24.02]: https://github.com/SuPyPerson/SuPyPerson.github.io/commits/24.02

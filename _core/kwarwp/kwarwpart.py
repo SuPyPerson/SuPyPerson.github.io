@@ -1,5 +1,6 @@
 # kwarwp.kwarwp.main.py
 # SPDX-License-Identifier: GPL-3.0-or-later
+# noinspection GrazieInspection
 """ Jogo para ensino de programação Python.
 
     .. codeauthor:: Carlo Oliveira <carlo@ufrj.br>
@@ -13,6 +14,9 @@
 
     Changelog
     ---------
+    .. versionchanged::    24.02c
+        Corrige erros sobre o programa.
+
     .. versionchanged::    20.08.b1
         modifica :meth:`Vazio.ocupou` para receber também a posição.
         - :py:class:`Nulo`      Objeto nulo passivo a todas as requisições.
@@ -25,7 +29,7 @@
         Adicionou :class:`Tora` e classe :class:`Nulo`
 
 """
-
+OBJ = 0
 
 class Nulo:
     """Objeto nulo que responde passivamente a todas as requisições."""
@@ -35,45 +39,52 @@ class Nulo:
     def nulo(self, *_, **__):
         """Método nulo, responde passivamente a todas as chamadas.
         
-        :param _: aceita todos os argumentos posicionais.
-        :param __: aceita todos os argumentos nomeados.
-        :return: retorna o próprio objeto nulo.
+        :param _: Aceita todos os argumentos posicionais.
+        :param __: Aceita todos os argumentos nomeados.
+        :return: Retorna o próprio objeto nulo.
         """
         return self 
 
 NULO = Nulo()
 
 
-class Vazio():
+# noinspection SpellCheckingInspection
+class Vazio:
     """ Cria um espaço vazio na taba, para alojar os elementos do desafio.
 
         :param imagem: A figura representando o índio na posição indicada.
         :param x: Coluna em que o elemento será posicionado.
-        :param y: Cinha em que o elemento será posicionado.
+        :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
         :param taba: Referência onde ele pode encontrar a taba.
         :param ocupante: Objeto que ocupa inicialmente a vaga.
     """
     VITOLLINO, LADO = None, None
-    
+    OBJ = 0
+    @staticmethod
+    def ob():
+        Vazio.OBJ += 1
+        return Vazio.OBJ
+
     def __init__(self, imagem, x, y, cena, taba, ocupante=None):
         self.lado = lado = self.LADO # or 100
         self.taba = taba
         self.posicao = (x//lado,y//lado-1)
-        self.vazio = self.VITOLLINO.a(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        cn = self.__class__.__name__
+        self.vazio = self.VITOLLINO.a(imagem, tit=f"_{cn}_{Vazio.ob()}", w=lado, h=lado, x=x, y=y, cena=cena)
         self._nada = self.VITOLLINO.a()
         self.acessa = self._acessa
         """O **acessa ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_acessa ()** que é o estado vago, aceitando ocupantes"""
         self.ocupante = ocupante or NULO
         """O ocupante se não for fornecido é encenado pelo próprio vazio, agindo como nulo"""
-        self.acessa(ocupante)
+        self._acessa(ocupante)
         self.sair = self._sair
         """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_sair ()** que é o estado leniente, aceitando saidas"""
 
-    def sai(self):
-        """ Pedido por um ocupante para que desocupe a posição nela.
+    def _sai(self):
+        """ Pedido por um ocupante para desocupar a posição nela.
         """
         self.ocupante = NULO
         self.acessa = self._acessa
@@ -89,23 +100,24 @@ class Vazio():
         self.sair = self._sair
 
     def pegar(self, requisitante):
-        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
+        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
-            :param requistante: O ator querendo pegar o objeto.
+            :param requisitante: O ator querendo pegar o objeto.
         """
         self.ocupante.pegar(requisitante)
         
     def empurrar(self, requisitante, azimute):
-        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
+        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
-            :param requistante: O ator querendo pegar o objeto.
+            :param azimute: Direção que vai empurrar o objeto.
+            :param requisitante: O ator querendo pegar o objeto.
         """
         self.ocupante.empurra(requisitante, azimute)
 
     def _valida_acessa(self, ocupante):
         """ Consulta o ocupante atual se há permissão para substituí-lo pelo novo ocupante.
 
-            :param ocupante: O canditato a ocupar a posição corrente.
+            :param ocupante: O candidato a ocupar a posição corrente.
         """
         self.ocupante.acessa(ocupante)
         
@@ -113,10 +125,10 @@ class Vazio():
         """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
         
         A responsabilidade de ocupar definitivamente a vaga é do candidato a ocupante
-        Caso ele esteja realmente apto a ocupar a vaga e deve cahamar de volta ao vazio
+        Caso ele esteja realmente apto a ocupar a vaga e deve chamar de volta ao vazio
         com uma chamada ocupou.
 
-            :param ocupante: O canditato a ocupar a posição corrente.
+            :param ocupante: O candidato a ocupar a posição corrente.
         """
         ocupante.ocupa(self)
 
@@ -144,7 +156,7 @@ class Vazio():
     def ocupou(self, ocupante, pos=(0, 0)):
         """ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
         
-        :param ocupante: O canditato a ocupar a posição corrente.
+        :param ocupante: O candidato a ocupar a posição corrente.
         :param pos: A posição (atitude) do sprite do ocupante.
 
         Este ocupante vai entrar no elemento do Vitollino e definitivamente se tornar
@@ -160,33 +172,34 @@ class Vazio():
 
     @property        
     def elt(self):
-        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
+        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro.
 
         No caso do espaço vazio, vai retornar um elemento que não contém nada.
         """
         return self._nada.elt
         
     def ocupa(self, vaga, *_):
-        """ Pedido por uma vaga para que ocupe a posição nela.
+        """ Pedido por uma vaga para ocupar a posição nela.
 
         No caso do espaço vazio, não faz nada.
         """
         pass
         
     def sai(self):
-        """ Pedido por um ocupante para que desocupe a posição nela.
+        """ Pedido por um ocupante desocupar a posição nela.
         """
         self.ocupante = self
         self.acessa = self._acessa
         self.sair = self._sair
 
 
+# noinspection SpellCheckingInspection,PyMissingConstructor
 class Piche(Vazio):
     """ Poça de Piche que gruda o índio se ele cair nela.
 
         :param imagem: A figura representando o índio na posição indicada.
         :param x: Coluna em que o elemento será posicionado.
-        :param y: Cinha em que o elemento será posicionado.
+        :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
         :param taba: Representa a taba onde o índio faz o desafio.
     """
@@ -210,14 +223,14 @@ class Piche(Vazio):
         
     @property        
     def elt(self):
-        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
+        """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro.
 
         No caso do espaço vazio, vai retornar um elemento que não contém nada.
         """
         return self.vazio.elt
     
-    def ocupa(self, vaga):
-        """ Pedido por uma vaga para que ocupe a posição nela.
+    def ocupa(self, vaga, *_):
+        """ Pedido por uma vaga ocupar a posição nela.
         
         :param vaga: A vaga que será ocupada pelo componente.
 
@@ -229,50 +242,39 @@ class Piche(Vazio):
         self.vaga = vaga
     
     def _pede_sair(self):
-        """Objeto tenta sair mas não é autorizado"""
+        """Objeto tenta sair, não sendo autorizado"""
         self.taba.fala("Você ficou preso no piche")       
 
 
 class Oca(Piche):
     """  A Oca é o destino final do índio, não poderá sair se ele entrar nela.
     
-        :param imagem: A figura representando o índio na posição indicada.
-        :param x: Coluna em que o elemento será posicionado.
-        :param y: Cinha em que o elemento será posicionado.
-        :param cena: Cena em que o elemento será posicionado.
-        :param taba: Representa a taba onde o índio faz o desafio.
     """
     
     def _pede_sair(self):
-        """Objeto tenta sair mas não é autorizado"""
+        """Objeto tenta sair, não sendo autorizado"""
         self.taba.fala("Você chegou no seu objetivo")       
         
     def _acessa(self, ocupante):
         """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
         
         A responsabilidade de ocupar definitivamente a vaga é do candidato a ocupante
-        Caso ele esteja realmente apto a ocupar a vaga e deve cahamar de volta ao vazio
+        Caso ele esteja realmente apto a ocupar a vaga e deve chamar de volta ao vazio
         com uma chamada ocupou.
 
-            :param ocupante: O canditato a ocupar a posição corrente.
+            :param ocupante: O candidato a ocupar a posição corrente.
         """
         self.taba.fala("Você chegou no seu objetivo")       
         ocupante.ocupa(self)
 
 class Tora(Piche):
     """  A Tora é um pedaço de tronco cortado que o índio pode carregar ou empurrar.
-    
-        :param imagem: A figura representando o índio na posição indicada.
-        :param x: Coluna em que o elemento será posicionado.
-        :param y: Linha em que o elemento será posicionado.
-        :param cena: Cena em que o elemento será posicionado.
-        :param taba: Representa a taba onde o índio faz o desafio.
     """
         
     def pegar(self, requisitante):
-        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
+        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
-            :param requistante: O ator querendo pegar o objeto.
+            :param requisitante: O ator querendo pegar o objeto.
         """
         vaga = requisitante
         self.vaga.sai()
@@ -281,16 +283,17 @@ class Tora(Piche):
         self.vaga = vaga
         
     def empurrar(self, empurrante, azimute):
-        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
+        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
-            :param requistante: O ator querendo pegar o objeto.
+            :param azimute:
+            :param empurrante: O ator querendo empurrar o objeto.
         """
         self.empurrante = empurrante
         self.vaga.acessar(self, azimute)
         self.empurrante = NULO
         
-    def ocupa(self, vaga):
-        """ Pedido por uma vaga para que ocupe a posição nela.
+    def ocupa(self, vaga, *_):
+        """ Pedido por uma vaga lhe ocupar a posição nela.
         
         :param vaga: A vaga que será ocupada pelo componente.
 
@@ -305,15 +308,15 @@ class Tora(Piche):
 
     @property        
     def posicao(self):
-        """ A propriedade posição faz parte do protocolo do double dispatch com o Indio .
+        """ A propriedade posição faz parte do protocolo do double dispatch com o Indio.
 
-        No caso da tora, retorna o a posição do atributo **self.vaga**.
+        No caso da tora, retorna a posição do atributo **self.vaga**.
         """
         return self.vaga.posicao
 
     @posicao.setter        
     def posicao(self, _):
-        """ A propriedade posição faz parte do protocolo do double dispatch com o Indio .
+        """ A propriedade posição faz parte do protocolo do double dispatch com o Indio.
 
         No caso da tora, é uma propriedade de somente leitura, não executa nada.
         """
@@ -338,18 +341,13 @@ class Tora(Piche):
 
 
 class Pedra(Tora):
-    """  A Pedra é um uma coisa muito pesada que o índio só consegue empurrar.
+    """  A Pedra é uma coisa muito pesada que o índio só consegue empurrar.
     
-        :param imagem: A figura representando o índio na posição indicada.
-        :param x: Coluna em que o elemento será posicionado.
-        :param y: Linha em que o elemento será posicionado.
-        :param cena: Cena em que o elemento será posicionado.
-        :param taba: Representa a taba onde o índio faz o desafio.
     """
         
     def pegar(self, requisitante):
-        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requistante.
+        """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
-            :param requistante: O ator querendo pegar o objeto.
+            :param requisitante: O ator querendo pegar o objeto.
         """
         pass

@@ -74,7 +74,7 @@ class ScriptVito:
         self.vit = ''
         if "# _VIT_" in COD[did]:
             self.vit, COD[did] = COD[did].split("# _VIT_\n")
-        print(params)
+        # print(params)
         show_scenario = params.get("show_scenario", True)
         h = None if show_scenario else 1
         self.scenario(did=did, show_scenario=show_scenario, h=h) #  if show_scenario else None

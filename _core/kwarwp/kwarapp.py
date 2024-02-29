@@ -1,5 +1,6 @@
 # kwarwp.kwarwp.main.py
 # SPDX-License-Identifier: GPL-3.0-or-later
+# noinspection GrazieInspection
 """ Jogo para ensino de programação Python.
 
 .. codeauthor:: Carlo Oliveira <carlo@ufrj.br>
@@ -11,6 +12,10 @@ Classes neste módulo:
 
 Changelog
 ---------
+
+.. versionadded::    24.02c
+    Função fala correta.
+    Clique no Sol e chamada para executa reiniciar o programa.
 
 .. versionadded::    20.08.b1
     Adicionou :class:`JogoProxy` para realizar o passo a passo.
@@ -96,7 +101,7 @@ class JogoProxy:
         
     @property    
     def siz(self):
-        """Propriedade tamanho"""
+        """A propriedade definindo o tamanho"""
         return self.elt.siz
         
     def a(self, *args, **kwargs):
@@ -110,7 +115,7 @@ class JogoProxy:
         return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v, proxy=self)
         
     def e(self, *args, **kwargs):
-        """Método fábrica - Encapsula a criação de elementos ativos, que executam scripts
+        """Método fábrica - Encapsula a criação de elementos ativos, que executam roteiros.
         
         :param args: Coleção de argumentos posicionais.
         :param kwargs: Coleção de argumentos nominais.
@@ -143,7 +148,7 @@ class JogoProxy:
         """Lida com modo de operação do JogoProxy"""
         #self.master.corrente(self)
         self.ativa() if self.master else None
-        print(self._ativa, self.proxy._ativa, metodo)
+        # print(self._ativa, self.proxy._ativa, metodo)
         self.corrente._enfileira(metodo) if self.proxy._ativa else self._executa(metodo)
         
     def c(self, *args, **kwargs):
@@ -158,7 +163,7 @@ class JogoProxy:
         
     @siz.setter    
     def siz(self, value):
-        """Propriedade tamanho"""
+        """A propriedade tamanho"""
         self.elt.siz = value
 
     @property
@@ -205,7 +210,8 @@ class JogoProxy:
         self.comandos.append(metodo)
 
     def _executa(self, metodo):
-        """Executa imediamente um comando, não põe na fila"""
+        """Executa imediatamente um comando, não põe na fila"""
+        _ = self
         metodo()
 
     def executa(self, *_):
@@ -213,12 +219,12 @@ class JogoProxy:
         self.comandos.pop(0)() if self.comandos else None
 
 
-class Indio():
+class Indio:
     """ Cria o personagem principal na arena do Kwarwp na posição definida.
 
         :param imagem: A figura representando o índio na posição indicada.
         :param x: Coluna em que o elemento será posicionado.
-        :param y: Cinha em que o elemento será posicionado.
+        :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
         :param taba: Representa a taba onde o índio faz o desafio.
     """
@@ -226,6 +232,7 @@ class Indio():
     """Constante com os pares ordenados que representam os vetores unitários dos pontos cardeais."""
     
     def __init__(self, imagem, x, y, cena, taba, vitollino=None):
+
         self.vitollino = vitollino or Vazio.VITOLLINO
         self.lado = lado = Vazio.LADO
         self.azimute = self.AZIMUTE.n
@@ -233,12 +240,15 @@ class Indio():
         self.taba = taba
         self.vaga = self
         self.ocupante = NULO
-        self.posicao = (x//lado,y//lado) 
-        self.indio = self.vitollino.e(imagem, w=lado, h=lado, x=x, y=y, cena=cena)
+        self.posicao = (x//lado,y//lado)
+        name = self.__class__.__name__
+        self.indio = self.vitollino.e(imagem, tit=f"{name}_{Vazio.ob()}", w=lado, h=lado, x=x, y=y, cena=cena)
         self.x = x
         """Este x provisoriamente distingue o índio de outras coisas construídas com esta classe"""
         if x:
             self.indio.siz = (lado*3, lado*4)
+            # print("Índio", self.indio, self.taba)
+
             """Define as proporções da folha de sprites"""
             self.gira()
        
@@ -254,7 +264,7 @@ class Indio():
         sprite_col = sum(self.posicao) % 3
         """Faz com que três casas adjacentes tenha valores diferentes para a coluna do sprite"""
         sprite_lin = self.AZIMUTE.index(self.azimute)
-        """A linha do sprite depende da direção dque índio está olhando"""
+        """A linha do sprite depende da direção que índio está olhando"""
         # self.indio.ocupa(ocupante=ocupante, pos=(-self.lado*sprite_col, -self.lado*sprite_lin))
         # self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
         pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
@@ -266,7 +276,7 @@ class Indio():
         sprite_col = sum(self.posicao) % 3
         """Faz com que três casas adjacentes tenha valores diferentes para a coluna do sprite"""
         sprite_lin = self.AZIMUTE.index(self.azimute)
-        """A linha do sprite depende da direção dque índio está olhando"""
+        """A linha do sprite depende da direção que índio está olhando"""
         # self.indio.ocupa(ocupante=ocupante, pos=(-self.lado*sprite_col, -self.lado*sprite_lin))
         # self.indio.pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
         pos = (-self.lado*sprite_col, -self.lado*sprite_lin)
@@ -284,22 +294,39 @@ class Indio():
         self.azimute = self.AZIMUTE[self.AZIMUTE.index(self.azimute)-3]
         self.gira()
        
-    def fala(self, texto=""):
+    def olha(self, texto=""):
         """ O índio fala um texto dado.
         
         :param texto: O texto a ser falado.
         """
-        self.taba.fala(texto)
+        self.indio.lidar(lambda t=texto: self._olha())
+
+    def fala(self, texto=""):
+        """ O índio fala um texto dado.
+
+        :param texto: O texto a ser falado.
+        """
+        self.indio.lidar(lambda t=texto: self.taba.fala(t))
+
 
     def anda(self):
         """Objeto tenta sair, tem que consultar a vaga onde está"""
         self.vaga.sair()      
         
+    def _olha(self):
+        """Obtém o nome do objeto na vga para onde olha"""
+        destino = (self.posicao[0]+self.azimute.x, self.posicao[1]+self.azimute.y)
+        """A posição para onde o índio vai depende do vetor de azimute corrente"""
+        ataba = self.taba.taba
+        if destino in ataba:
+            vaga = ataba[destino]
+            """Recupera na taba a vaga para a qual o índio irá se transferir"""
+            return vaga.ocupante
+
     def empurra(self):
         """Objeto tenta sair, tem que consultar a vaga onde está"""
         # self.vaga.sair() # esta parte vai ser feita mais tarde.
-        # print("Estou tentanto empurrar para a posição", self.posicao[0]+self.azimute.x, self.posicao[1]+self.azimute.y)
-        
+
         # de resto o código é semelhante ao _anda
         # TODO refatorar o método _anda e empurra, pois tem código duplicado
         destino = (self.posicao[0]+self.azimute.x, self.posicao[1]+self.azimute.y)
@@ -332,7 +359,7 @@ class Indio():
             vaga.acessa(self.ocupante)
 
     def sair(self):
-        """Objeto de posse do índio tenta sair e é autorizado"""
+        """Objeto de posse do índio tenta sair, sendo autorizado"""
         self.vaga.ocupante.siga()      
 
     def siga(self):
@@ -430,6 +457,8 @@ class Kwarwp:
         :param vitollino: Empacota o engenho de jogo Vitollino.
         :param mapa: Um texto representando o mapa do desafio.
         :param medidas: Um dicionário usado para redimensionar a tela.
+        :param indios: Uma coleção de classes representando os personagens..
+        :param tela: Local no DOM do navegador onde o jogo vai ser feito..
     """
     KW = None
     
@@ -438,6 +467,13 @@ class Kwarwp:
             medidas = {}
         Kwarwp.KW = self
         Vazio.VITOLLINO = self.v = vitollino()
+        self.tela = tela
+        self.fabrica = None
+        """Fabrica de componentes que podem ser posicionados no jogo."""
+        self.sol = None
+        """Imagem do sol que inicia a programação quando clicado."""
+        self.ceu = None
+        """Imagem do céu que avança a programação quando clicado."""
         self.vitollino = vitollino
         """Referência estática para obter o engenho de jogo."""
         self.mapa = (mapa or MAPA_INICIO).split()
@@ -454,20 +490,16 @@ class Kwarwp:
         w, h = self.col *self.lado, self.lin *self.lado
         medidas.update(width=w, height=f"{h}px")
         self.indios = deque(indios or [Indio])
-        self.cena = self.cria(mapa=self.mapa, tela=tela) if vitollino else None
+        self.cena = self.cria() if vitollino else None
+        # self.inicia()
 
-    def cria(self, mapa=None, tela=None):
+    def cria(self):
         """ Fábrica de componentes.
-        
-        :param tela: A tela inicial da Aventura.
-        :param mapa: Um texto representando o mapa do desafio.
         """
-        if mapa is None:
-            mapa = []
         Fab = nt("Fab", "objeto imagem")
-        """Esta tupla nomeada serve para definir o objeto construido e sua imagem."""
+        """Esta tupla nomeada serve para definir o objeto construído e sua imagem."""
 
-        fabrica = {
+        self.fabrica = {
         "&": Fab(self.maloc, f"{IMGUR}dZQ8liT.jpg"), # OCA
         "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"), # INDIO
         "`": Fab(self.indio, f"{IMGUR}nvrwu0r.png"), # INDIA
@@ -483,32 +515,51 @@ class Kwarwp:
         "|": Fab(self.coisa, f"{IMGUR}uwYPNlz.png")  # CERCA
         }
         """Dicionário que define o tipo e a imagem do objeto para cada elemento."""
-        mapa = mapa if mapa != "" else self.mapa
+        # mapa = mapa if mapa != "" else self.mapa
         """Cria um cenário com imagem de terra de chão batido, céu e sol"""
-        mapa = self.mapa
+        '''mapa = self.mapa
         lado = self.lado
-        cena = self.v.c(fabrica["_"].imagem, tela=tela)
+        return
+        self.cena = cena = self.v.c(fabrica["_"].imagem, tela=self.tela)
         self.ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado-10, x=0, y=0, cena=cena, vai=self.passo,
                        style={"padding-top": "10px", "text-align": "center"})
-        """No argumento *vai*, associamos o clique no céu com o método **executa ()** desta classe.
+        """No argumento *vai*, associamos o clique no céu com o método **passo ()** desta classe.
            O *ceu* agora é um argumento de instância e por isso é referenciado como **self.ceu**.
         """
-        sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.executa)
-        """No argumento *vai*, associamos o clique no sol com o método **esquerda ()** desta classe."""
+        self.sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.executa)
+        """No argumento *vai*, associamos o clique no sol com o método **executa ()** desta classe."""
+        cena.vai()
+        # Kwarwp.KW.fala(Vazio.LADO)
+        #self.fala(Vazio.LADO)
+        return cena'''
+
+    def inicia(self):
+        """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.
+        """
+        fabrica, lado, cena, mapa = self.fabrica,self.lado,self.cena, self.mapa
+        # cena.elt.html=""
+        self.os_indios = []
+        self.cena = cena = self.v.c(fabrica["_"].imagem, tela=self.tela)
+        self.ceu = self.v.a(fabrica["~"].imagem, w=lado*self.col, h=lado-10, x=0, y=0, cena=cena, vai=self.passo,
+                       style={"padding-top": "10px", "text-align": "center"})
+        self.sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.executa)
+        # print("KW<", self.os_indios)
+
         self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i*lado, y=j*lado+lado, cena=cena)
             for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
-        """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
+        # print("KW>", self.os_indios)
+
         cena.vai()
-        Kwarwp.KW.fala(Vazio.LADO)
-        #self.fala(Vazio.LADO)
-        return cena
-        
+        """No argumento *vai*, associamos o clique no sol com o método **executa ()** desta classe."""
+        """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
+        pass
+
     def fala(self, texto=""):
         """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.
         """
         self.ceu.elt.fala(texto)
         pass
-        
+
     def sai(self, *_):
         """ O Kwarwp é aqui usado como uma vaga falsa, o pedido de sair é ignorado.
         """
@@ -525,6 +576,7 @@ class Kwarwp:
         # self.o_indio.esquerda()
         # self.v.executa()
         # self.o_indio.passo()
+        # self.cena = self.cria(mapa=self.mapa, tela=self.tela)
 
         [indio.passo() for indio in self.os_indios]
 
@@ -536,6 +588,8 @@ class Kwarwp:
         # JogoProxy.ATIVA = True
         # self.o_indio.ativa()
         # self.o_indio.executa()
+        self.v._ativa = False
+        self.inicia()
         self.v.ativa()
         [indio.ativa() or indio.executa() for indio in self.os_indios]
         # self.os_indios[0].ativa()
@@ -544,6 +598,7 @@ class Kwarwp:
     def atora(self, imagem, x, y, cena):
         """ Cria uma tora na arena do Kwarwp na posição definida.
 
+        :param imagem: Imagem da tora a ser apresentada
         :param x: Coluna em que o elemento será posicionado.
         :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
@@ -558,6 +613,7 @@ class Kwarwp:
     def apedra(self, imagem, x, y, cena):
         """ Cria uma pedra na arena do Kwarwp na posição definida.
 
+        :param imagem: Imagem da pedra a ser apresentada.
         :param x: Coluna em que o elemento será posicionado.
         :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
@@ -572,11 +628,12 @@ class Kwarwp:
     def maloc(self, imagem, x, y, cena):
         """ Cria uma maloca na arena do Kwarwp na posição definida.
 
-        :param x: coluna em que o elemento será posicionado.
-        :param y: linha em que o elemento será posicionado.
-        :param cena: cena em que o elemento será posicionado.
+        :param imagem: Imagem da maloca a ser apresentada.
+        :param x: Coluna em que o elemento será posicionado.
+        :param y: Linha em que o elemento será posicionado.
+        :param cena: Cena em que o elemento será posicionado.
         
-        Cria uma vaga vazia e coloca o componente dentro dela.
+        Cria uma maloca normalmente associada ao fim do jogo.
         """
         coisa = Oca(imagem, x=0, y=0, cena=cena, taba=self)
         vaga = Vazio("", x=x, y=y, cena=cena, ocupante=coisa, taba=self)
@@ -625,9 +682,10 @@ class Kwarwp:
     def indio(self, imagem, x, y, cena):
         """ Cria o personagem principal na arena do Kwarwp na posição definida.
 
-        :param x: coluna em que o elemento será posicionado.
-        :param y: linha em que o elemento será posicionado.
-        :param cena: cena em que o elemento será posicionado.
+        :param imagem: Imagem do personagem principal.
+        :param x: Coluna em que o elemento será posicionado.
+        :param y: Linha em que o elemento será posicionado.
+        :param cena: Cena em que o elemento será posicionado.
         """
         self.o_indio = self.indios[0](imagem, x=1, y=0, cena=cena, taba=self, vitollino=self.v)
         """ O índio tem deslocamento zero, pois é relativo à vaga.
@@ -645,6 +703,7 @@ class Kwarwp:
 def main(vitollino, medidas=None, mapa=None, indios=(), tela=None):
     """ Rotina principal que invoca a classe Kwarwp.
     
+    :param tela: Local no DOM do navegador onde o jogo vai ser feito.
     :param indios: A lista de índios que participam desta aventura.
     :param mapa: O mapa da aldeia a ser utilizada na aventura.
     :param vitollino: Empacota o engenho de jogo Vitollino.
@@ -662,6 +721,4 @@ def main(vitollino, medidas=None, mapa=None, indios=(), tela=None):
         
     
 # if __name__ == "__main__":
-#     from _spy.vitollino.main import Jogo, STYLE
-#     STYLE.update(width=600, height="500px")
 #     main(Jogo, STYLE)
