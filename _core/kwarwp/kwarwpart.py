@@ -1,21 +1,26 @@
-# kwarwp.kwarwp.main.py
 # SPDX-License-Identifier: GPL-3.0-or-later
-# noinspection GrazieInspection
+# noinspection GrazieInspection, SpellCheckingInspection
 """ Jogo para ensino de programação Python.
 
     .. codeauthor:: Carlo Oliveira <carlo@ufrj.br>
 
     Classes neste módulo:
         - :py:class:`Vazio`     Espaço vago na arena do desafio.
-        - :py:class:`Oca`       Destino final da aventura.
+        - :py:class:`Oca`       Destino esperado da aventura.
         - :py:class:`Piche`     Uma armadilha para prender o índio.
         - :py:class:`Tora`      Uma tora que o índio pode pegar.
         - :py:class:`Nulo`      Objeto Nulo para default em argumentos.
+        - :py:class:`Nome`      Guarda e retorna o nome do objeto.
 
     Changelog
     ---------
+    .. versionadded::    24.03
+        Adiciona nomes para os objetos da classe (03).
+
     .. versionchanged::    24.02c
         Corrige erros sobre o programa.
+        Adiciona nomes para os objetos da classe.
+
 
     .. versionchanged::    20.08.b1
         modifica :meth:`Vazio.ocupou` para receber também a posição.
@@ -28,14 +33,44 @@
         Moveu :class:`Vazio`, :class:`Oca`, :class:`Piche` para cá.
         Adicionou :class:`Tora` e classe :class:`Nulo`
 
+|   **Open Source Notification:** This file is part of open source program **Pynoplia**
+|   **Copyright © 2024 Carlo Oliveira** <carlo@nce.ufrj.br>,
+|   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <https://is.gd/3Udt>`_.
+|   `Labase <https://labase.github.io/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
 OBJ = 0
 
+
+class Nome:
+    NOMES = {
+        "dZQ8liT": "OCA",
+        "UCWGCKR": "INDIO",
+        "nvrwu0r": "INDIA",
+        "HeiupbP": "PAJE",
+        "Sx3OH66": "PEDRA",
+        "npb9Oej": "VAZIO",
+        "sGoKfvs": "SOLO",
+        "0jSB27g": "TORA",
+        "tLLVjfN": "PICHE",
+        "UAETaiP": "CEU",
+        "PfodQmT": "SOL",
+        "mOV7r9I": "FLOR",
+        "uwYPNlz": "CERCA",
+    }
+
+    @staticmethod
+    def nomear(img):
+        img = img or "nadinha.xxx"
+        return Nome.NOMES.get(img.split(".")[-2][-7:], "")
+
+
 class Nulo:
     """Objeto nulo que responde passivamente a todas as requisições."""
+
     def __init__(self):
         self.pegar = self.ocupa = self.ocupou = self.elt = self.corrente = self.nulo
-        
+        self.nome = "NULO"
+
     def nulo(self, *_, **__):
         """Método nulo, responde passivamente a todas as chamadas.
         
@@ -43,7 +78,8 @@ class Nulo:
         :param __: Aceita todos os argumentos nomeados.
         :return: Retorna o próprio objeto nulo.
         """
-        return self 
+        return self
+
 
 NULO = Nulo()
 
@@ -61,16 +97,18 @@ class Vazio:
     """
     VITOLLINO, LADO = None, None
     OBJ = 0
+
     @staticmethod
     def ob():
         Vazio.OBJ += 1
         return Vazio.OBJ
 
     def __init__(self, imagem, x, y, cena, taba, ocupante=None):
-        self.lado = lado = self.LADO # or 100
+        self.lado = lado = self.LADO  # or 100
+        self.nome = Nome.nomear(imagem)
         self.taba = taba
-        self.posicao = (x//lado,y//lado-1)
-        cn = self.__class__.__name__
+        self.posicao = (x // lado, y // lado - 1)
+        cn = self.nome or self.__class__.__name__
         self.vazio = self.VITOLLINO.a(imagem, tit=f"_{cn}_{Vazio.ob()}", w=lado, h=lado, x=x, y=y, cena=cena)
         self._nada = self.VITOLLINO.a()
         self.acessa = self._acessa
@@ -90,6 +128,11 @@ class Vazio:
         self.acessa = self._acessa
         self.sair = self._sair
 
+    def nomeia(self):
+        """ O índio fala seu nome.
+        """
+        return self.ocupante.nome if self.ocupante is not NULO else self.nome
+
     def limpa(self):
         """ Pedido por um ocupante para ele seja eliminado do jogo.
         """
@@ -105,7 +148,7 @@ class Vazio:
             :param requisitante: O ator querendo pegar o objeto.
         """
         self.ocupante.pegar(requisitante)
-        
+
     def empurrar(self, requisitante, azimute):
         """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
@@ -120,7 +163,7 @@ class Vazio:
             :param ocupante: O candidato a ocupar a posição corrente.
         """
         self.ocupante.acessa(ocupante)
-        
+
     def _acessa(self, ocupante):
         """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
         
@@ -132,11 +175,10 @@ class Vazio:
         """
         ocupante.ocupa(self)
 
-
     def acessar(self, ocupante, azimute):
         """ Faz o índio caminhar na direção em que está olhando.
         """
-        destino = (self.posicao[0]+azimute.x, self.posicao[1]+azimute.y)
+        destino = (self.posicao[0] + azimute.x, self.posicao[1] + azimute.y)
         """A posição para onde o índio vai depende do vetor de azimute corrente"""
         taba = self.taba.taba
         if destino in taba:
@@ -144,14 +186,13 @@ class Vazio:
             """Recupera na taba a vaga para a qual o índio irá se transferir"""
             vaga.acessa(ocupante)
 
-
     def _sair(self):
         """Objeto tenta sair e recebe autorização para seguir"""
-        self.ocupante.siga()      
-    
+        self.ocupante.siga()
+
     def _pede_sair(self):
         """Objeto tenta sair e consulta o ocupante para seguir"""
-        self.ocupante.sair()      
+        self.ocupante.sair()
 
     def ocupou(self, ocupante, pos=(0, 0)):
         """ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
@@ -170,21 +211,21 @@ class Vazio:
         self.acessa = self._valida_acessa
         self.sair = self._pede_sair
 
-    @property        
+    @property
     def elt(self):
         """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro.
 
         No caso do espaço vazio, vai retornar um elemento que não contém nada.
         """
         return self._nada.elt
-        
+
     def ocupa(self, vaga, *_):
         """ Pedido por uma vaga para ocupar a posição nela.
 
         No caso do espaço vazio, não faz nada.
         """
         pass
-        
+
     def sai(self):
         """ Pedido por um ocupante desocupar a posição nela.
         """
@@ -203,13 +244,14 @@ class Piche(Vazio):
         :param cena: Cena em que o elemento será posicionado.
         :param taba: Representa a taba onde o índio faz o desafio.
     """
-   
+
     def __init__(self, imagem, x, y, cena, taba):
-        self.taba = taba
+        self.nome = Nome.nomear(imagem)
+        cn = self.nome or self.__class__.__name__
         self.vaga = taba
         self.lado = lado = self.LADO or 100
-        self.posicao = (x//lado,y//lado-1)
-        self.vazio = self.VITOLLINO.a(imagem, w=lado, h=lado, x=0, y=0, cena=cena)
+        self.posicao = (x // lado, y // lado - 1)
+        self.vazio = self.VITOLLINO.a(imagem, tit=f"_{cn}_{Vazio.ob()}", w=lado, h=lado, x=0, y=0, cena=cena)
         # self._nada = Kwarwp.VITOLLINO.a()
         self.ocupante = NULO
         self.empurrante = NULO
@@ -220,15 +262,15 @@ class Piche(Vazio):
         self.sair = self._sair
         """O **sair ()** é usado como método dinâmico, variando com o estado da vaga.
         Inicialmente tem o comportamento de **_sair ()** que é o estado vago, aceitando ocupantes"""
-        
-    @property        
+
+    @property
     def elt(self):
         """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro.
 
         No caso do espaço vazio, vai retornar um elemento que não contém nada.
         """
         return self.vazio.elt
-    
+
     def ocupa(self, vaga, *_):
         """ Pedido por uma vaga ocupar a posição nela.
         
@@ -240,21 +282,21 @@ class Piche(Vazio):
         self.posicao = vaga.posicao
         vaga.ocupou(self)
         self.vaga = vaga
-    
+
     def _pede_sair(self):
         """Objeto tenta sair, não sendo autorizado"""
-        self.taba.fala("Você ficou preso no piche")       
+        self.taba.fala("Você ficou preso no piche")
 
 
 class Oca(Piche):
     """  A Oca é o destino final do índio, não poderá sair se ele entrar nela.
     
     """
-    
+
     def _pede_sair(self):
         """Objeto tenta sair, não sendo autorizado"""
-        self.taba.fala("Você chegou no seu objetivo")       
-        
+        self.taba.fala("Você chegou no seu objetivo")
+
     def _acessa(self, ocupante):
         """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
         
@@ -264,13 +306,14 @@ class Oca(Piche):
 
             :param ocupante: O candidato a ocupar a posição corrente.
         """
-        self.taba.fala("Você chegou no seu objetivo")       
+        self.taba.fala("Você chegou no seu objetivo")
         ocupante.ocupa(self)
+
 
 class Tora(Piche):
     """  A Tora é um pedaço de tronco cortado que o índio pode carregar ou empurrar.
     """
-        
+
     def pegar(self, requisitante):
         """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
@@ -281,7 +324,7 @@ class Tora(Piche):
         # self.posicao = vaga.posicao
         vaga.ocupou(self)
         self.vaga = vaga
-        
+
     def empurrar(self, empurrante, azimute):
         """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
@@ -291,7 +334,7 @@ class Tora(Piche):
         self.empurrante = empurrante
         self.vaga.acessar(self, azimute)
         self.empurrante = NULO
-        
+
     def ocupa(self, vaga, *_):
         """ Pedido por uma vaga lhe ocupar a posição nela.
         
@@ -306,7 +349,7 @@ class Tora(Piche):
         self.empurrante.fala(self.empurrante.posicao) if self.empurrante is not NULO else None
         self.vaga = vaga
 
-    @property        
+    @property
     def posicao(self):
         """ A propriedade posição faz parte do protocolo do double dispatch com o Indio.
 
@@ -314,7 +357,7 @@ class Tora(Piche):
         """
         return self.vaga.posicao
 
-    @posicao.setter        
+    @posicao.setter
     def posicao(self, _):
         """ A propriedade posição faz parte do protocolo do double dispatch com o Indio.
 
@@ -322,14 +365,14 @@ class Tora(Piche):
         """
         pass
 
-    @property        
+    @property
     def elt(self):
         """ A propriedade elt faz parte do protocolo do Vitollino para anexar um elemento no outro .
 
         No caso da tora, retorna o elt do elemento do atributo **self.vazio**.
         """
         return self.vazio.elt
-        
+
     def _acessa(self, ocupante):
         """ Pedido de acesso a essa posição, delegada ao ocupante pela vaga.
         
@@ -344,7 +387,7 @@ class Pedra(Tora):
     """  A Pedra é uma coisa muito pesada que o índio só consegue empurrar.
     
     """
-        
+
     def pegar(self, requisitante):
         """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 

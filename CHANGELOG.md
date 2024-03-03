@@ -8,14 +8,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-# 🛡️ Hoplon - Plataforma primária com quatro aulas
-
-## [Unreleased]
-
-### ADDED
-- Aula IV planejada
+### <span class="curversion"></span>
 
 # 🗡️ Kopis - Pré-Entrega para teste de tecnologia
+
+## Kopis [24.03] - 2024-03-03
+
+### ADDED
+- ⛲ Comando olha funcionando. (03)
 
 ## Kopis [24.02c] - 2024-02-29
 
@@ -44,8 +44,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Integration with Docsify
 - Falhou a integração Kwarwp Supy
 
+
+# 🛡️ Hoplon - Plataforma primária com quatro aulas
+
+## [Unreleased]
+
+### ADDED
+- Aula IV planejada
+
 [unreleased]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02b...HEAD
 [24.02c]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02b...24.02c
+[24.02c]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02c...24.03
 [24.02b]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02a...24.02b
 [24.02a]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02...24.02a
 [24.02]: https://github.com/SuPyPerson/SuPyPerson.github.io/commits/24.02
