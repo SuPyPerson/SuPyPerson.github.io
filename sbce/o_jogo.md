@@ -11,7 +11,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
 
 <img src onerror="__did_got__('../../_prog/o_jogo0.py')"></img>
-<div id="_jogo_"></div>
+<div id="pydiv"></div>
 
 + O Primeiro Jogo +
  

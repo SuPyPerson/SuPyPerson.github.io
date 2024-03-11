@@ -13,9 +13,10 @@ Cena("https://imgur.com/i0gCtpV.jpg", tela=jogo).vai()
 # _VIT_
 # coloque sua cena aqui
 from browser import document
-from vitollino import Cena, STYLE
+from vitollino import Cena, STYLE, Texto
 STYLE.update(height="500px")
-jogo = document["_jogo_"]
+jogo = document["pydiv"]
 jogo.html = ''
 jogo.style.minHeight = "500px"
-Cena("https://imgur.com/i0gCtpV.jpg", tela=jogo).vai()
+cena = Cena("/_ativo/jardim/mirante.jpg").vai()
+Texto(cena, "OLA").vai()

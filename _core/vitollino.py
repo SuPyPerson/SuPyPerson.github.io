@@ -29,15 +29,19 @@ Gerador de labirintos e jogos tipo *'novel'*.
 
 Changelog
 ---------
+.. versionadded::    24.03
+    fixed cena neighbors to portal (10)
+    fixed style from Element to 3.11 work (10)
+
 .. versionadded::    23.09
-	remove property style from Element to 3.11 work (09)
+    remove property style from Element to 3.11 work (09)
 
 .. versionadded::    20.08
-	Add img, siz and pos properties to Elemento
+    Add img, siz and pos properties to Elemento
 
 .. versionadded::    20.07
-	Fix Elemento x, y setters; add z function to Jogo
-	
+    Fix Elemento x, y setters; add z function to Jogo
+
 Descrição
 ---------
 
@@ -50,7 +54,7 @@ Gerador de labirintos e jogos tipo *'novel'*.
 |   **Open Source Notification:** This file is part of open source program **Alite**
 |   **Copyright © 2023  Carlo Oliveira** <carlo@nce.ufrj.br>,
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <https://is.gd/3Udt>`_.
-|   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
+|   `Labase <https://labase.github.io/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 
 """
 import json
@@ -274,12 +278,16 @@ class SalaCenaNula:
 
     def __init__(self):
         self.esquerda, self.direita = [None] * 2
+        self.elt = self
         self.salas = [None] * 5
         self.cenas = [self] * 4
         self.img = "_NO_IMG_"
         self.nome = "_NO_NAME_"
         self.init = self.init
         self.centro, self.norte, self.leste, self.sul, self.oeste = self.salas
+
+    def __lt__(self):
+        pass
 
     def __repr__(self):
         return "<CenaNula>"
@@ -1053,7 +1061,7 @@ class Sala:
         for esquerda in range(4):
             cena_a_direita = (esquerda + 1) % 4
             self.cenas[esquerda].direita = self.cenas[cena_a_direita]
-            self.cenas[cena_a_direita].esquerda = self.cenas[esquerda]
+            self.cenas[cena_a_direita]._esquerda = self.cenas[esquerda]
 
     @staticmethod
     def c(**cenas):
@@ -1105,15 +1113,31 @@ class Cena:
         # self.img = img
         self.nome = nome
         self.dentro = []
-        self.esquerda, self.direita, self.meio = esquerda or NADA, direita or NADA, meio or NADA
+        self._esquerda, self._direita, self._meio = esquerda, direita, meio
         self.N, self.O, self.L = [NADA] * 3
         self.vai = vai or self.vai
         self.elt = html.DIV(style=STYLE)
         self.img = html.IMG(src=img, width=width, style=STYLE, title=nome)
         self.elt <= self.img
+        self.portal(esquerda=self.portal(O=esquerda), direita=self.portal(L=direita), meio=self.portal(N=meio))
         Cena.c(**kwargs)
-
         # self._cria_divs(width)
+
+    @property
+    def direita(self):
+        return self._direita
+
+    @direita.setter
+    def direita(self, direita):
+        self._direita = self.portal(direita=self.portal(L=direita))
+
+    @property
+    def esquerda(self):
+        return self._direita
+
+    @esquerda.setter
+    def esquerda(self, esquerda):
+        self._esquerda = self.portal(direita=self.portal(O=esquerda))
 
     def _cria_divs(self, width):
         self.divesq = divesq = html.DIV(style=STYLE)
@@ -1133,22 +1157,23 @@ class Cena:
         divdir.onclick = self.vai_direita
         Droppable(divdir, cursor="not-allowed")
         divdir.style.left = width * 2 // 3  # 100
-        self.elt <= self.divesq
-        self.elt <= self.divmeio
-        self.elt <= self.divdir
+        _ = self.elt <= self.divesq
+        _ = self.elt <= self.divmeio
+        _ = self.elt <= self.divdir
 
     def __call__(self):
         return self.vai()
 
     def __le__(self, other):
         if hasattr(other, 'elt'):
-            self.elt <= other.elt
+            _ = self.elt <= other.elt
         else:
-            self.elt <= other
+            _ = self.elt <= other
             print(other)
 
     def portal(self, esquerda=None, direita=None, meio=None, **kwargs):
-        self.esquerda, self.direita, self.meio = esquerda or self.esquerda, direita or self.direita, meio or self.meio
+        self._esquerda, self._direita, self._meio = (
+            esquerda or self._esquerda, direita or self._direita, meio or self._meio)
         return Portal(self, **kwargs)
 
     @staticmethod
@@ -1167,19 +1192,19 @@ class Cena:
         return Salao(n, l, s, o, nome=nome, **kwargs)
 
     def vai_direita(self, _=0):
-        if self.direita:
-            self.direita.vai()
+        if self._direita:
+            self._direita.vai()
 
     def vai_esquerda(self, _=0):
-        if self.esquerda:
-            self.esquerda.vai()
+        if self._esquerda:
+            self._esquerda.vai()
 
     def vai_meio(self, _=0):
-        if self.meio:
-            self.meio.vai()
+        if self._meio:
+            self._meio.vai()
 
     def sai(self, saida):
-        self.meio = saida
+        self._meio = saida
 
     def bota(self, nome_item):
         if isinstance(nome_item, str):
@@ -1212,6 +1237,7 @@ class Cena:
         score = {key: kwargs[key] if key in kwargs else value for key, value in self.scorer.items()}
         INVENTARIO.score(**score)
 
+
 def singleton(class_):
     instances = {}
 
@@ -1237,7 +1263,7 @@ class Pop:
         self.a.onclick = self._close
         self.alt = html.DIV(Class="content")
         self.popup <= div
-        self.popup.style = {"visibility": "hidden", "opacity": 0}
+        self.popup.style = {"visibility": "hidden", "opacity": 0.7}
         self.inicia()
 
     def inicia(self):
@@ -1251,11 +1277,15 @@ class Pop:
         return "<Popup>"
 
     def _close(self, *_):
-        self.popup.style = {"visibility": "hidden", "opacity": 0}
+        # self.popup.style = {"visibility": "hidden"} #, "opacity": 0}
+        self.popup.style.visibility = "hidden"
+        self.popup.style.opacity = 0
         self.esconde()
 
     def _open(self, *_):
-        self.popup.style = {"visibility": "visible", "opacity": 0.7}
+        # self.popup.style = {"visibility": "visible", "opacity": 0.7}
+        self.popup.style.visibility = "visible"
+        self.popup.style.opacity = 0.7
 
     def esconde(self, *_):
         ...
@@ -2023,7 +2053,7 @@ h1 {
 
 
 def __setup__():
-    #document.head <= html.STYLE(CSS, type="text/css", media="screen")
+    _ = document.head <= html.STYLE(CSS, type="text/css", media="screen")
     Popup(Cena())
 
 

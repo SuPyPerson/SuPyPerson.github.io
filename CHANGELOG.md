@@ -12,6 +12,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 # 🗡️ Kopis - Pré-Entrega para teste de tecnologia
 
+## Kopis [24.03a] - 2024-03-11
+
+### FIXED
+- 🚒 Conserta Cena, Texto Vitollino. (11)
+
 ## Kopis [24.03] - 2024-03-03
 
 ### ADDED
@@ -53,7 +58,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Aula IV planejada
 
 [unreleased]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02b...HEAD
-[24.02c]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02b...24.02c
+[24.03a]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.03...24.03a
+[24.03]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02c...24.03
 [24.02c]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02c...24.03
 [24.02b]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02a...24.02b
 [24.02a]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02...24.02a
