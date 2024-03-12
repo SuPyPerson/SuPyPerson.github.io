@@ -1,7 +1,7 @@
-![logo](_media/pynoplialg.svg)
+![logo](_media/pynoplia_sbc_eb.png)
 
 # Pynoplia <small><span class="curversion"></span></small>
 
 [GitHub](https://github.com/SuPyPerson/SuPyPerson.github.io)
-[Get Started](README)
-[Kwarwp](/kwa)
+[Apresentação](README)
+[Início](/kwa)

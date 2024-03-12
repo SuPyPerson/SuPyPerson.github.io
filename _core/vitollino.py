@@ -75,16 +75,31 @@ ABOXED = 9398
 NOSCORE = dict(ponto=0, valor=0, carta=None, casa=None, move=None)
 NOSC = {}
 SZ = dict(W=300, H=300)
-DOC_PYDIV = document["pydiv"]
+try:
+    DOC_PYDIV = document["pydiv"]
+except KeyError as _:
+    DOC_PYDIV = document.body
+
+
+def get_doc_pydiv():
+    return DOC_PYDIV
+
+
+def set_doc_pydiv(doc_id):
+    global DOC_PYDIV
+    DOC_PYDIV = doc_id
+
+
 ppcss = 'https://codepen.io/imprakash/pen/GgNMXO'
-STYLE = {'position': "absolute", 'width': SZ['W'], 'left': 0, 'top': 0}
+# STYLE = {'position': "absolute", 'width': SZ['W'], 'left': 0, 'top': 0}
+STYLE = {'position': "absolute", 'width': "500px", "minHeight": "500px", 'left': "300px", 'top': 0}
 PSTYLE = {'position': "absolute", 'width': SZ['W'], 'left': 0, 'bottom': 0}
 LIMBOSTYLE = {'position': "absolute", 'width': SZ['W'], 'left': 10000, 'bottom': 0, 'background': "white"}
 ISTYLE = {'opacity': "inherited", 'height': 30, 'left': 0, 'top': 0, 'background': "white"}
 ESTYLE = {'opacity': "inherited", 'width': 30, 'height': "30px", 'min-height': '30px', 'float': 'left',
           'position': 'unset'}
 EIMGSTY = {"max-width": "100%", "max-height": "100%", "width": "100%", "height": "100%"}
-STYLE["min-height"] = "300px"
+# STYLE["min-height"] = "300px"
 IMAGEM = ""
 NSTYLE = {'position': "absolute", 'width': "60%", 'left': "20%", 'top': 0, 'margin': "0%",
           "min-height": "20%", "cursor": "n-resize"}
@@ -328,8 +343,8 @@ class Inventario:
     """# Usado para definir um jogador no modo multiusuário"""
     GID = str(uuid.uuid4())[:8]  # Usado para definir um jogador no modo multiusuário
 
-    def __init__(self, tela=DOC_PYDIV):
-        self.tela = tela
+    def __init__(self, tela=None):
+        self.tela = tela or get_doc_pydiv()
         self.cena = None
         self.nome = "__INVENTARIO__"
         self.inventario = {}
@@ -342,7 +357,7 @@ class Inventario:
         self.limbo = html.DIV(style=self.style)
         self.limbo.style.left = "4000px"
         self.mostra()
-        tela <= self.elt
+        _ = self.tela <= self.elt
 
     def __repr__(self):
         return "Inventario"
@@ -918,7 +933,7 @@ class Portal:
                 self._vai = self.do_vai
 
             def do_vai(self, ev=NoEv()):
-                print("vai", self.destino.nome)
+                # print("vai", self.destino.nome)
                 return self.destino.vai(ev)
 
             @property
@@ -1061,7 +1076,7 @@ class Sala:
         for esquerda in range(4):
             cena_a_direita = (esquerda + 1) % 4
             self.cenas[esquerda].direita = self.cenas[cena_a_direita]
-            self.cenas[cena_a_direita]._esquerda = self.cenas[esquerda]
+            self.cenas[cena_a_direita].esquerda = self.cenas[esquerda]
 
     @staticmethod
     def c(**cenas):
@@ -1102,13 +1117,13 @@ class Cena:
     """
 
     def __init__(self, img=IMAGEM, esquerda=NADA, direita=NADA, meio=NADA,
-                 vai=None, nome='', tela=DOC_PYDIV, xy=(0, 0), score=NOSC, **kwargs):
+                 vai=None, nome='', tela=None, xy=(0, 0), score=NOSC, **kwargs):
         width = STYLE["width"]
         self.scorer = dict(ponto=1, valor="__JOGO__", carta=nome, casa=xy, move=None)
         self.scorer.update(score)
         self._auto_score = self.score if score else self._auto_score
         self.ev = NoEv()
-        self.tela = tela
+        self.tela = tela or get_doc_pydiv()
         self.xy = xy
         # self.img = img
         self.nome = nome
@@ -1117,6 +1132,7 @@ class Cena:
         self.N, self.O, self.L = [NADA] * 3
         self.vai = vai or self.vai
         self.elt = html.DIV(style=STYLE)
+        # print(STYLE)
         self.img = html.IMG(src=img, width=width, style=STYLE, title=nome)
         self.elt <= self.img
         self.portal(esquerda=self.portal(O=esquerda), direita=self.portal(L=direita), meio=self.portal(N=meio))
@@ -1250,18 +1266,18 @@ def singleton(class_):
 
 @singleton
 class Pop:
-    def __init__(self, tela=DOC_PYDIV):
-        self.tela = tela
+    def __init__(self, tela=None):
+        self.tela = tela or get_doc_pydiv()
         self.optou = ""
         self.foi = None
         self.popup = html.DIV(Id="__popup__", Class="overlay")
         self.div = div = html.DIV(Id="__baloon__", Class="popup")
         self.tit = html.H2()
-        self.a = html.A("×", Class="close", href="#")
+        self.a = html.A("×", Class="closet_vit", href="#")
         self.go = html.A(Id="txt_button", Class="button", href="#__popup__")
         self.go.onclick = self._open
         self.a.onclick = self._close
-        self.alt = html.DIV(Class="content")
+        self.alt = html.DIV(Class="content_vit")
         self.popup <= div
         self.popup.style = {"visibility": "hidden", "opacity": 0.7}
         self.inicia()
@@ -1276,7 +1292,9 @@ class Pop:
     def __repr__(self):
         return "<Popup>"
 
-    def _close(self, *_):
+    def _close(self, ev):
+        ev.preventDefault()
+        ev.stopPropagation()
         # self.popup.style = {"visibility": "hidden"} #, "opacity": 0}
         self.popup.style.visibility = "hidden"
         self.popup.style.opacity = 0
@@ -1298,7 +1316,7 @@ class Pop:
             self.popup.style = {"visibility": "hidden", "opacity": 0}
 
         def opta(letra, texto):
-            div = html.DIV(Class="content")
+            div = html.DIV(Class="content_vit")
             optou = html.A(chr(ABOXED + ord(letra) - ord("A")), Class="option", href="#")
             optou.onclick = lambda *_: _close() or opcao(letra)
             texto_opcao = html.SPAN(texto)
@@ -1425,7 +1443,7 @@ class Point(list):
         return Point(self.x + other.x, self.y + other.y)
 
     def __radd__(self, other):
-        print("__radd__(self, {other})".format(other=other))
+        # print("__radd__(self, {other})".format(other=other))
         self.x += other.x
         self.y += other.y
         return self
@@ -1449,8 +1467,8 @@ class Point(list):
 
 
 class Cursor:
-    def __init__(self, alvo, cena=DOC_PYDIV):
-        self.alvo, self.cena, self.ponto = alvo, cena, None
+    def __init__(self, alvo, cena=None):
+        self.alvo, self.cena, self.ponto = alvo, cena or get_doc_pydiv(), None
         outer = self
 
         class Noop:
@@ -1465,7 +1483,7 @@ class Cursor:
                 cur_style = dict(outer.style)
                 point = Point(outer.alvo.style.left, outer.alvo.style.top)
                 delta = delta if delta else Point(outer.alvo.style.width, outer.alvo.style.minHeight)
-                print("delta.x, delta.y", outer.elt.style.left, outer.elt.style.top, delta.x, delta.y)
+                # print("delta.x, delta.y", outer.elt.style.left, outer.elt.style.top, delta.x, delta.y)
                 cur_style.update(cursor=styler, left=point.x, top=point.y, width=delta.x, height=delta.y, **new_style)
                 cur_style["min-height"] = "{}px".format(delta.y)
                 return cur_style
@@ -1503,7 +1521,7 @@ class Cursor:
                 ev.target.style.cursor = "move"
 
             def next(self, ev):
-                print("next resize")
+                # print("next resize")
                 ev.target.style = self.update_style("grab", _PATTERN.BOKEH)
                 outer.current = outer.resize
 
@@ -1523,7 +1541,7 @@ class Cursor:
                 ev.target.style.cursor = "grab"
 
             def next(self, ev):
-                print("next noop")
+                # print("next noop")
                 ev.target.style = self.update_style("default", _PATTERN.STARRY)
                 outer.current = outer.noop
 
@@ -1823,12 +1841,13 @@ class Roteiro:
         protagonista.elt.style.filter = "brightness(100%)"
 
         class Falar(Texto):
-            def __init__(self, ator, fala, prox, act=None, mini=1, **kwarg):
+            def __init__(self, ator, fala, prox, act=None, mini=1, alinha=-1, **kwarg):
                 self.ator, self.fala, self.prox = ator, fala, prox
                 self._foi = act or self.nada
                 minih = 80 / mini
+                margin = (40, 70, 10)[alinha]
                 self.mini = Elemento(ator.img, cena=cena, w=80, h=80, tipo=f"80px {minih}px",
-                                     style=dict(top="20%", margin="-10px 10%"))
+                                     style=dict(top="20%", margin=f"-10px {margin}%"))
                 super().__init__(cena, fala, **kwarg)
 
             def esconde(self, *_):
@@ -1861,9 +1880,12 @@ class Roteiro:
         pass
 
     def segue(self, *_):
-        ator, fala, prox, action = self.scripter()
+        script = self.scripter()
+        if not script:
+            return
+        ator, fala, prox, action = script
         # ator.elt.style.filter = "brightness(30%)"
-        fala = self._fala(ator, fala, prox, action, mini=self.dic_ator[ator].mini)  # .vai()
+        fala = self._fala(ator, fala, prox, action, mini=self.dic_ator[ator].mini, alinha=self.dic_ator[ator].alinha)
         if prox:
             prox.vai = self.segue
         fala.vai()
@@ -1876,11 +1898,14 @@ class Roteiro:
                 ato.elt.style.filter = "brightness(100%)"
 
     def scripter(self, *_):
-        return self.roteiro.pop(0)
+        return self.roteiro.pop(0) if self.roteiro else None
 
 
 class Jogo:
-    def __init__(self):
+    def __init__(self, style=None, did=None):
+        STYLE.update(style) if style else None
+        did = document[did] if isinstance(did, str) else did if did else None
+        set_doc_pydiv(did) if did else None
         self.c = Cena
         self.d = self.codigo = Codigo
         self.q = Sala
@@ -1904,7 +1929,7 @@ class Jogo:
 
     def z(self):
         """ Zera, limpa a área de desenho"""
-        DOC_PYDIV.html = ""
+        get_doc_pydiv().html = ""
 
     @property
     def cena(self):
@@ -2022,7 +2047,7 @@ h1 {
   color: #333;
   font-family: Tahoma, Arial, sans-serif;
 }
-.popup .close {
+.popup .closet_vit {
   position: absolute;
   top: 0px;
   right: 5px;
@@ -2039,13 +2064,13 @@ h1 {
   text-decoration: none;
   color: #333;
 }
-.popup .close:hover {
+.popup .closet_vit:hover {
   color: #06D85F;
 }
 .popup .option:hover {
   color: #06D85F;
 }
-.popup .content {
+.popup .content_vit {
   max-height: 30%;
   overflow: auto;
 }

@@ -15,7 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## Kopis [24.03a] - 2024-03-11
 
 ### FIXED
-- 🚒 Conserta Cena, Texto Vitollino. (11)
+- 🚒 Conserta Cena, Texto, Roteiro Vitollino. (11)
+- 🚒 Conserta CSS, para evitar conflito com Bulma. (11)
 
 ## Kopis [24.03] - 2024-03-03
 

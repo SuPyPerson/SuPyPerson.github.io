@@ -1,3 +1,5 @@
 - [Apresentação](README)
 - [Python Kwarwp](/kwa)
 - [Sonho de Curumim](/soho)
+- [Jardim Radical](/jardim)
+- [Povoando o Jardim](/sbce/o_elenco)

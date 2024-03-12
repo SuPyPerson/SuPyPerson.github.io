@@ -20,11 +20,12 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
         from browser import window, document, alert, html, timer
         jogo = document["pydiv"]
 
-        from vitollino import Cena, STYLE, Elemento, Texto
+        from vitollino import Cena, STYLE, Elemento, Texto, Sala, Roteiro, Ator, Fala, A
         from jogos import Sprite
         STYLE.update(height="500px", width="500px")
         def fala(*_):
-            Texto(cena, "Oi sou a Adenosino o DNA").vai()
+            #Texto(cena, "Oi sou a Adenosino o DNA").vai()
+            Roteiro(cena, fala, elenco)
         jogo.html = ''
         jogo.style.minHeight = "500px"
         cenad = Cena("/_ativo/jardim/japones.jpg")
@@ -33,13 +34,25 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
         cenae.direita = cena
         cenad.esquerda = cena
         cenad.direita = cenae
-        Elemento(
+        tetis = Elemento(
             "/_ativo/jardim/tetis.png",  tit= "Tetis",cena=cena,
             y=200, h=200, texto="oi, sou tetis")
-        Elemento(
+        adenaldo = Elemento(
             "/_ativo/adenaldo.png",  tit= "Adenaldo",cena=cena,
             x=200, y=200, h=200, vai=fala)
-        persona = Sprite("/_ativo/jardim/persona.png")
+        # persona = Sprite("/_ativo/jardim/persona.png")
+        # sala = Sala(Cena("/_ativo/jardim/mirante.jpg"),Cena("/_ativo/jardim/tomjobim.jpg"),
+        sala = Sala(cena,cenad,
+        Cena("/_ativo/jardim/orquidario.jpg"),Cena("/_ativo/jardim/portal.jpg"))
+        sala.norte.vai()
+        elenco = (Ator(tetis, "Tetis", 0.4, A.e), Ator(adenaldo, "Adenaldo", 0.4, A.d))
+        fala = [
+            Fala(tetis, "olá", adenaldo, None),
+            Fala(adenaldo, "olá, tetis", tetis, None),
+            Fala(tetis, "tudo bem Adenaldo?", adenaldo, None),
+            Fala(adenaldo, "Melhor que nunca, Tetis!", tetis, None),
+        ]
+        # roteiro = Roteiro(cena, fala, elenco)
 
     </script>
 

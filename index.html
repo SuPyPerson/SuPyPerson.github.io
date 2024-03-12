@@ -30,22 +30,6 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ext-language_tools.min.js"
             integrity="sha512-22wocMmMcRBM2la/vRMi/ZkYQMCAYMGxh8H2unSWmsBo0zELkk1/nZeTbZ4rykAny3y43yM3x7MwuhrE0Lksxg=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!--
-    <link rel="stylesheet" href="//unpkg.com/docsify-accordify/src/assets/default.css">
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css" />
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/buble.css" />
-    <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
-    <script type=" text/javascript " src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.29.0/ace.js"></script>
-    <script type=" text/javascript " src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.29.0/theme-cobalt.min.js">
-    </script>
-  <script type="module">
-    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
-    //mermaid.initialize({ startOnLoad: true });
-    window.mermaid = mermaid;
-  </script>
-  <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
-    -->
     <style>
         .accordion {
           background-color: #222322;
@@ -106,7 +90,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     </style>
 </head>
 <body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./_core', './_prog', './']})">
-    <div id="pydiv"></div>
+    <!--    <div id="pydiv"></div>-->
     <div id="app"></div>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
     <script src="//cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
@@ -138,6 +122,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
             '/pintro': '/pgintro/README',
             '/kwa': '/kwarwp/README',
             '/soho': '/kwarwp/o_sonho',
+            '/jardim': '/sbce/o_jogo',
             '/changelog':
               'https://raw.githubusercontent.com/docsifyjs/docsify/master/CHANGELOG',
             '/.*/_sidebar.md': '/_sidebar.md', // See #301
@@ -153,7 +138,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
             },
           },
         },
-        name: 'Pynóplia',
+        name: 'Pynoplia',
         coverpage: {"/":'_coverpage.md', "/pgintro/":'_coverpage.md', "/kwa/":'_coverpage.md'},
 
 
