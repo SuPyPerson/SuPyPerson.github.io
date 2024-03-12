@@ -63,8 +63,12 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
   <img id="al4" src onerror="__widget__(this.id)"></img>
 
-    Caminhe pela cerca até uma oca.
-    Use o comando for do Python.
+  Caminhe pela cerca até uma oca.
+  Use o comando for do Python.
+  Clique no botão executar para mostrar o cenário,
+  depois clique no céu para executar um comando passo a passo.
+  Clique até que todos os comandos tenham executado.
+  Você terá sucesso se o Pajé chegar até sua oca.
     ```python
     for _cada_na_lista in range(0):
       # ponha aqui coisas que se repetem

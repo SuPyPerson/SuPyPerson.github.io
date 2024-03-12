@@ -80,6 +80,30 @@ Aqui está um elemento identificado como '_jogo_', onde o jogo vai aparecer.
   Veja se você consegue agora rodar pela direita ou esquerda, 
   incluindo uma passagem pelo mirante.
 
++ Criando Salas no Jogo +
+ 
+  <img id="jo2" src onerror="__widget__(this.id)"/>
+
+  Vamos facilitar a criação de cenas navegáveis com a *Sala*.
+  A *Sala* tem proriedades *norte, oeste, sul e leste* que são
+  as cenas que estão nesta posição.
+  Na *Cena*, o parâmetro *meio* indica a cena quando se navega em frente.
+  A seta do meio vai aparecer na borda do topo da imagem.
+  Procure ligar as duas salas, fazendo o meio do norte de uma sala
+  levar à cena norte da outra. Faça depois o caminho inverso, ligando
+  o meio do sul ligar no sul da outra sala.
+  ```python
+  cenas = "japones relogio mirante tomjobim".split()
+  """a chamada *split* recorta o texto nos espaços, retornando
+  # a lista de textos: *["japones", "relogio", "mirante", "tomjobim"]*
+  """
+  jardim = Sala(*[f"/_ativo/jardim/{cena}.jpg" for cena in cenas])
+  """Aqui a lista de cenas é percorrida com o comando *[$1 for $2 in $3]*
+  o *$3* é a lista ser percorrida. O $2 é valor corrente da lista.
+  O $3 é executado para cada valor da lista.
+  O * na frente do *[]* separa a lista em parâmetros a serem passados para *Sala*
+  """
+  ```
 
 #### LABASE
 [footer](footer.md ':include')

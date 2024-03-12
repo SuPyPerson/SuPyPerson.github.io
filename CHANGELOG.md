@@ -8,11 +8,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-### <span class="curversion"></span>
+### Current Version - Milestone 🛡️ Hoplon - <span class="curversion"></span>
+
+# 🛡️ Hoplon - Plataforma primária com quatro aulas
+
+## [Hp🛡24.03]
+
+### ADDED
+- ⛲ Lição SBC-EB - Povoando o Jardim - Roteiro 🚸. (12)
+- ⛲ Lição SBC-EB - O Jardim Floresce - Movimenta 🚸. (12)
+
+### FIXED
+- 🚒 Conserta Cena.meio @property que faltava. (11)
 
 # 🗡️ Kopis - Pré-Entrega para teste de tecnologia
 
-## Kopis [24.03a] - 2024-03-11
+## Kopis [24.03] - 2024-03-11
 
 ### FIXED
 - 🚒 Conserta Cena, Texto, Roteiro Vitollino. (11)
@@ -21,10 +32,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### ADDED
 - ⛲ Lição SBC-EB - Primeiro Jogo 🚸. (11)
 - ⛲ Lição SBC-EB - Povoando o Jardim 🚸. (11)
-
-## Kopis [24.03] - 2024-03-03
-
-### ADDED
 - ⛲ Comando olha funcionando. (03)
 
 ## Kopis [24.02c] - 2024-02-29
@@ -54,16 +61,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Integration with Docsify
 - Falhou a integração Kwarwp Supy
 
-
-# 🛡️ Hoplon - Plataforma primária com quatro aulas
-
-## [Unreleased]
-
-### ADDED
-- Aula IV planejada
-
-[unreleased]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02b...HEAD
-[24.03a]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.03...24.03a
+[unreleased]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/Hp🛡24.03...HEAD
+[Hp🛡24.03]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.03...Hp🛡24.03
 [24.03]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02c...24.03
 [24.02c]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02c...24.03
 [24.02b]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02a...24.02b

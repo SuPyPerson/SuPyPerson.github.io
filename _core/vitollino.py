@@ -29,6 +29,9 @@ Gerador de labirintos e jogos tipo *'novel'*.
 
 Changelog
 ---------
+.. versionchanged::    24.03
+    fixed cena.meio @property to portal (11)
+
 .. versionadded::    24.03
     fixed cena neighbors to portal (10)
     fixed style from Element to 3.11 work (10)
@@ -1138,6 +1141,14 @@ class Cena:
         self.portal(esquerda=self.portal(O=esquerda), direita=self.portal(L=direita), meio=self.portal(N=meio))
         Cena.c(**kwargs)
         # self._cria_divs(width)
+
+    @property
+    def meio(self):
+        return self._meio
+
+    @meio.setter
+    def meio(self, meio):
+        self._meio = self.portal(direita=self.portal(N=meio))
 
     @property
     def direita(self):
