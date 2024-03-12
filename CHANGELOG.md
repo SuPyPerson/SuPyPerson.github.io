@@ -18,6 +18,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - 🚒 Conserta Cena, Texto, Roteiro Vitollino. (11)
 - 🚒 Conserta CSS, para evitar conflito com Bulma. (11)
 
+### ADDED
+- ⛲ Lição SBC-EB - Primeiro Jogo 🚸. (11)
+- ⛲ Lição SBC-EB - Povoando o Jardim 🚸. (11)
+
 ## Kopis [24.03] - 2024-03-03
 
 ### ADDED
