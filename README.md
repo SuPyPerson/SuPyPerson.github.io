@@ -6,10 +6,6 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > E agora para algo totalmente diferente! <br>
 > Aprenda Python resolvendo, modificando e criando desafios e jogos
 
-<style>
-  span.curversion::after {content: "24.03";}
-</style>
-
 ![Python Programming Flying Circus](_media/PPFC.jpg)
 
 ### Uma Plataforma para Resolver e Criar Desafios
