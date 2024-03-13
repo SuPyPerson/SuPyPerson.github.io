@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 # 🛡️ Hoplon - Plataforma primária com quatro aulas
 
-## [Hp🛡24.03]
+## Hoplon [Hp🛡24.03] - 2024-03-12
 
 ### ADDED
 - ⛲ Lição SBC-EB - Povoando o Jardim - Roteiro 🚸. (12)
