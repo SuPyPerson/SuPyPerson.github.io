@@ -11,9 +11,9 @@ Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
 local = "/_ativo/jardim/{}.jpg"  # este {} vai ser substituído pelo format
 japones, relogio = local.format("japones"), local.format("relogio")
 cena = Cena(japones).vai()
-"japones aqui diz que a imagem da cena á aquela da figura mirante.jpg"
+"japones aqui diz que a imagem da cena á aquela da figura japones.jpg"
 Texto(cena, "Olá, Vamos construir o Jardim Radical!").vai()
-"cena diz a cena que vai mostrar o texto que é colocado após a vírgula"
+"cena diz o local que vai mostrar o texto que é colocado após a vírgula"
 # cena = Cena(relogio).vai()
 "Descomente a linha acima, removendo o *# * inicial e execute"
 _SET1_ = {
@@ -33,8 +33,8 @@ cena_mirante = Cena(mirante, direita=cena_japones, esquerda=cena_relogio).vai()
 cena_relogio.direita = cena_mirante
 cena_japones.esquerda = cena_mirante
 cena_japones.direita = cena_relogio
-cena_mirante = Cena(mirante)  # edite esta linha para ter vizinhos
-"agora tente inserir a *cena_mirante* na ciranda"
+cena_tomjobim = Cena(tomjobim)  # edite esta linha para ter vizinhos
+"agora tente inserir a *cena_tomjobim* na ciranda"
 _SET2_ = {
     "script_name": "jo2", "script_div_id": "jo2",
     "height": 200, "title": "Criando Salas", "show_scenario": False, "console_height": 45
@@ -69,7 +69,7 @@ ossanha = Elemento(ossanha, x=250, y=300, h=200, cena=cena, texto="O Curandeiro"
 narciso = Elemento(narciso, x=450, y=300, h=200, cena=cena, texto="O Orgulhoso")
 _SET4_ = {
     "script_name": "jo4", "script_div_id": "jo4",
-    "height": 250, "title": "Povoando o Jardim", "show_scenario": False, "console_height": 45
+    "height": 250, "title": "Conversas no Jardim", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
 # _VIT_

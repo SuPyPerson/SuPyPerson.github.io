@@ -68,7 +68,7 @@ class Nulo:
     """Objeto nulo que responde passivamente a todas as requisições."""
 
     def __init__(self):
-        self.pegar = self.ocupa = self.ocupou = self.elt = self.corrente = self.nulo
+        self.pegar = self.ocupa = self.ocupou = self.elt = self.fala = self.corrente = self.nulo
         self.nome = "NULO"
 
     def nulo(self, *_, **__):
@@ -127,6 +127,11 @@ class Vazio:
         self.ocupante = NULO
         self.acessa = self._acessa
         self.sair = self._sair
+
+    def fala(self, texto=""):
+        """ O índio fala seu nome.
+        """
+        self.ocupante.fala(texto)
 
     def nomeia(self):
         """ O índio fala seu nome.
@@ -248,7 +253,7 @@ class Piche(Vazio):
     def __init__(self, imagem, x, y, cena, taba):
         self.nome = Nome.nomear(imagem)
         cn = self.nome or self.__class__.__name__
-        self.vaga = taba
+        self.vaga = self.taba = taba
         self.lado = lado = self.LADO or 100
         self.posicao = (x // lado, y // lado - 1)
         self.vazio = self.VITOLLINO.a(imagem, tit=f"_{cn}_{Vazio.ob()}", w=lado, h=lado, x=0, y=0, cena=cena)
@@ -285,7 +290,7 @@ class Piche(Vazio):
 
     def _pede_sair(self):
         """Objeto tenta sair, não sendo autorizado"""
-        self.taba.fala("Você ficou preso no piche")
+        self.fala("Você ficou preso no piche")
 
 
 class Oca(Piche):
@@ -295,7 +300,7 @@ class Oca(Piche):
 
     def _pede_sair(self):
         """Objeto tenta sair, não sendo autorizado"""
-        self.taba.fala("Você chegou no seu objetivo")
+        self.fala("Você chegou no seu objetivo")
 
     def _acessa(self, ocupante):
         """ Atualmente a posição está vaga e pode ser acessada pelo novo ocupante.
@@ -306,8 +311,8 @@ class Oca(Piche):
 
             :param ocupante: O candidato a ocupar a posição corrente.
         """
-        self.taba.fala("Você chegou no seu objetivo")
         ocupante.ocupa(self)
+        ocupante.fala("Você chegou no seu objetivo")
 
 
 class Tora(Piche):
