@@ -12,6 +12,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 # 🛡️ Hoplon - Plataforma primária com quatro aulas
 
+## Hoplon [Hp🛡24.03a] - 2024-03-21
+
+### ADDED
+- ⛲ Capoeira no Mato - Roteiro 🔰. (21)
+
 ## Hoplon [Hp🛡24.03] - 2024-03-12
 
 ### ADDED
@@ -62,6 +67,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Falhou a integração Kwarwp Supy
 
 [unreleased]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/Hp🛡24.03...HEAD
+[Hp🛡24.03a]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/Hp🛡24.03...Hp🛡24.03a
 [Hp🛡24.03]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.03...Hp🛡24.03
 [24.03]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02c...24.03
 [24.02c]: https://github.com/SuPyPerson/SuPyPerson.github.io/compare/24.02c...24.03
