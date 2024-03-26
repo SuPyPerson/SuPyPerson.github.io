@@ -3,7 +3,7 @@ version: '3.1'
 services:
   pynoplia:
     build: .
-    command: python3 -m wsgi
+    command: python3 -m wsgi --port=8585
     restart: always
     environment:
       - VIRTUAL_HOST=pyno.alite.selfip.org
