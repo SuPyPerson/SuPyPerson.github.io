@@ -6,15 +6,19 @@ Classes neste módulo:
     - :py:class:`DirectoryHandler` handle all routes from web.
 
 .. codeauthor:: Carlo Oliveira <carlo@nce.ufrj.br>
-.. codeauthor:: Dominik Gront <dgront@gmail.com>
+.. codeauthor:: Craig Campbell <https://craig.is>
 
 Changelog
 ---------
+.. versionchanged::    24.03
+   |br| Revert to enable serving index from root (07).
+
 .. versionadded::    24.03
-   |br| Initial server implemetation (07).
+   |br| Initial server implementation (07).
 
 |   **Open Source Notification:** This file is part of open source program **Pynoplia**
 |   **Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
+|   # Copyright (c) 2018, Craig Campbell
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <https://is.gd/3Udt>`_.
 |   `Labase <https://labase.github.io/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
@@ -33,27 +37,25 @@ options.parse_command_line(final=True)
 
 PORT = options.port
 DEBUG = options.debug
-ROUTE_TO_INDEX = options.route_to_index
+ROUTE_TO_INDEX = True  # options.route_to_index
+PATH = '/'
 
 
 class DirectoryHandler(tornado.web.StaticFileHandler):
     def validate_absolute_path(self, root, absolute_path):
-
-        if (os.path.splitext(absolute_path)[1] == '.md') and ("sbce" not in absolute_path):
-            base, file = os.path.split(absolute_path)
-            absolute_path = base + '/sbce/' + file
-            print("base", base, file, absolute_path)
-        # if ROUTE_TO_INDEX and self.request.uri != '/' and not '.' in self.request.uri:
-        if self.request.uri != '/' and '.' not in self.request.uri:
+        print(absolute_path, self.request.uri, os.path.isdir(absolute_path))
+        if ROUTE_TO_INDEX and self.request.uri != '/' and '.' not in self.request.uri:
             uri = self.request.uri
             if self.request.uri.endswith('/'):
                 uri = uri[:-1]
 
-            absolute_path = absolute_path.replace(uri, 'sbce/index.html')
+            absolute_path = absolute_path.replace(uri, '/index.html')
 
         if os.path.isdir(absolute_path):
-            index = os.path.join(absolute_path, 'sbce/index.html')
+            index = os.path.join(absolute_path, 'index.html')
+            print("os.path.isfile(index)", index, absolute_path)
             if os.path.isfile(index):
+                print("if os.path.isfile(index)", index, absolute_path)
                 return index
 
             return absolute_path
@@ -78,8 +80,6 @@ class DirectoryHandler(tornado.web.StaticFileHandler):
     @classmethod
     def get_content(cls, abspath, start=None, end=None):
         relative_path = abspath.replace(os.getcwd(), '') + '/'
-        if abspath != '/' and '.' not in abspath:
-            abspath = abspath + "/sbce"
 
         if os.path.isdir(abspath):
             html = ('<html><title>Directory listing for %s</title><body><h2>Directory listing for %s</h2><hr><ul>'

@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### ADDED
 - ⛲ Capoeira no Mato - Roteiro 🔰. (21)
+- ⛲ Docker and Compose files 🔰. (25)
 
 ## Hoplon [Hp🛡24.03] - 2024-03-12
 
