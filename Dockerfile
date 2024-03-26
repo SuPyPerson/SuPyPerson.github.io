@@ -17,4 +17,4 @@ USER labuser
 
 WORKDIR /var/www/pynoplia
 #ENTRYPOINT ["top", "-b"]
-ENTRYPOINT ["python", "wsgi.py", "--port=8000", "--debug=True"]
+ENTRYPOINT ["python", "wsgi.py", "--port=8585", "--debug=True"]
