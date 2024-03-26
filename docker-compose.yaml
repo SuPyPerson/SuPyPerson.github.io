@@ -15,6 +15,6 @@ services:
     restart: always
     environment:
       - VIRTUAL_HOST=pyno.alite.selfip.org
-      - VIRTUAL_PORT=8080
+      - VIRTUAL_PORT=8585
     ports:
-      - "8000:8000"
+      - "8585:8585"
