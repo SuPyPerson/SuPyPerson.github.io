@@ -32,12 +32,12 @@ from tornado.escape import xhtml_escape
 # config options
 define('port', default=8585, type=int, help='port to run web server on')
 define('debug', default=True, help='start app in debug mode')
-define('route_to_index', default=True, help='route all requests to index.html')
+define('route_to_index', default=False, help='route all requests to index.html')
 options.parse_command_line(final=True)
 
 PORT = options.port
 DEBUG = options.debug
-ROUTE_TO_INDEX = options.route_to_index
+ROUTE_TO_INDEX = False  # options.route_to_index
 PATH = '/'
 
 
@@ -49,7 +49,7 @@ class DirectoryHandler(tornado.web.StaticFileHandler):
             if self.request.uri.endswith('/'):
                 uri = uri[:-1]
 
-            absolute_path = absolute_path.replace(uri, '/index.html')
+            #absolute_path = absolute_path.replace(uri, '/index.html')
 
         if os.path.isdir(absolute_path):
             index = os.path.join(absolute_path, 'index.html')
@@ -80,6 +80,7 @@ class DirectoryHandler(tornado.web.StaticFileHandler):
     @classmethod
     def get_content(cls, abspath, start=None, end=None):
         relative_path = abspath.replace(os.getcwd(), '') + '/'
+        print("relative_path", relative_path, os.path.isdir(abspath))
 
         if os.path.isdir(abspath):
             html = ('<html><title>Directory listing for %s</title><body><h2>Directory listing for %s</h2><hr><ul>'

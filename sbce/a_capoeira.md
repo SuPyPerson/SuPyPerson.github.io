@@ -91,6 +91,70 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     tambem_falso = 3-1 <= 5+4 <= 7
     falso_ainda = not (4+4 > 12-6)
     ```
+  
++ Contando Araras +
+ 
+  <img id="ca3" src onerror="__widget__(this.id)"/>
+ 
+    Curumim tenta se distrair em sua longa jornada. Ele conta um bando de araras que passa.
+    O bando tem vinte araras e Curumim faz vários palpites. Faça uma função para saber se ele acerta ou não.
+    A função recebe um argumento *um_bando* que define a contagem do bando
+    O argumento *um_bando* é a contagem de araras no bando.
+    Curumim acerta quando ele erra por apenas dois a mais o a menos.
+    
+    ```python
+    """Você pode saber o valor absoluto de um número com a função *abs()*."""
+    cem = abs(100)
+    cem_tambem = abs(-100)
+    ```
+  
++ Elogiando Amigos +
+ 
+  <img id="ca4" src onerror="__widget__(this.id)"/>
+ 
+    Curumim se sente feliz com os animais que o acompanham. Ele chama todos de "sagaz".
+    <continue aqui> https://intro-python.readthedocs.io/en/latest/dojo_esquenta_0.html#negacao
+
+    ```python
+    """Em Construção."""
+    em_construção = 0
+    ```
+  
++ Tucano Resfriado +
+ 
+  <img id="ca5" src onerror="__widget__(this.id)"/>
+ 
+    Curumim percebe que o Tucano está resfriado. Ele come letras das palavras.
+    <continue aqui> https://intro-python.readthedocs.io/en/latest/dojo_esquenta_0.html#eliminacao
+
+    ```python
+    """Em Construção."""
+    em_construção = 0
+    ```
+  
++ Tatu Zoado +
+ 
+  <img id="ca6" src onerror="__widget__(this.id)"/>
+ 
+    Curumim resgata o Tatu que caiu num buraco fundo. Ele bateu a cabeça e agora troca letras das palavras.
+    <continue aqui> https://intro-python.readthedocs.io/en/latest/dojo_esquenta_0.html#trocacao
+
+    ```python
+    """Em Construção."""
+    em_construção = 0
+    ```
+  
++ Coruja Zombeteira +
+ 
+  <img id="ca7" src onerror="__widget__(this.id)"/>
+ 
+    Curumim está chatedo com a coruja. Ela fica repetindo as letras das palavras.
+    <continue aqui> https://intro-python.readthedocs.io/en/latest/dojo_esquenta_0.html#copiacao
+
+    ```python
+    """Em Construção."""
+    em_construção = 0
+    ```
 
 #### LABASE
 [footer](footer.md ':include')
