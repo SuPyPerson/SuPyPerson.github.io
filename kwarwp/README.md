@@ -158,5 +158,32 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     # Outro desafio é trocar estes vários caminhe() por um while!
     ```
 
++ Pajé - O Caminho Árduo +
+
+  <img id="al9" src onerror="__widget__(this.id)"></img>
+
+  Ache um caminho até uma oca.
+  Use os comando ***def e while*** do Python.
+  Podemos definir no Python um conjunto de comandos a serem
+  executados juntos. Para isso usamos o comando ***def***.
+  Neste ***def*** inteligente, além de caminhar pelo corredor,
+  o Pajé fará uma busca para saber por onde deve continuar.
+  Teremos então dois comandos ***while*** dentro deste ***def***
+  Você terá sucesso se o Pajé chegar até sua oca.
+    ```python
+    def caminha(self):
+      while self.olha() == "VAZIO": # enquanto o caminho está livre 
+        _ = 0  # troque isso e ponha aqui coisas que se repetem
+      # o Pajé começa tentando seguir à direita do caminho
+      self.direita()
+      while self.olha() != "VAZIO": # enquanto o caminho não está livre 
+        self.esquerda() # se vira para tentar outra direção
+    # lá no comando executa faremos assim
+    self.caminha()
+    self.caminha()
+    # continue até o Pajé chegar na oca
+    # Outro desafio é trocar estes vários caminhe() por um while!
+    ```
+
 #### LABASE
 [footer](footer.md ':include')
