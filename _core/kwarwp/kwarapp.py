@@ -575,6 +575,16 @@ class Kwarwp:
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         pass
 
+    def vizinho(self, posicao, azimute):
+        """ Encontra um vizinho do objeto para um dado azimute.
+        """
+        destino = (posicao[0] + azimute.x, posicao[1] + azimute.y)
+        """A posição para onde o índio vai depende do vetor de azimute corrente"""
+        taba = self.taba
+        if destino in taba:
+            return taba[destino]
+        return None
+
     def fala(self, texto=""):
         """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.
         """

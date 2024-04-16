@@ -160,7 +160,7 @@ class Vazio:
             :param azimute: Direção que vai empurrar o objeto.
             :param requisitante: O ator querendo pegar o objeto.
         """
-        self.ocupante.empurra(requisitante, azimute)
+        self.ocupante.empurrar(requisitante, azimute)
 
     def _valida_acessa(self, ocupante):
         """ Consulta o ocupante atual se há permissão para substituí-lo pelo novo ocupante.
@@ -337,7 +337,8 @@ class Tora(Piche):
             :param empurrante: O ator querendo empurrar o objeto.
         """
         self.empurrante = empurrante
-        self.vaga.acessar(self, azimute)
+        vaga = self.taba.vizinho(self.posicao, azimute)
+        vaga.empurrar(self, azimute) if vaga else None
         self.empurrante = NULO
 
     def ocupa(self, vaga, *_):
