@@ -54,8 +54,7 @@ v__.Elemento(img="_media/indigena.png", y=90, x=50, w=200, h=200, cena=c__, tit=
     "background-size": "300% 400%", "background-position": f"0% {100/3}%"})
 v__.Elemento(img="_media/animais.png", y=90, x=520, w=200, h=200, cena=c__, tit="Tucano Cantou", style={
     "background-size": "200% 300%", "background-position": "0% 100%"})
-v__.Elemento(img="_media/animais.png", y=90, x=300, w=200, h=200, cena=c__, tit="Tucano Tunoca", style={
-    "background-size": "200% 300%", "background-position": "0% 100%"})
+
 # _VIT_
 def fazendo_cocar(um_bando, outro_bando):
     """Retorna se a contagem dos bandos ou a soma é sete.
@@ -92,15 +91,33 @@ _SET4_ = {
     "script_name": "ca4", "script_div_id": "ca4",
     "height": 200, "title": "Elogiando Amigos", "console_height": 180
 }  # _SEC_
-v__.Elemento(img="_media/indigena.png", y=90, x=50, w=200, h=200, cena=c__, tit="Curumim", style={
-    "background-size": "300% 400%", "background-position": f"0% {100/3}%"})
-# _VIT_
-def elogia(a_fazer):
-    """Em construção.
-    """
-    resultado = a_fazer
-    return resultado
 
+
+from vitollino import Jogo
+def animal(xpos, nome, bpos):
+    return v__.Elemento(img="_media/animais.png", y=90, x=130 + 130 * xpos, w=200, h=200, cena=c__, tit=nome, style={
+        "background-size": "200% 300%", "background-position": f"{bpos[0]}% {bpos[1]}%"})
+
+
+v__.Elemento(img="_media/indigena.png", y=90, x=0, w=200, h=200, cena=c__, tit="Curumim Sagaz", style={
+    "background-size": "300% 400%", "background-position": f"0% {100/3}%"})
+Jogo.ANIMAIS = [animal(x, n, b) for x, (n, b) in enumerate(
+    [("mico", (0, 0)), ("tucano", (0, 100)), ("coruja", (0, 50)), ("tatu", (100, 0))]
+)]
+# _VIT_
+from vitollino import Jogo
+def elogia_os_amigos():
+    """Use a coleção de animais e para cada animal use a propriedade tit para trabalhar com o nome.
+    """
+    animais = Jogo.ANIMAIS
+    for _ in __:  # conserte esta linha
+        nome = animal.tit
+        animal.tit = "conserte esta linha também"
+elogia_os_amigos()
+assert Jogo.ANIMAIS[0].tit == "mico sagaz"
+assert Jogo.ANIMAIS[1].tit == "tucano sagaz"
+assert Jogo.ANIMAIS[2].tit == "coruja sagaz"
+assert Jogo.ANIMAIS[3].tit == "tatu sagaz"
 _SET5_ = {
     "script_name": "ca5", "script_div_id": "ca5",
     "height": 200, "title": "Resfriado", "console_height": 180

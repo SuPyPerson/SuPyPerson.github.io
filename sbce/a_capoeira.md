@@ -113,10 +113,16 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
   <img id="ca4" src onerror="__widget__(this.id)"/>
  
     Curumim se sente feliz com os animais que o acompanham. Ele chama todos de "sagaz".
+    Acrescescente a palavra *"sagaz"* no nome de cada animal.
     <continue aqui> https://intro-python.readthedocs.io/en/latest/dojo_esquenta_0.html#negacao
 
     ```python
-    """Em Construção."""
+    """Use a coleção de animais e para cada animal use a propriedade tit para trabalhar com o nome"""
+    from vitollino import Jogo
+    animais = Jogo.ANIMAIS
+    for animal in animais:
+       nome = animal.tit
+       animal.tit = nome + " sagaz"
     em_construção = 0
     ```
   
