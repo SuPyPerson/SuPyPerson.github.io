@@ -25,6 +25,7 @@ Changelog
 
 import os
 import tornado.web
+from tornado import websocket
 from tornado.ioloop import IOLoop
 from tornado.options import define, options
 from tornado.escape import xhtml_escape
@@ -39,6 +40,37 @@ PORT = options.port
 DEBUG = options.debug
 ROUTE_TO_INDEX = options.route_to_index
 PATH = '/'
+
+cl = []
+
+
+class SocketHandler(websocket.WebSocketHandler):
+    def check_origin(self, origin):
+        return True
+
+    def _open(self):
+        if self not in cl:
+            cl.append(self)
+
+    def _on_close(self):
+        if self in cl:
+            cl.remove(self)
+
+    def open(self):
+        print("WebSocket opened")
+        self._open()
+
+    def on_message(self, message):
+        print("WebSocket message received", message)
+        self.write_all(message)
+
+    def on_close(self):
+        print("WebSocket closed")
+        self._on_close()
+
+    def write_all(self, msg):
+        print("WebSocket write all", cl, msg)
+        [receiver.write_message(msg) for receiver in cl if receiver is not self]
 
 
 class DirectoryHandler(tornado.web.StaticFileHandler):
@@ -106,6 +138,8 @@ settings = {
 }
 
 application = tornado.web.Application([
+    (r'/ws', SocketHandler),
+    # (r'/index', DirectoryHandler, {'path': './'})
     (r'/(.*)', DirectoryHandler, {'path': './'})
 ], **settings)
 
