@@ -3,6 +3,7 @@
 # from .ScriptWidget import ScriptWidget
 import json
 from collections import namedtuple
+
 Op = namedtuple('Op', "i e d")(*"i e d".split())
 Om = namedtuple('Op', "i e d")(*"i e d".split())
 
@@ -58,6 +59,7 @@ class ScriptWidget:
         # ScriptVito(did=mid, **params)
         # self.code_text = COD[mid]
 
+        """
         if "alignment" in params and params["alignment"] == 'top-bottom':
             document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
         else:
@@ -68,7 +70,17 @@ class ScriptWidget:
         document["run-%s" % main_div_id].bind("click", self.run_script)
         document["clear-%s" % main_div_id].bind("click", self.clear_console)
         document["reset-%s" % main_div_id].bind("click", self.get_script)
-
+        """
+        handlers = (self.run_script, self.clear_console, self.get_script,)
+                    # self.share_script, self.save_script)
+        if "alignment" in params and params["alignment"] == 'top-bottom':
+            innerHTML, self.buttons = self.widget_code(m, handlers, is_long=True)
+            _ = document[main_div_id] <= innerHTML
+        else:
+            innerHTML, self.buttons = self.widget_code(m, handlers)
+            _ = document[main_div_id] <= innerHTML
+            if "editor_width" in params:
+                document[self.script_div_id].style.width = params["editor_width"]
         # Set title (number and name) of the script
         index = params.get("index", None)
         title = params.get("title", None)
@@ -103,6 +115,55 @@ class ScriptWidget:
             del document["run-%s" % main_div_id]
             del document["clear-%s" % main_div_id]
             del document["reset-%s" % main_div_id]
+        self.get_script()
+
+    def widget_code(self, name, actions, is_long=False):
+        """
+          <div class="script-title" id="title-%s"></div>
+          <div class="script-container" id="script-container-%s">
+            <div id="script-%s" class="script-editor-long"></div>
+            <div id="result-%s" class="script-result-long"><pre id="result_pre-%s"></pre></div>
+          </div>
+          <button class="script-button" id="run-%s" type="button">Executar</button>
+          <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
+          <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
+        """
+        wdg = self
+
+        class Share:
+            def __init__(self):
+                self.share_text = "👁 Compartilhar,🕵️‍♀️ Parar".split(",")
+                self.sharing = False
+                self.button = h.BUTTON("👁 Compartilhar", Class="script-button", Id=f"share-{name}")
+                self.button.bind("click", self.share)
+
+            def share(self, ev):
+                self.sharing = not self.sharing
+                wdg.sd.share(self.sharing)
+                self.button.text = self.share_text[self.sharing]
+                print("share_script", self.sharing)
+
+            def vai(self):
+                return self.button
+
+        h = self.browser.html
+        editor, result = ("script-editor-long", "script-result-long") if is_long else ("script-editor", "script-result")
+        buttons = [h.BUTTON("︎▶ Executar", Class="script-button", Id=f"run-{name}"),
+                   h.BUTTON("⭕ Limpar Console", Class="script-button", Id=f"clear-{name}"),
+                   h.BUTTON("🔁 Reiniciar", Class="script-button", Id=f"reset-{name}"),
+                   Share().vai(), ]
+        [button.bind("click", action) for button, action in zip(buttons, actions)]
+
+        widget = [
+            h.DIV(Class="script-title", Id=f"title-{name}"),
+            h.DIV([
+                h.DIV(Class=editor, Id=f"script-{name}"),
+                h.DIV(h.PRE(id=f"result_pre-{name}"), Class=result, Id=f"result-{name}"),
+            ], Class="script-container", Id=f"script-container-{name}"),
+        ]
+        widget.extend(buttons)
+        print(widget)
+        return widget, buttons
 
     def write(self, stn):
         document, timer, python_runner = self.browser.document, self.browser.window, self.browser.python_runner
@@ -115,6 +176,9 @@ class ScriptWidget:
     def clear_console(self, _):
         document, timer, python_runner = self.browser.document, self.browser.window, self.browser.python_runner
         document[self.console_pre_id].innerHTML = ""
+
+    def save_script(self, _):
+        pass
 
     def run_script(self, _):
         document, timer, python_runner = self.browser.document, self.browser.window, self.browser.python_runner
@@ -133,7 +197,7 @@ class ScriptWidget:
         self.editor.getSession().setMode("ace/mode/python")
         self.editor.setOptions({
             "enableBasicAutocompletion": True,
-            "enableSnippets": True,
+            # "enableSnippets": True,
             "enableLiveAutocompletion": True
         })
 
@@ -144,15 +208,24 @@ class ShareDome:
         return lambda *_: None
 
     def __init__(self, editor, ws):
+        class ShareNone:
+            def __init__(self):
+                self.change, self.send, self.do_message = ShareDome.nop, ShareDome.nop, ShareDome.nop
         self.editor = editor
         self.ws = ws
         self.ops = {}
         self.index = 0
         self.open = False
         self.op = []
-        self.send = self.nop
+        self.send = self.do_submit
         self.change = self.do_change
+        self.dome = self
+        self.none = ShareNone()
+        self.share(False)
         self._open()
+
+    def share(self, go=True):
+        self.dome = self if go else self.none
 
     def _open(self):
         websocket = SuperGirls.BR.websocket
@@ -198,10 +271,11 @@ class ShareDome:
 
     def on_close(self, _):
         self.open = False
-        self.send = self.nop
+        self.share(False)
+        # self.send = self.nop
 
     def on_change(self, e):
-        self.change(e)
+        self.dome.change(e)
 
     def do_change(self, e):
         ed = self.editor
@@ -212,12 +286,21 @@ class ShareDome:
         if e.action == 'insert':
             op.append({Op.e: e.lines.join(ed.session.doc.getNewLineCharacter())})
         elif e.action == 'remove':
-            delCt = e.lines.join(ed.session.doc.getNewLineCharacter()).length
-            op.append({Op.d: delCt})
+            try:
+                del_go = e.lines
+                cnl = ed.session.doc.getNewLineCharacter()
+                delCt = len(cnl.join(del_go))
+                # delCt = e.lines.join(ed.session.doc.getNewLineCharacter()).length
+                op.append({Op.d: delCt})
+            except AttributeError:
+                print("AttributeError", e.lines)
 
         self.submit(op)
 
     def on_message(self, evt):
+        self.dome.do_message(evt)
+
+    def do_message(self, evt):
         # message received from server
         self.change = self.nop
         data = evt.data
