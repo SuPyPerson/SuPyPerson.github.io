@@ -5,31 +5,8 @@ import json
 from collections import namedtuple
 
 Op = namedtuple('Op', "i e d")(*"i e d".split())
-Om = namedtuple('Op', "i e d")(*"i e d".split())
 
-widget_code_lr = """
-  <div class="script-title" id="title-%s"></div>
-  <div class="script-container" id="script-container-%s">
-    <div id="script-%s" class="script-editor"></div>
-    <div id="result-%s" class="script-result"><pre id="result_pre-%s"></pre></div>
-  </div>  
-  <button class="script-button" id="run-%s" type="button">Executar</button>
-  <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
-  <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
-"""
-
-widget_code_tb = """
-  <div class="script-title" id="title-%s"></div>
-  <div class="script-container" id="script-container-%s">
-    <div id="script-%s" class="script-editor-long"></div>
-    <div id="result-%s" class="script-result-long"><pre id="result_pre-%s"></pre></div>
-  </div>  
-  <button class="script-button" id="run-%s" type="button">Executar</button>
-  <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
-  <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
-"""
-
-
+'''
 class ScriptWidget:
 
     def __init__(self, browser, script_named=None, main_div_id='', **params):
@@ -72,12 +49,11 @@ class ScriptWidget:
         document["reset-%s" % main_div_id].bind("click", self.get_script)
         """
         handlers = (self.run_script, self.clear_console, self.get_script,)
-                    # self.share_script, self.save_script)
         if "alignment" in params and params["alignment"] == 'top-bottom':
-            innerHTML, self.buttons = self.widget_code(m, handlers, is_long=True)
+            innerHTML = self.widget_code(m, handlers, is_long=True)
             _ = document[main_div_id] <= innerHTML
         else:
-            innerHTML, self.buttons = self.widget_code(m, handlers)
+            innerHTML = self.widget_code(m, handlers)
             _ = document[main_div_id] <= innerHTML
             if "editor_width" in params:
                 document[self.script_div_id].style.width = params["editor_width"]
@@ -162,8 +138,7 @@ class ScriptWidget:
             ], Class="script-container", Id=f"script-container-{name}"),
         ]
         widget.extend(buttons)
-        print(widget)
-        return widget, buttons
+        return widget
 
     def write(self, stn):
         document, timer, python_runner = self.browser.document, self.browser.window, self.browser.python_runner
@@ -324,6 +299,8 @@ class ShareDome:
         self.ws.send(str(json.dumps(op)))
         # ws.send("ola")
 
+'''
+
 
 class SuperGirls:
     BR = None
@@ -336,7 +313,7 @@ class SuperGirls:
         # h = self.browser.html
         # div = h.DIV()
         print('Criando super', self.browser.i_d)
-        ScriptWidget(browser=self.browser, script_named="Sup.y.Girls", main_div_id=self.browser.i_d)
+        # ScriptWidget(browser=self.browser, script_named="Sup.y.Girls", main_div_id=self.browser.i_d)
 
 
 def girls(browser):

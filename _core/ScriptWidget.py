@@ -25,35 +25,17 @@ Changelog
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
 import sys
-from json import loads
-
-from browser import window, ajax, document, html, timer, run_script as python_runner
+# noinspection PyUnresolvedReferences
+from browser import window, ajax, document, html, timer, websocket, run_script as python_runner
 from vitollino import Cena, Elemento
 import vitollino
+import json
+from collections import namedtuple
+
+Op = namedtuple('Op', "i e d")(*"i e d".split())
 
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
 
-widget_code_lr = """
-  <div class="script-title" id="title-%s"></div>
-  <div class="script-container" id="script-container-%s">
-    <div id="script-%s" class="script-editor"></div>
-    <div id="result-%s" class="script-result"><pre id="result_pre-%s"></pre></div>
-  </div>  
-  <button class="script-button" id="run-%s" type="button">Executar</button>
-  <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
-  <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
-"""
-
-widget_code_tb = """
-  <div class="script-title" id="title-%s"></div>
-  <div class="script-container" id="script-container-%s">
-    <div id="script-%s" class="script-editor-long"></div>
-    <div id="result-%s" class="script-result-long"><pre id="result_pre-%s"></pre></div>
-  </div>  
-  <button class="script-button" id="run-%s" type="button">Executar</button>
-  <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
-  <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
-"""
 COD = {}
 HEADER = {}
 """Store the code and header obtained from the script in the Python file"""
@@ -77,7 +59,7 @@ class ScriptVito:
         # print(params)
         show_scenario = params.get("show_scenario", True)
         h = None if show_scenario else 1
-        self.scenario(did=did, show_scenario=show_scenario, h=h) #  if show_scenario else None
+        self.scenario(did=did, show_scenario=show_scenario, h=h)  # if show_scenario else None
 
     def scenario(
             self, did="0", show_scenario=True, sky="_media/sky.gif", sun="_media/sun.gif", soil="_media/terra.jpg",
@@ -141,7 +123,6 @@ class ScriptBuilder:
         self.script_path = "_core/"
         self.get_script(None)
 
-
     def set_script_editor(self, code,
                           script_div_id="", **params):
         self.params.update(params)
@@ -149,7 +130,6 @@ class ScriptBuilder:
         self.params.pop('script_name') if 'script_name' in params else None
         COD[script_div_id] = code.strip()
         HEADER[script_div_id] = dict(code=code, **params)
-
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
@@ -200,17 +180,15 @@ class ScriptWidget:
         ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
 
-
+        handlers = (self.run_script, self.clear_console, self.get_script,)
         if "alignment" in params and params["alignment"] == 'top-bottom':
-            document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
+            innerHTML = self.widget_code(m, handlers, is_long=True)
+            _ = document[main_div_id] <= innerHTML
         else:
-            document[main_div_id].innerHTML = widget_code_lr % (m, m, m, m, m, m, m, m)
+            innerHTML = self.widget_code(m, handlers)
+            _ = document[main_div_id] <= innerHTML
             if "editor_width" in params:
                 document[self.script_div_id].style.width = params["editor_width"]
-
-        document["run-%s" % main_div_id].bind("click", self.run_script)
-        document["clear-%s" % main_div_id].bind("click", self.clear_console)
-        document["reset-%s" % main_div_id].bind("click", self.get_script)
 
         # Set title (number and name) of the script
         index = params.get("index", None)
@@ -224,6 +202,7 @@ class ScriptWidget:
         # Set the height of the editor's window
         self.editor = window.ace.edit(self.script_div_id)
         self.get_script(COD[main_div_id[1:]])
+        self.sd = ShareDome(editor=self.editor, ws=None).cria()
 
         if "height" in params:
             h = "%dpx" % (params["height"])
@@ -243,6 +222,53 @@ class ScriptWidget:
             del document["run-%s" % main_div_id]
             del document["clear-%s" % main_div_id]
             del document["reset-%s" % main_div_id]
+
+    def widget_code(self, name, actions, is_long=False):
+        """
+          <div class="script-title" id="title-%s"></div>
+          <div class="script-container" id="script-container-%s">
+            <div id="script-%s" class="script-editor-long"></div>
+            <div id="result-%s" class="script-result-long"><pre id="result_pre-%s"></pre></div>
+          </div>
+          <button class="script-button" id="run-%s" type="button">Executar</button>
+          <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
+          <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
+        """
+        wdg = self
+
+        class Share:
+            def __init__(self):
+                self.share_text = "👁 Compartilhar,🕵️‍♀️ Parar".split(",")
+                self.sharing = False
+                self.button = h.BUTTON("👁 Compartilhar", Class="script-button", Id=f"share-{name}")
+                self.button.bind("click", self.share)
+
+            def share(self, _):
+                self.sharing = not self.sharing
+                wdg.sd.share(self.sharing)
+                self.button.text = self.share_text[self.sharing]
+                # print("share_script", self.sharing)
+
+            def vai(self):
+                return self.button
+
+        h = html
+        editor, result = ("script-editor-long", "script-result-long") if is_long else ("script-editor", "script-result")
+        buttons = [h.BUTTON("︎▶ Executar", Class="script-button", Id=f"run-{name}"),
+                   h.BUTTON("⭕ Limpar Console", Class="script-button", Id=f"clear-{name}"),
+                   h.BUTTON("🔁 Reiniciar", Class="script-button", Id=f"reset-{name}"),
+                   Share().vai(), ]
+        [button.bind("click", action) for button, action in zip(buttons, actions)]
+
+        widget = [
+            h.DIV(Class="script-title", Id=f"title-{name}"),
+            h.DIV([
+                h.DIV(Class=editor, Id=f"script-{name}"),
+                h.DIV(h.PRE(id=f"result_pre-{name}"), Class=result, Id=f"result-{name}"),
+            ], Class="script-container", Id=f"script-container-{name}"),
+        ]
+        widget.extend(buttons)
+        return widget
 
     def write(self, strn):
         def set_svg():
@@ -272,3 +298,126 @@ class ScriptWidget:
             "enableSnippets": True,
             "enableLiveAutocompletion": True
         })
+
+
+class ShareDome:
+    @staticmethod
+    def nop(*_):
+        return lambda *_: None
+
+    def __init__(self, editor, ws):
+        class ShareNone:
+            def __init__(self):
+                self.change, self.send, self.do_message = ShareDome.nop, ShareDome.nop, ShareDome.nop
+        self.editor = editor
+        self.ws = ws
+        self.ops = {}
+        self.index = 0
+        self.open = False
+        self.op = []
+        self.send = self.do_submit
+        self.change = self.do_change
+        self.dome = self
+        self.none = ShareNone()
+        self.share(False)
+        # self._open()
+
+    def share(self, go=True):
+        self.dome = self if go else self.none
+        self._open() if go else None
+
+    def _open(self):
+        self.open = False
+        if not websocket.supported:
+            # SuperGirls.BR.InfoDialog("websocket", "WebSocket is not supported by your browser")
+            return
+        # open a web socket
+        self.ws = ws = websocket.WebSocket("http://localhost:8585/ws")
+        # bind functions to web socket events
+        ws.bind('open', self.on_open)
+        ws.bind('message', self.on_message)
+        ws.bind('close', self.on_close)
+
+    def cria(self):
+        ed = self.editor
+        ed.bind('change', self.on_change)
+        self.index = 0
+
+        def ind(d):
+            self.index = int(d)
+
+        def edt(d):
+            pos = ed.session.doc.indexToPosition(self.index)
+            ed.session.insert(pos, d)
+
+        def dlt(d):
+            delCt = d
+            stPos = ed.session.doc.indexToPosition(self.index)
+            edPos = ed.session.doc.indexToPosition(self.index + delCt)
+            rangi = {'start': stPos, 'end': edPos}
+            ed.session.remove(rangi)
+
+        nv, ops = Op._fields, (ind, edt, dlt)
+
+        self.ops = {k: v for k, v in zip(nv, ops)}
+        return self
+
+    def on_open(self, _):
+        # print("on open", e)
+        self.open = True
+        self.send = self.do_submit
+
+    def on_close(self, _):
+        self.open = False
+        self.share(False)
+        # self.send = self.nop
+
+    def on_change(self, e):
+        self.dome.change(e)
+
+    def do_change(self, e):
+        ed = self.editor
+        op = self.op
+        st_index = ed.session.doc.positionToIndex(e.start)
+        op.append({Op.i: st_index})
+
+        if e.action == 'insert':
+            op.append({Op.e: e.lines.join(ed.session.doc.getNewLineCharacter())})
+        elif e.action == 'remove':
+            try:
+                del_go = e.lines
+                cnl = ed.session.doc.getNewLineCharacter()
+                delCt = len(cnl.join(del_go))
+                # delCt = e.lines.join(ed.session.doc.getNewLineCharacter()).length
+                op.append({Op.d: delCt})
+            except AttributeError:
+                print("AttributeError", e.lines)
+
+        self.submit(op)
+
+    def on_message(self, evt):
+        self.dome.do_message(evt)
+
+    def do_message(self, evt):
+        # message received from server
+        self.change = self.nop
+        data = evt.data
+        # print("websocket", f"Message received : {data}")
+        op = json.loads(data)
+        # print(op, type(op))
+        # [print(k, v) for o in op for k, v in o.items()]
+        [self.ops[k](v) for o in op for k, v in o.items()]
+        # [print("op", o) for o in op]
+        # [self.ops[k](v) for o for k,v do.items() in op]
+        self.change = self.do_change
+
+    def submit(self, op):
+        self._open() if not self.open else None
+        self.send(op)
+
+    def do_submit(self, op):
+        # self._open(0) if not self.open else None #self.ws
+        # print("websocket", f"Submitted {len(op)} operations: {json.dumps(op)}")
+        self.op = []
+        self.ws.send(str(json.dumps(op)))
+        # ws.send("ola")
