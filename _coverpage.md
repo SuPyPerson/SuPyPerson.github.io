@@ -1,4 +1,4 @@
-[![logo](_media/pynoplia_sbc_eb.png)](https://www2.sbc.org.br/sbceb2024/)
+[![logo](_media/superpython_jogos.svg)](http://superpython_jogos.activufrj.nce.ufrj.br/)
 
 # Pynoplia <small><span class="curversion"></span></small>
 

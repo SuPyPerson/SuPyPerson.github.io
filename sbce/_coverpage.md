@@ -1,6 +1,6 @@
-![logo](../../_media/pynoplia_sbc_eb.png)
+![logo](../../_media/superpython_jogos.svg)
 
-# Pynoplia SBC-EB <small>24.03</small>
+# Pynoplia SBC-EB <small>24.08</small>
 
 > Usando jogos na educação.
 
