@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Kwarwp - Aventuras com o Python</title>
+    <title>SupyGirls - Editor de Aventuras</title>
     <!-- stylesheets -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- fonts -->
+    <link rel="stylesheet" href="css/lecture.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-    <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="../_media/pynoplia.png" type="image/x-icon"/>
     <!-- script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.8.0/www/src/brython.js"></script -->
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.0/brython.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.11/brython.min.js">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.8.0/brython_stdlib.min.js">
+    <script src="https://cdn.jsdelivr.net/npm/brython@3.11/brython_stdlib.min.js">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"
+            integrity="sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-python.min.js"
+        integrity="sha512-DUdq0nHbbCHQMqQNALNivk5tAdpFWOpm3mplXDwBqIpXD6/vfgXp8fESbfsnePQT3jZKVI3mCbEQumz/S4IHPA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/theme-gruvbox.min.js"
+            integrity="sha512-csAdQ+MAmg252+rlVpEgxnAzlzPBBEDzi8QSoaMyV1lJqMZuzASQUDyTpT1W2gGqrRLioKPaX0ylDwkMXxzDsw=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ext-language_tools.min.js"
+            integrity="sha512-22wocMmMcRBM2la/vRMi/ZkYQMCAYMGxh8H2unSWmsBo0zELkk1/nZeTbZ4rykAny3y43yM3x7MwuhrE0Lksxg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body onload="brython()" bgcolor="black">
     <script  type="text/javascript">
@@ -23,15 +36,16 @@
 }
     </script>
 <script type="text/python">
-    from vitollino import Jogo, STYLE
-    from kwarwp.main import main
-    main(Jogo, STYLE)
+    import browser
+    from editor import main
+    main(browser)
 </script>
   <div id="pyparent" class="card">
       <!-- about content -->
       <div id="pycard"></div>
       <div id="pydiv" class="card is-12by8" style="min-height:600px;">
       </div>
+      <div id="pyedit"></div>
   </div>
 </body>
 </html>

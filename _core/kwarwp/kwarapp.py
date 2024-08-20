@@ -55,7 +55,7 @@ Changelog
 from collections import namedtuple as nt, deque
 from .kwarwpart import Vazio, Piche, Oca, Tora, Pedra, NULO, Nome
 
-IMGUR = "https://imgur.com/"
+IMGUR = "https://i.imgur.com/"
 """Prefixo do site imgur."""
 MAPA_INICIO = """
 ..#^¨..
