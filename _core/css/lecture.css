@@ -267,3 +267,4 @@ td.value { text-align: left; }
     font-size: small;
 }
 
+.ace_editor {word-spacing: 0 !important;}

@@ -6,7 +6,7 @@ services:
     command: python3 -m wsgi --port=8585
     restart: always
     environment:
-      - VIRTUAL_HOST=pyno.alite.selfip.org
-      - VIRTUAL_PORT=8585
+      - VIRTUAL_HOST=pyno.horacio.selfip.org
+      - VIRTUAL_PORT=8595
     ports:
-      - "8585:8585"
+      - "8595:8595"
