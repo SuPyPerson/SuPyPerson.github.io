@@ -19,14 +19,15 @@ Changelog
 .. versionadded::    24.02
    |br| Classes ScriptVito, ScriptWidget (08).
 
+.. versionadded::    24.08
+   |br| top-bottom now default in alignment (21).
+
 |   **Open Source Notification:** This file is part of open source program **Pynoplia**
 |   **Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
 import sys
-from json import loads
-
 from browser import window, ajax, document, html, timer, run_script as python_runner
 from vitollino import Cena, Elemento
 import vitollino
@@ -201,12 +202,12 @@ class ScriptWidget:
         self.code_text = COD[mid]
 
 
-        if "alignment" in params and params["alignment"] == 'top-bottom':
-            document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
-        else:
+        if "alignment" in params and params["alignment"] == 'left-right':
             document[main_div_id].innerHTML = widget_code_lr % (m, m, m, m, m, m, m, m)
             if "editor_width" in params:
                 document[self.script_div_id].style.width = params["editor_width"]
+        else:
+            document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
 
         document["run-%s" % main_div_id].bind("click", self.run_script)
         document["clear-%s" % main_div_id].bind("click", self.clear_console)
