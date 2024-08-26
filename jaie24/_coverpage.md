@@ -7,6 +7,6 @@
 [GitHub](https://github.com/SuPyPerson/SuPyPerson.github.io)
 [Get Started](jaie24/README)
 [Jogos na Educação](#bem-vindos-ao-pynoplia)
-[Introdução](jaie24/intro)
+[Introdução](/intro)
 
 

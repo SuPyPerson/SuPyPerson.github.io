@@ -1,0 +1,60 @@
+<!---
+Open Source program Pynoplia - Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
+PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Pynoplia</title>
+    <!-- stylesheets -->
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../_media/pynoplia.png" type="image/x-icon"/>
+    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython.min.js "></script>
+    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython_stdlib.js "></script>
+</head>
+<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['../_core', '../_prog', './']})">
+    <div id="pydiv"></div>
+    <script type="text/python">
+        from browser import window, document, alert, html, timer
+        jogo = document["pydiv"]
+
+        from vitollino import Cena, STYLE, Elemento, Texto, Sala, Roteiro, Ator, Fala, A
+        from jogos import Sprite
+        STYLE.update(height="500px", width="500px")
+        def fala(*_):
+            #Texto(cena, "Oi sou a Adenosino o DNA").vai()
+            Roteiro(cena, fala, elenco)
+        jogo.html = ''
+        jogo.style.minHeight = "500px"
+        cenad = Cena("/_ativo/jardim/japones.jpg")
+        cenae = Cena("/_ativo/jardim/relogio.jpg", esquerda=cenad)
+        cena = Cena("/_ativo/jardim/mirante.jpg", direita= cenad, esquerda=cenae).vai()
+        cenae.direita = cena
+        cenad.esquerda = cena
+        cenad.direita = cenae
+        tetis = Elemento(
+            "/_ativo/jardim/tetis.png",  tit= "Tetis",cena=cena,
+            y=200, h=200, texto="oi, sou tetis")
+        adenaldo = Elemento(
+            "/_ativo/adenaldo.png",  tit= "Adenaldo",cena=cena,
+            x=200, y=200, h=200, vai=fala)
+        # persona = Sprite("/_ativo/jardim/persona.png")
+        # sala = Sala(Cena("/_ativo/jardim/mirante.jpg"),Cena("/_ativo/jardim/tomjobim.jpg"),
+        sala = Sala(cena,cenad,
+        Cena("/_ativo/jardim/orquidario.jpg"),Cena("/_ativo/jardim/portal.jpg"))
+        sala.norte.vai()
+        elenco = (Ator(tetis, "Tetis", 0.4, A.e), Ator(adenaldo, "Adenaldo", 0.4, A.d))
+        fala = [
+            Fala(tetis, "olá", adenaldo, None),
+            Fala(adenaldo, "olá, tetis", tetis, None),
+            Fala(tetis, "tudo bem Adenaldo?", adenaldo, None),
+            Fala(adenaldo, "Melhor que nunca, Tetis!", tetis, None),
+        ]
+        # roteiro = Roteiro(cena, fala, elenco)
+
+    </script>
+
+
+</body>
