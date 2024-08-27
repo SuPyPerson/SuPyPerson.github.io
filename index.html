@@ -9,7 +9,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <!-- stylesheets -->
 
     <style>
-      span.curversion::after {content: "🛡24.08b";}
+      span.curversion::after {content: "🛡24.08jb1";}
     </style>
 
     <meta charset="utf-8">
@@ -102,10 +102,33 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <script type="text/python">
         from browser import window, document, alert, html, timer
         from ScriptWidget import show, build
+        from urllib.parse import urlparse
+        from urllib.parse import parse_qs
+        loc = dict(jr="jaie24", sb="sbce")
+
         window.__widget__ = show
         window.__did_got__ = build
+        h = window.location.href
+        r = h.split("?")[-1].split("#")[0].split(";")
+        parsed_url = urlparse(h)
+        # param = parse_qs(parsed_url.query)['r'][0]
+        pt = loc.get(parsed_url.hostname.split(".")[0], "/")
+
+        # print(h, parsed_url.query, parsed_url.hostname, pt)
+        # window.Docsify.basePath = pt
+        # window.__docsify__path = pt
+        dc = dict(basePath= pt, executeScript=True, name="Pynoplia", coverpage="/",
+        accordify=dict(prerenderComments=True, selectors="h1 h2 h3 h4 h5 h6".split(), debug=False)
+        )
+        window.config_doc(dc)
         # Widget()
 
+
+    </script>
+    <script>
+        function config_doc(docConf){
+            window.$docsify = docConf
+        }
 
     </script>
     <script>
@@ -113,9 +136,23 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
       mermaid.initialize({ startOnLoad: false });
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
+      let url = window.location.hostname; // obter o dominio
+      let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
+      const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"kwarwp",
+      j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", k: git+"kwarwp"
+      };
+      let url_first = url[0];
+      let docBasePath = "/";
+        // let url_name = url_splt[url_splt.length - 2];
+      if ("jsgkiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
+      console.log("got url to path", url_first, url, docBasePath);
+
+
       window.$docsify = {
-            coverpage: ["/", "/kwarwp/"],
-            executeScript: true,
+            // basePath: '/jaie24/',
+            basePath: docBasePath,
+            coverpage: ["/", "/jaie24/"],
+            executeScript: false,
             accordify: {
                 prerenderComments: true,                    // default
                 selectors: ['h1','h2','h3','h4','h5','h6'], // default value
@@ -126,6 +163,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
             '/pyi/(.*)': '/pgintro/$1', // supports regexp
             '/pintro': '/pgintro/README',
             '/kwa': '/kwarwp/README',
+            '/jaie24': '/README',
             '/soho': '/kwarwp/o_sonho',
             '/jardim': '/sbce/o_jogo',
             '/changelog':
@@ -144,15 +182,20 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
           },
         },
         name: 'Pynoplia',
-        coverpage: {"/":'_coverpage.md', "/pgintro/":'_coverpage.md', "/kwa/":'_coverpage.md'},
-
-
+        nameLink: {
+            // 'jaie24/': '#/jaie24/',
+            '/': '#/',
+          },
         // Sidebar Configuration
         auto2top: true,
         loadSidebar: true,
-        maxLevel: 0,
+          mergeSidebar: true,
+        // loadSidebar: './_sidebar.md',
+        loadNavbar: true,
+        maxLevel: 3,
         // Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
-        subMaxLevel: 3,
+        subMaxLevel: 2,
+          sidebarDisplayLevel: 1,
 
         // Search Plugin Configuration
         search: {
@@ -165,8 +208,14 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
     </script>
     <script src="//unpkg.com/docsify-accordion/src/index.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/docsify/4.13.1/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/ga.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js" data-ga="UA-107835557-1"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/external-script.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/emoji.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/zoom-image.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28/components/prism-python.min.js"></script>
-
+<script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/A5yncX/docsify-theme-darcula@v1.0/darcula.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-funky.min.css" integrity="sha512-KaCkQvJ0dQIhdJ0Am5LM3sgXA+Y0LWpbxkfKACZnlOqDvk54lZaWYk/sQiJGNRuSyFpe24jpjwJ4q+u3Rbez5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </body>
