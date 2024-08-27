@@ -137,11 +137,14 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
       let url = window.location.hostname; // obter o dominio
-      const thePaths ={j: "jaie24", s:"sbce", g:"guia", k:"kwarwp"};
+      let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/"
+      const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"kwarwp",
+      j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", k: git+"kwarwp"
+      };
       let url_first = url[0];
       let docBasePath = "/";
         // let url_name = url_splt[url_splt.length - 2];
-      if ("jsgk".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
+      if ("jsgkiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
       console.log(url_first, url, docBasePath);
 
 
