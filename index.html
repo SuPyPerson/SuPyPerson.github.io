@@ -9,7 +9,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <!-- stylesheets -->
 
     <style>
-      span.curversion::after {content: "🛡24.08hb";}
+      span.curversion::after {content: "🛡24.08hb1";}
     </style>
 
     <meta charset="utf-8">
@@ -120,16 +120,22 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
       mermaid.initialize({ startOnLoad: false });
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+
+      let url_param = "_";
+      if (urlParams.has('rel')) url_param = urlParams.get('rel');
       let url = window.location.hostname; // obter o dominio
       let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
       const thePaths ={i: "jaie24", b:"sbce", f:"guia", n:"kwarwp",
       j: git+"jaie24/jaie24/", c: git+"horacio/sbce", g:git+"jaie24/guia", m: git+"kwarwp"
       };
       let url_first = url[0];
+      if (url_param !== "_") url_first = url_param;
       let docBasePath = "/";
         // let url_name = url_splt[url_splt.length - 2];
       if ("jcgmibfn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
-      console.log("got url to path", url_first, url, docBasePath, "jcgmibfn".indexOf(url_first) >= 0);
+      console.log("got url to path", url_first, url_param, url, docBasePath, "jcgmibfn".indexOf(url_first) >= 0);
 
 
       window.$docsify = {
