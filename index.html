@@ -9,7 +9,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <!-- stylesheets -->
 
     <style>
-      span.curversion::after {content: "🛡24.08jb";}
+      span.curversion::after {content: "🛡24.08jb1";}
     </style>
 
     <meta charset="utf-8">
@@ -137,7 +137,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
       let url = window.location.hostname; // obter o dominio
-      let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/"
+      let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
       const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"kwarwp",
       j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", k: git+"kwarwp"
       };
@@ -145,7 +145,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
       let docBasePath = "/";
         // let url_name = url_splt[url_splt.length - 2];
       if ("jsgkiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
-      console.log(url_first, url, docBasePath);
+      console.log("got url to path", url_first, url, docBasePath);
 
 
       window.$docsify = {
