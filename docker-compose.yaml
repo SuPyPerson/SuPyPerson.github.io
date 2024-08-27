@@ -3,10 +3,10 @@ version: '3.1'
 services:
   pynoplia:
     build: .
-    command: python3 -m wsgi --port=8575
+    command: python3 -m wsgi --port=8595
     restart: always
     environment:
-      - VIRTUAL_HOST=pyno.selfip.org
-      - VIRTUAL_PORT=8575
+      - VIRTUAL_HOST=pyno.horacio.selfip.org
+      - VIRTUAL_PORT=8595
     ports:
-      - "8575:8575"
+      - "8595:8595"

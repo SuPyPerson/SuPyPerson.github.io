@@ -1283,7 +1283,7 @@ class Pop:
         self.foi = None
         self.popup = html.DIV(Id="__popup__", Class="overlay")
         self.div = div = html.DIV(Id="__baloon__", Class="popup")
-        self.tit = html.H2()
+        self.tit = html.H2(Class="fala_vit")
         self.a = html.A("×", Class="closet_vit", href="#")
         self.go = html.A(Id="txt_button", Class="button", href="#__popup__")
         self.go.onclick = self._open
@@ -2074,6 +2074,9 @@ h1 {
   font-weight: bold;
   text-decoration: none;
   color: #333;
+}
+.popup .fala_vit {
+  color: gray;
 }
 .popup .closet_vit:hover {
   color: #06D85F;
