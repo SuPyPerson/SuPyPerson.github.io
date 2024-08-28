@@ -19,8 +19,8 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/A5yncX/docsify-theme-darcula@v1.0/darcula.css">
-    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython.min.js "></script>
-    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython_stdlib.js "></script>
+    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.12/brython.min.js "></script>
+    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.12/brython_stdlib.js "></script>
     <link rel="stylesheet" href="//unpkg.com/docsify-accordion/src/style.css">
     <link rel="stylesheet" href="_core/css/lecture.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"
@@ -94,7 +94,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
     </style>
  </head>
-<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./_core', './_prog', './']})">
+<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./_core', './_prog', './','/_core','/']})">
     <!--    <div id="pydiv"></div>-->
     <div id="app"></div>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
@@ -153,6 +153,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
             '/pyi/(.*)': '/pgintro/$1', // supports regexp
             '/pintro': '/pgintro/README',
             '/kwa': '/kwarwp/README',
+            '/kwb': '/pyjr/o_kwarwp1',
             '/jaie24': '/README',
             '/soho': '/kwarwp/o_sonho',
             '/jardim': '/sbce/o_jogo',

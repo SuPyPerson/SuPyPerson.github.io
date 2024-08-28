@@ -550,6 +550,11 @@ class Kwarwp:
         return cena'''
 
     def inicia(self):
+        self.v._ativa = False
+        self._inicia()
+        self.v.ativa()
+
+    def _inicia(self):
         """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.
         """
         fabrica, lado, cena, mapa = self.fabrica, self.lado, self.cena, self.mapa
@@ -604,7 +609,7 @@ class Kwarwp:
         # self.o_indio.ativa()
         # self.o_indio.executa()
         self.v._ativa = False
-        self.inicia()
+        self._inicia()
         self.v.ativa()
         [indio.ativa() or indio.executa() for indio in self.os_indios]
         # self.os_indios[0].ativa()
