@@ -29,9 +29,9 @@ Changelog
 """
 import sys
 from browser import window, ajax, document, html, timer, run_script as python_runner
-from vitollino import Cena, Elemento
+from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
-
+Jogo.Kaiowa = {}
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
 
 widget_code_lr = """
@@ -57,6 +57,7 @@ widget_code_tb = """
 """
 COD = {}
 HEADER = {}
+MAPAS = {}
 """Store the code and header obtained from the script in the Python file"""
 
 
@@ -70,7 +71,10 @@ def build(name="forest_0.py"):
 
 class ScriptVito:
     def __init__(self, did="0", **params):
+        self.curumim = None
         self.scene = None
+        self.mapa = None
+        self.did = did
         self.e = Elemento
         self.vit = ''
         if "# _VIT_" in COD[did]:
@@ -79,6 +83,28 @@ class ScriptVito:
         show_scenario = params.get("show_scenario", True)
         h = None if show_scenario else 1
         self.scenario(did=did, show_scenario=show_scenario, h=h) #  if show_scenario else None
+
+    def executar(self, executor):
+        from kwarwp.kwarapp import main as kwarwp_main, Indio
+        class Curumim(Indio):
+            def executa(self):
+                self.anda()
+
+
+        self.curumim = Curumim
+        self.curumim.executa = executor
+        print("executando", executor, self.curumim, Indio, self.scene, self.did, self.mapa, MAPAS[self.did])
+
+        return kwarwp_main(
+            vitollino=Jogo, medidas=STYLE, mapa=MAPAS[self.did][0], indios=(self.curumim,), tela=MAPAS[self.did][1])
+        # return lambda ind=self.curumim, mapa=self.mapa: kwarwp_main(
+        #     vitollino=Jogo, medidas=None, mapa=mapa, indios=(ind,), tela=self.scene)
+
+    def prepara(self, mapa):
+        from kwarwp.kwarapp import main as kwarwp_main, Indio
+        self.mapa = mapa
+        MAPAS[self.did] = (mapa, self.scene)
+        print("preparando", mapa, self.did)
 
     def scenario(
             self, did="0", show_scenario=True, sky="_media/sky.gif", sun="_media/sun.gif", soil="_media/terra.jpg",
@@ -99,7 +125,7 @@ class ScriptVito:
         c.vai()
         Elemento(img=sun, cena=c)
         Elemento(img=soil, y=100, w=695, h=ground, cena=c)
-        exec(self.vit, dict(c__=c, v__=vitollino))
+        exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=self.prepara))
 
 
 def build_(did="0", name="forest_0.py"):
@@ -198,7 +224,7 @@ class ScriptWidget:
         self.console_pre_id = "result_pre-%s" % main_div_id
         self.script_path = "_core/"
         self.main_div_id = main_div_id
-        ScriptVito(did=mid, **params)
+        self._vito = ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
 
 
@@ -260,7 +286,8 @@ class ScriptWidget:
         sys.stdout = self
         sys.stderr = ScriptStderr(self.console_pre_id)
         if self.name_to_run is None:
-            python_runner(editor.getValue())
+            exec(editor.getValue(), dict(o_indio=self._vito.executar))
+            # python_runner(editor.getValue(), dict(o_indio=self._vito.executa))
         else:
             python_runner(editor.getValue(), self.name_to_run)
 

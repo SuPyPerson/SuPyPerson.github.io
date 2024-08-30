@@ -88,12 +88,12 @@ p....&
 ||||||
 """
 STYLE.update(height=400)
-Jogo.Kaiowa = Indio
+Jogo.Kaiowa[c__.did] = Indio
 Jogo.kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=MAPA, indios=(ind,), tela=c__.tela)
 # Jogo.kwarwp(ind=Indio).executa()
 # _VIT_
 from vitollino import Jogo as Povo
-class Curumim(Povo.Kaiowa):
+class Curumim(Povo.Kaiowa[c__.did]):
     def executa(self):
         self.direita()
         self.anda()
@@ -113,12 +113,12 @@ p.####&
 |||||||
 """
 STYLE.update(height=400)
-Jogo.Kaiowa = Indio
+Jogo.Kaiowa[_d_] = Indio
 Jogo.kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=MAPA, indios=(ind,), tela=c__.tela)
 #Jogo.kwarwp(ind=Indio).executa()
 # _VIT_
 from vitollino import Jogo as Povo
-class Curumim(Povo.Kaiowa):
+class Curumim(Povo.Kaiowa[_d_]):
     def executa(self):
         self.direita()
         self.anda()
@@ -141,19 +141,20 @@ p....|
 |.||||
 |....&
 """
-Jogo.Kaiowa = Indio
-Jogo.kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=MAPA, indios=(ind,), tela=c__.tela)
-# Jogo.kwarwp(ind=Indio).executa()
-# _VIT_
-from vitollino import Jogo as Povo
-class Curumim(Povo.Kaiowa):
-    def executa(self):
-        self.direita()
-        self.anda()
-        while self.olha() == "VAZIO":
-            _ = 0  # troque isso pelo comando certo
+kwarwp_prepara(MAPA)
+# Jogo.Kaiowa[_d_] = Indio
+# Jogo.kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=MAPA, indios=(ind,), tela=c__.tela)
+# # Jogo.kwarwp(ind=Indio).executa()
+# # _VIT_
+# from vitollino import Jogo as Povo
+# class Curumim(Povo.Kaiowa[_d_]):
+def roteiro(self):
+    self.direita()
+    self.anda()
+    while self.olha() == "VAZIO":
+        _ = 0  # troque isso pelo comando certo
 
-Povo.kwarwp(Curumim).executa()
+o_indio(roteiro) # .executa()
 _SET7_ = {
     "script_name": "al7", "script_div_id": "al7",
     "height": 150, "title": "Caminha na Estrada Melhorado"

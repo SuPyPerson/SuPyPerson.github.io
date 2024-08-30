@@ -102,10 +102,25 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <script type="text/python">
         from browser import window, document, alert, html, timer
         from ScriptWidget import show, build
+        observer = window.IntersectionObserver
+        def showing(ev, unk):
+            iid = ev[0].target.id
+            if iid not in document:
+                return
+            print(ev[0].target.id, unk)
+            pid = document[iid].parent
+            [elm.remove() for elm in pid.children if elm.id != iid]
+            show(ev[0].target.id)
+        def observing():
+            # observer.new(showing).observe(document["al5"])
+            [observer.new(showing, {"delay": 2000}).observe(elt) for elt in document.getElementsByClassName("_kwarwp_")]
+
 
         window.__widget__ = show
         window.__did_got__ = build
+        window.__observing__ = observing
         # Widget()
+        # [observer.new(lambda ev: print(ev[0].target.id)).observe(elt) for elt in document.getElementsByClassName("_kwarwp_")]
 
 
     </script>
