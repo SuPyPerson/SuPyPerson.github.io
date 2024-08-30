@@ -84,26 +84,29 @@ class ScriptVito:
         h = None if show_scenario else 1
         self.scenario(did=did, show_scenario=show_scenario, h=h) #  if show_scenario else None
 
-    def executar(self, executor):
-        from kwarwp.kwarapp import main as kwarwp_main, Indio
-        class Curumim(Indio):
-            def executa(self):
-                self.anda()
+    def executar(self, curumim):
+        # from kwarwp.kwarapp import main as kwarwp_main, Indio
+        # class Curumim(Indio):
+        #     def executa(self):
+        #         self.anda()
+        #
+        #
+        # self.curumim = Curumim
+        # self.curumim.executa = executor
+        print("executando", curumim, self.curumim, self.scene, self.did, self.mapa, MAPAS[self.did])
+        return MAPAS[self.did][1]
 
-
-        self.curumim = Curumim
-        self.curumim.executa = executor
-        print("executando", executor, self.curumim, Indio, self.scene, self.did, self.mapa, MAPAS[self.did])
-
-        return kwarwp_main(
-            vitollino=Jogo, medidas=STYLE, mapa=MAPAS[self.did][0], indios=(self.curumim,), tela=MAPAS[self.did][1])
-        # return lambda ind=self.curumim, mapa=self.mapa: kwarwp_main(
+        # return kwarwp_main(
+        #     vitollino=Jogo, medidas=STYLE, mapa=MAPAS[self.did][0], indios=(self.curumim,), tela=MAPAS[self.did][1])
+        # # return lambda ind=self.curumim, mapa=self.mapa: kwarwp_main(
         #     vitollino=Jogo, medidas=None, mapa=mapa, indios=(ind,), tela=self.scene)
 
     def prepara(self, mapa):
         from kwarwp.kwarapp import main as kwarwp_main, Indio
         self.mapa = mapa
-        MAPAS[self.did] = (mapa, self.scene)
+        kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=mapa, indios=(ind,), tela=self.scene)
+
+        MAPAS[self.did] = (mapa, kwarwp, Indio)
         print("preparando", mapa, self.did)
 
     def scenario(
@@ -132,7 +135,7 @@ def build_(did="0", name="forest_0.py"):
     def go():
         _did = f"_{did}"
         # print(did, HEADER[did])
-        ScriptWidget(script_named=name, main_div_id=did, **HEADER[did])
+        ScriptWidget.create(script_named=name, main_div_id=did, **HEADER[did])
 
     timer.set_timeout(go, 100)
 
@@ -202,6 +205,14 @@ class ScriptBuilder:
 
 
 class ScriptWidget:
+    _self = {}
+
+    @staticmethod
+    def create(main_div_id='', **params):
+        print("ScriptWidget create", ScriptWidget._self)
+        instance = None if main_div_id in ScriptWidget._self else ScriptWidget(main_div_id=main_div_id, **params)
+        return ScriptWidget._self.setdefault(
+            main_div_id, instance)
 
     def __init__(self, script_named=None, main_div_id='', **params):
         """ Creates a widget in a given DIV
@@ -216,6 +227,7 @@ class ScriptWidget:
           - name: name of the module to run; by default this widget just runs the whole script; use
             the ``name`` keyword to run ``__main__`` section of a Python script
         """
+        print("SScriptWidget", main_div_id) if main_div_id == "al6" else None
         mid = main_div_id
         m = main_div_id = f"_{main_div_id}"
         self.script_name = script_named
@@ -285,8 +297,9 @@ class ScriptWidget:
         document[self.console_pre_id].style.color = "dimgrey"
         sys.stdout = self
         sys.stderr = ScriptStderr(self.console_pre_id)
+        _, tarefa, kaiowa = MAPAS[self.main_div_id[1:]]
         if self.name_to_run is None:
-            exec(editor.getValue(), dict(o_indio=self._vito.executar))
+            exec(editor.getValue(), dict(a_tarefa=tarefa, Kaiowa=kaiowa))
             # python_runner(editor.getValue(), dict(o_indio=self._vito.executa))
         else:
             python_runner(editor.getValue(), self.name_to_run)

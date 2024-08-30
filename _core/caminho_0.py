@@ -147,14 +147,14 @@ kwarwp_prepara(MAPA)
 # # Jogo.kwarwp(ind=Indio).executa()
 # # _VIT_
 # from vitollino import Jogo as Povo
-# class Curumim(Povo.Kaiowa[_d_]):
-def roteiro(self):
-    self.direita()
-    self.anda()
-    while self.olha() == "VAZIO":
-        _ = 0  # troque isso pelo comando certo
+class Curumim(Kaiowa):
+    def executa(self):
+        self.direita()
+        self.anda()
+        # while self.olha() == "VAZIO":
+        #     _ = 0  # troque isso pelo comando certo
 
-o_indio(roteiro) # .executa()
+a_tarefa(Curumim) # .executa()
 _SET7_ = {
     "script_name": "al7", "script_div_id": "al7",
     "height": 150, "title": "Caminha na Estrada Melhorado"
