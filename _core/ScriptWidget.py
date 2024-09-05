@@ -104,7 +104,8 @@ class ScriptVito:
     def prepara(self, mapa):
         from kwarwp.kwarapp import main as kwarwp_main, Indio
         self.mapa = mapa
-        kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=mapa, indios=(ind,), tela=self.scene)
+        oid = f"_{self.did}_"
+        kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=mapa, indios=(ind,), tela=document[oid])
 
         MAPAS[self.did] = (mapa, kwarwp, Indio)
         print("preparando", mapa, self.did)
@@ -295,9 +296,9 @@ class ScriptWidget:
     def run_script(self, _):
         editor = self.editor  # window.ace.edit(self.script_div_id)
         document[self.console_pre_id].style.color = "dimgrey"
-        sys.stdout = self
+        sys.stdout,  oid= self, self.main_div_id[1:]
         sys.stderr = ScriptStderr(self.console_pre_id)
-        _, tarefa, kaiowa = MAPAS[self.main_div_id[1:]]
+        _, tarefa, kaiowa = MAPAS[oid] if oid in MAPAS else [None]*3
         if self.name_to_run is None:
             exec(editor.getValue(), dict(a_tarefa=tarefa, Kaiowa=kaiowa))
             # python_runner(editor.getValue(), dict(o_indio=self._vito.executa))
