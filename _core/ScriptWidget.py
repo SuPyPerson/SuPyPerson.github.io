@@ -82,7 +82,7 @@ class ScriptVito:
         # print(params)
         show_scenario = params.get("show_scenario", True)
         h = None if show_scenario else 1
-        self.scenario(did=did, show_scenario=show_scenario, h=h) #  if show_scenario else None
+        self.scenario(did=did, show_scenario=show_scenario, h=h)  # if show_scenario else None
 
     def executar(self, curumim):
         # from kwarwp.kwarapp import main as kwarwp_main, Indio
@@ -105,6 +105,7 @@ class ScriptVito:
         from kwarwp.kwarapp import main as kwarwp_main, Indio
         self.mapa = mapa
         oid = f"_{self.did}_"
+        # oid = f"__{self.did}"
         kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=mapa, indios=(ind,), tela=document[oid])
 
         MAPAS[self.did] = (mapa, kwarwp, Indio)
@@ -114,9 +115,10 @@ class ScriptVito:
             self, did="0", show_scenario=True, sky="_media/sky.gif", sun="_media/sun.gif", soil="_media/terra.jpg",
             ground=200, h=None):
         h = f"{h}px" if h is not None else "300px"
-        vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h, 'left': 0, 'top': 0}
+        vitollino.STYLE = {'position': "relative", 'width': "100%", 'minHeight': h, 'left': 0, 'top': 0}
+        # vitollino.STYLE = {'position': "relative", 'width': "100%", 'height': h, 'minHeight': h, 'left': 0, 'top': 0}
 
-        _did = f"_{did}"
+        _did, __did = f"_{did}", f"__{did}"
         edi = html.DIV(Id=_did)
         vit = html.DIV(Id=_did + "_", style={"min-height": h})
         _ = document[did].parentNode <= vit
@@ -127,8 +129,8 @@ class ScriptVito:
         c.elt.style.width = "100%"
         c.img.style.width = "100%"
         c.vai()
-        Elemento(img=sun, cena=c)
-        Elemento(img=soil, y=100, w=695, h=ground, cena=c)
+        Elemento(tit="sun"+_did, img=sun, cena=c)
+        Elemento(tit=__did, img=soil, y=100, w=695, h=ground, cena=c)
         exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=self.prepara))
 
 
@@ -172,7 +174,6 @@ class ScriptBuilder:
         self.script_path = "_core/"
         self.get_script(None)
 
-
     def set_script_editor(self, code,
                           script_div_id="", **params):
         self.params.update(params)
@@ -180,7 +181,6 @@ class ScriptBuilder:
         self.params.pop('script_name') if 'script_name' in params else None
         COD[script_div_id] = code.strip()
         HEADER[script_div_id] = dict(code=code, **params)
-
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
@@ -240,7 +240,6 @@ class ScriptWidget:
         self._vito = ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
 
-
         if "alignment" in params and params["alignment"] == 'left-right':
             document[main_div_id].innerHTML = widget_code_lr % (m, m, m, m, m, m, m, m)
             if "editor_width" in params:
@@ -286,7 +285,16 @@ class ScriptWidget:
 
     def write(self, strn):
         def set_svg():
-            _ = document[self.console_pre_id] <= strn
+            console = document.getElementById(self.console_pre_id)
+
+            if console:
+                # console.innerHTML = strn
+                _ = console <= strn
+            # try:
+            #
+            #     _ = document[self.console_pre_id] <= strn
+            # except KeyError:
+            #     pass
 
         timer.set_timeout(set_svg, 10)
 
@@ -296,7 +304,7 @@ class ScriptWidget:
     def run_script(self, _):
         editor = self.editor  # window.ace.edit(self.script_div_id)
         document[self.console_pre_id].style.color = "dimgrey"
-        sys.stdout,  oid= self, self.main_div_id[1:]
+        sys.stdout,  oid = self, self.main_div_id[1:]
         sys.stderr = ScriptStderr(self.console_pre_id)
         _, tarefa, kaiowa = MAPAS[oid] if oid in MAPAS else [None]*3
         if self.name_to_run is None:
