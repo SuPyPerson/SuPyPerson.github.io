@@ -358,7 +358,8 @@ class Inventario:
         self.elt = html.DIV(Id="__inv__") #  , style=self.style)
         self.elt.onclick = self.mostra
         self.limbo = html.DIV(style=self.style)
-        self.limbo.style.left = "4000px"
+        # self.limbo.style.left = "4000px"
+        self.limbo.style['display'] = 'hidden'
         self.mostra()
         _ = self.tela <= self.elt
 
@@ -1129,7 +1130,6 @@ class Cena:
         self.tela = tela or get_doc_pydiv()
         self.xy = xy
         # self.img = img
-        self.nome = nome
         self.dentro = []
         self._esquerda, self._direita, self._meio = esquerda, direita, meio
         self.N, self.O, self.L = [NADA] * 3
@@ -1140,6 +1140,7 @@ class Cena:
         self.elt <= self.img
         self.portal(esquerda=self.portal(O=esquerda), direita=self.portal(L=direita), meio=self.portal(N=meio))
         Cena.c(**kwargs)
+        self.nome = nome
         # self._cria_divs(width)
 
     @property
@@ -2055,7 +2056,7 @@ h1 {
 
 .popup h2 {
   margin-top: 0;
-  color: #333;
+  color: #333 !important;
   font-family: Tahoma, Arial, sans-serif;
 }
 .popup .closet_vit {
