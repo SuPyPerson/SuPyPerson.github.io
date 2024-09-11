@@ -17,7 +17,7 @@ Changelog
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
-from vitollino import Salao, Cena
+from vitollino import Sala, Cena
 ROSA = ["n", "l", "s", "o"]
 
 
@@ -60,13 +60,17 @@ class Mapa(Planilha):
         self.nome_salas = self.nome_salas or [f"s{i}" for i in range(self.conta_lado*self.lado)]
         _img = self._i * 4
         _im4 = list(zip(*(iter(_img),)*4))
-        _imn = zip(self.nome_salas, _im4)
+        self._im = _imn = list(zip(self.nome_salas, _im4))
+        # _imn = zip(self.nome_salas, _im4)
 
         def do_cena(_im, **kwargs):
             c = Cena(_im, tela=self.tela)  # , **kwargs)
             c.nome = kwargs.get("nome", "_CENA_")
             return c
+        def do_teste(_im, **kwargs):
+            return kwargs
         self.salas = [{k: do_cena(**v) for k, v in zip(ROSA, sala)} for sala in _im4]
-        self.n = {nome: Salao(**{k: do_cena(**v) for k, v in zip(ROSA, sala)}) for nome, sala in _imn}
+        self._im = {nome: do_teste(nome, **{k: do_cena(**v) for k, v in zip(list(ROSA), sala)}) for nome, sala in _imn}
+        self.n = {nome: Sala(nome=nome, **{k: do_cena(**v) for k, v in zip(list(ROSA), sala)}) for nome, sala in _imn}
         self.s = [self.n[nome] for nome in self.nome_salas]
 
