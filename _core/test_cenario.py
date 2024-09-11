@@ -2,7 +2,7 @@ import unittest
 from unittest import TestCase
 
 from _core.cenario import Planilha, Mapa
-from _core.vitollino import Cena
+# from _core.vitollino import Cena, Inventario, INVENTARIO as INV
 
 
 class TestPlanilha(TestCase):
@@ -56,10 +56,56 @@ class TestMapa(TestPlanilha):
         # self.assertEqual([1], self.planilha.salas)
 
     def test__img(self):
-        s0 = self.planilha.n["s0"].norte
-        s1 = self.planilha.n["s0"].leste
+        from vitollino import Cena, Sala, Portal, Inventario, INVENTARIO as INV
+        q0 = self.planilha.n["s0"]
+        self.assertIsInstance(q0, Sala)
+        ln = s0 = q0.norte
+        ll = q0.leste
+        ls = q0.sul
+        lo = q0.oeste
+        s1 = q0.leste
+        s1 = q0.oeste
+        ln, ll, ls, lo = [Cena("img", nome=c) for c in "aeio"]
         self.assertEqual("l0", s0.nome)
-        self.assertEqual(s1.direita.cena, s0.direita)
+        self.assertEqual("l3", s1.nome)
+        self.assertEqual("s0", q0.nome)
+        # self.assertEqual("s0",self.planilha._im["s0"])
+        self.assertIsInstance(INV, Inventario)
+        self.assertIsInstance(s0, Cena)
+        self.assertIsInstance(s0.direita, Portal)
+
+        # sl = Sala(n=ln, l=ll, s=ls, o=lo, nome="testar")
+        sl = Sala(n=ln, l=ll, s=ls, o=lo, nome="testar")
+        sc = sl.cenas
+        def liga(og, ct, dt):
+            # og.direita = dt
+            ct.portal(direita=ct.portal(L=dt), esquerda=ct.portal(O=og))
+            # dt.esquerda = og
+        [liga(o, c, d) for o, c, d in zip(sc, sc[1:]+sc, sc[2:]+sc)]
+        self.assertEqual("a", sl.norte.nome)
+        self.assertEqual("e", sl.leste.nome)
+        self.assertEqual("i", sl.sul.nome)
+        self.assertEqual("o", sl.oeste.nome)
+        self.assertEqual("e", sl.norte.direita.portal.destino.nome)
+        self.assertEqual("e", sl.norte.esquerda.portal.destino.nome)
+        self.assertEqual("i", sl.leste.direita.portal.destino.nome)
+        self.assertEqual("a", sl.leste.esquerda.portal.destino.nome)
+        self.assertEqual("e", sl.sul.esquerda.portal.destino.nome)
+        self.assertEqual("i", sl.oeste.esquerda.portal.destino.nome)
+        # s0.direita = s1
+        self.assertIsInstance(s0.direita.portal.destino, Cena)
+        # self.assertIsInstance(sl.norte.direita.portal, Cena)
+        # s0.direita.portal.do_vai()
+        # s1.vai()
+        # s0.direita.vai()
+        # s0.vai_direita()
+        self.assertEqual('', [al.esquerda.portal for al in [ln, ll, ls, lo]])
+        # self.assertEqual('', [al.direita.portal.destino.nome for al in [ln]])
+        s0.vai_esquerda()
+        self.assertEqual("l3", INV.cena.nome)
+        s1.vai_esquerda()
+        self.assertEqual("l3", INV.cena.nome)
+        self.assertEqual(s1, INV.cena)
 
         # self.fail()
     pass
