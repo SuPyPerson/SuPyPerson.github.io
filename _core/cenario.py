@@ -17,7 +17,7 @@ Changelog
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
-from vitollino import Sala, Cena, SalaCenaNula, Labirinto, NADA
+from vitollino import Sala, Cena, SalaCenaNula, NADA
 
 ROSA = ["n", "l", "s", "o"]
 
@@ -54,54 +54,147 @@ class Planilha:
     def _img(self, posto=0):
         return self.j[posto]
 
+
 class Paisagem(Cena):
     def __init__(self, style, tela=None, **kwargs):
         super().__init__("", tela=tela, **kwargs)
         self.elt.html = ""
         self.elt.style = style
 
+    def rename(self, nome):
+        self.nome = nome
+        return self
+
 
 class Paisagens(Sala):
     def __init__(self, locais, conta_lado=4, tela=None, n=NADA, l=NADA, s=NADA, o=NADA,
                  nome='', **kwargs):
+        self.locais, self.conta_lado, self.tela, self.kwargs = locais, conta_lado, tela, kwargs
         super().__init__(n, l, s, o, nome, **kwargs)
-        self.cenas = [Paisagem(img, tela=tela) for img in locais[:conta_lado]]
+        self.inicia()
+
+    def rename(self, nome):
         self.nome = nome
+        return self
+
+    def inicia(self):
+        self.cenas = [Paisagem(img, tela=self.tela) for img in self.locais[:self.conta_lado]]
+        self.nome = self.nome
         [setattr(self, rosa, cena) for rosa, cena in zip(ROSA, self.cenas)]
-        Sala.c(**kwargs)
+        Sala.c(**self.kwargs)
         self.p()
+
+
+class Labirinto:
+    def __init__(self, c=NADA, n=NADA, l=NADA, s=NADA, o=NADA):
+        self.salas = [sala for sala in [c, n, l, s, o]]
+        self.centro, self.norte, self.leste, self.sul, self.oeste = self.salas
+        self.lb()
+
+    def lb(self):
+        for indica, sala in enumerate(self.salas[1:]):
+            self.centro.cenas[indica].portal(N=sala.cenas[indica]) if sala != NADA else None
+            indica_oposto = (indica + 2) % 4
+            sala.cenas[indica_oposto].portal(N=self.centro.cenas[indica_oposto]) if sala != NADA else None
 
 
 class Mapa(Planilha):
     def __init__(self, imagem, conta_lado=1.1, locais="", salas="", tela=None):
         self.salas = self.s = self.n = []
-        self.nome_salas = salas
+        self.nome_salas, self.nome_locais = salas, locais
         self.tela = tela
+        self.sala = self.local = {}
+        # self.plano = Planilha(imagem, conta_lado=conta_lado, locais=locais) if imagem is str else imagem
         super().__init__(imagem, conta_lado=conta_lado, locais=locais, tela=tela)
-        linha = int(conta_lado)
-        salas = [SalaCenaNula]*linha+self.n+[SalaCenaNula]*linha
-        matriz_salas = list(zip(*(iter(salas),)*int(conta_lado)))
-        matriz_salas = zip(*matriz_salas)
-        [[Labirinto(c=c, n=n, s=s) for n, c, s in trio]
-         for coluna in matriz_salas for trio in zip(coluna, coluna[1:-1], coluna[2:]+coluna)]
 
     def inicia(self):
-        self.conta_lado *= 4
+        def nomeia(oid, ojd, ponto):
+            return nome if (nome := ponto.nome) else f"s{ojd}:{oid}"
+
+        def renomeia(oid, ojd, ponto):
+            return nome if (nome := ponto.nome) else f"s{ojd}:{oid}"
+        self.conta_lado = self.conta_lado // 4 if self.conta_lado >= 1 else 1
         super(Mapa, self).inicia()
-        self.nome_salas = self.nome_salas or [f"s{i}" for i in range(self.conta_lado*self.lado)]
-        _img = self.j * 4
-        _im4 = list(zip(*(iter(_img),)*4))
-        self._im = _imn = list(zip(self.nome_salas, _im4))
+        # _img = self.j * 4
+        # _im4 = list(zip(*(iter(_img),)*4))
+        # self._im = _imn = list(zip(self.nome_salas, _im4))
+        nula, self.salas = PaisagensNula(0), self._check_sala()
+        self.imagem = [[nula]*self.conta_lado] + self.salas + [[nula]*self.conta_lado]
+        self.img = imagem = list(zip(self.imagem, self.imagem[1:], self.imagem[2:]))
+        [Labirinto(c=c, n=n, s=s) for linha in imagem for n, c, s in zip(*linha)]
+        self.nome_salas = self.nome_salas or [
+            nomeia(i, j, sala) for j, linha in enumerate(self.salas) for i, sala in enumerate(linha)]
+        self.nome_locais = self.nome_locais or [f"{s}.{r}" for s in self.nome_salas for r in ROSA]
+        # self.sala = {f"l{ln}:{legenda}": sala.rename(f"l{ln}:{legenda}")
+        self.sala = {renomeia(ln, legenda, sala): sala.rename(renomeia(ln, legenda, sala))
+                     for ln, linha in enumerate(self.salas) for legenda, sala in zip(self.nome_salas, linha)}
+        self.local = {f"{sala.nome}.{legenda}": cena.rename(f"{sala.nome}.{legenda}")
+                      for linha in self.salas for sala in linha for legenda, cena in zip(ROSA, sala.cenas)}
+        return
+
+
+        # self.salas = [Paisagens(style=style, tela=self.tela, nome=nome) for nome, style in _imn]
         # _imn = zip(self.nome_salas, _im4)
 
         def do_cena(_im, **kwargs):
             c = Cena(_im, tela=self.tela)  # , **kwargs)
             c.nome = kwargs.get("nome", "_CENA_")
             return c
+
         def do_teste(_im, **kwargs):
             return kwargs
-        self.salas = [{k: do_cena(**v) for k, v in zip(ROSA, sala)} for sala in _im4]
-        self._im = {nome: do_teste(nome, **{k: do_cena(**v) for k, v in zip(list(ROSA), sala)}) for nome, sala in _imn}
-        self.n = {nome: Sala(nome=nome, **{k: do_cena(**v) for k, v in zip(list(ROSA), sala)}) for nome, sala in _imn}
-        self.s = [self.n[nome] for nome in self.nome_salas]
+        # self.salas = [{k: do_cena("_im", **v) for k, v in zip(ROSA, sala)} for sala in _im4]
+        # self._im = {nome: do_teste(nome, **{k: do_cena("_im", **v) for k, v in zip(list(ROSA), sala)}) for nome, sala in _imn}
+        # self.n = {nome: Sala(nome=nome, **{k: do_cena("_im", **v) for k, v in zip(list(ROSA), sala)}) for nome, sala in _imn}
+        # self.s = [self.n[nome] for nome in self.nome_salas]
 
+    def _check_sala(self):
+        _map = self
+
+        class NType(Typer):
+            def paisagens(self):
+                return _map.imagem
+        return NType(self.imagem[0][0])(self.imagem[0][0])()
+
+
+class PaisagensNula(Paisagens):
+    def inicia(self):
+        class PaisagemNula(Paisagem):
+            def portal(self, esquerda=None, direita=None, meio=None, **kwargs):
+                return None
+
+            @property
+            def meio(self):
+                return self._meio
+
+            @meio.setter
+            def meio(self, meio):
+                pass
+
+        self.cenas = [PaisagemNula("", tela=self.tela) for img in range(self.conta_lado)]
+
+
+class Typer:
+
+    def __init__(self, ref, type_names="Planilha Paisagem Paisagens Mapa str"):
+        self.ref = ref
+        # Typer._doit(self.__def, type_names)
+        # Typer._doit = lambda *_: None
+        # [setattr(self, x.lower(), lambda _self=self: _self.ref) for x in type_names.split()]
+        # [setattr(self, x.lower(), lambda _self=self, _r=ref: _r) for x in type_names.split()]
+
+    def str(self):
+        return self.ref
+
+    def paisagens(self):
+        return self.ref
+
+    def planilha(self):
+        return self.ref
+
+    def __def(self):
+        return self.ref
+
+    # def __call__(self, typer,  *args, **kwargs):
+    def __call__(self, *args, **kwargs):
+        return getattr(self, type(self.ref).__name__.lower())
