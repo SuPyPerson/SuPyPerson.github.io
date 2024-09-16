@@ -11,13 +11,14 @@ Changelog
 ---------
 .. versionadded::    24.09
    |br| Classes Planilha, Mapa (09).
+   |br| Classes Paisagem, Paisagens, Labirinto, PaisagemNula, Typer (16).
 
 |   **Open Source Notification:** This file is part of open source program **Pynoplia**
 |   **Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
-from vitollino import Sala, Cena, SalaCenaNula, NADA
+from vitollino import Sala, Cena, NADA
 
 ROSA = ["n", "l", "s", "o"]
 
@@ -46,10 +47,8 @@ class Planilha:
                 bs: f"{_w}% {_h}%", bi: f"url({self.imagem})", br: "no-repeat", bp: f"{x:.2f}% {y:.2f}%"}
         self.locais = self.locais or [f"l{i}" for i in range(self.conta_lado*self.lado)]
         self.i = locais = {nome: style(i) for i, nome in enumerate(self.locais)}
-        # [setattr(self.c, k, (lambda x, _v=v: _v)) for k, v in locais.items()]
         [setattr(self.c, k, v) for k, v in locais.items()]
         self.j = [style(i) for i, p in enumerate(self.locais)]
-        # self._i = [dict(ele=self.imagem, alt=p) for i, p in enumerate(self.locais)]
 
     def _img(self, posto=0):
         return self.j[posto]
@@ -100,11 +99,10 @@ class Labirinto:
 
 class Mapa(Planilha):
     def __init__(self, imagem, conta_lado=1.1, locais="", salas="", tela=None):
-        self.salas = self.s = self.n = []
+        self.salas = self.s = self.n = self.img = []
         self.nome_salas, self.nome_locais = salas, locais
         self.tela = tela
         self.sala = self.local = {}
-        # self.plano = Planilha(imagem, conta_lado=conta_lado, locais=locais) if imagem is str else imagem
         super().__init__(imagem, conta_lado=conta_lado, locais=locais, tela=tela)
 
     def inicia(self):
@@ -115,9 +113,6 @@ class Mapa(Planilha):
             return nome if (nome := ponto.nome) else f"s{ojd}:{oid}"
         self.conta_lado = self.conta_lado // 4 if self.conta_lado >= 1 else 1
         super(Mapa, self).inicia()
-        # _img = self.j * 4
-        # _im4 = list(zip(*(iter(_img),)*4))
-        # self._im = _imn = list(zip(self.nome_salas, _im4))
         nula, self.salas = PaisagensNula(0), self._check_sala()
         self.imagem = [[nula]*self.conta_lado] + self.salas + [[nula]*self.conta_lado]
         self.img = imagem = list(zip(self.imagem, self.imagem[1:], self.imagem[2:]))
@@ -130,31 +125,22 @@ class Mapa(Planilha):
                      for ln, linha in enumerate(self.salas) for legenda, sala in zip(self.nome_salas, linha)}
         self.local = {f"{sala.nome}.{legenda}": cena.rename(f"{sala.nome}.{legenda}")
                       for linha in self.salas for sala in linha for legenda, cena in zip(ROSA, sala.cenas)}
-        return
-
-
-        # self.salas = [Paisagens(style=style, tela=self.tela, nome=nome) for nome, style in _imn]
-        # _imn = zip(self.nome_salas, _im4)
-
-        def do_cena(_im, **kwargs):
-            c = Cena(_im, tela=self.tela)  # , **kwargs)
-            c.nome = kwargs.get("nome", "_CENA_")
-            return c
-
-        def do_teste(_im, **kwargs):
-            return kwargs
-        # self.salas = [{k: do_cena("_im", **v) for k, v in zip(ROSA, sala)} for sala in _im4]
-        # self._im = {nome: do_teste(nome, **{k: do_cena("_im", **v) for k, v in zip(list(ROSA), sala)}) for nome, sala in _imn}
-        # self.n = {nome: Sala(nome=nome, **{k: do_cena("_im", **v) for k, v in zip(list(ROSA), sala)}) for nome, sala in _imn}
-        # self.s = [self.n[nome] for nome in self.nome_salas]
 
     def _check_sala(self):
         _map = self
 
         class NType(Typer):
+            def list(self):
+                return NType(_map.imagem[0])(_map.imagem[0])
+
             def paisagens(self):
                 return _map.imagem
+
+            def paisagem(self):
+                paisagens = [[Paisagens(imagem)] for linha in _map.imagem for imagem in linha]
+                return paisagens
         return NType(self.imagem[0][0])(self.imagem[0][0])()
+        # return NType(self.imagem[0])(self.imagem[0])()
 
 
 class PaisagensNula(Paisagens):
@@ -178,10 +164,9 @@ class Typer:
 
     def __init__(self, ref, type_names="Planilha Paisagem Paisagens Mapa str"):
         self.ref = ref
-        # Typer._doit(self.__def, type_names)
-        # Typer._doit = lambda *_: None
-        # [setattr(self, x.lower(), lambda _self=self: _self.ref) for x in type_names.split()]
-        # [setattr(self, x.lower(), lambda _self=self, _r=ref: _r) for x in type_names.split()]
+
+    def list(self):
+        return self.ref
 
     def str(self):
         return self.ref
@@ -195,6 +180,5 @@ class Typer:
     def __def(self):
         return self.ref
 
-    # def __call__(self, typer,  *args, **kwargs):
     def __call__(self, *args, **kwargs):
         return getattr(self, type(self.ref).__name__.lower())
