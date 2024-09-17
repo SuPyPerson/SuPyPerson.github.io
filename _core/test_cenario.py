@@ -1,11 +1,12 @@
 import unittest
-from unittest import TestCase
+from unittest import TestCase, mock
+from unittest.mock import MagicMock
 
-from _core.cenario import Planilha, Mapa, Paisagens, Paisagem, Typer
-from _core.vitollino import Sala
+from cenario import Planilha, Mapa, Paisagens, Paisagem, Typer
+import _core.vitollino as vit
 
 
-# from _core.vitollino import Cena, Inventario, INVENTARIO as INV
+from vitollino import Cena, Inventario, Sala, Portal, INVENTARIO as INV
 
 
 class TestPlanilha(TestCase):
@@ -38,10 +39,18 @@ class TestPlanilha(TestCase):
 
 
 class TestMapa(TestPlanilha):
+
     def setUp(self):
-        self.p0 = Paisagens("abcd", 4, nome="As_Paisagens0")
-        self.p1 = Paisagens("efgh", 4, nome="As_Paisagens1")
-        self.planilha = Mapa([[self.p0], [self.p1]], 4.2)
+        self.portal = MagicMock(name='portal')
+        def fake_portal(itself, esquerda=None, direita=None, meio=None, **kwargs):
+            itself._meio = meio
+            # print("fake portal", kwargs, esquerda, meio, direita) if "N" in kwargs else None
+            return self.portal
+
+        with mock.patch.object(Cena, "portal", fake_portal):
+            self.p0 = Paisagens("abcd", 4, nome="As_Paisagens0")
+            self.p1 = Paisagens("efgh", 4, nome="As_Paisagens1")
+            self.planilha = Mapa([[self.p0], [self.p1]], 4.2)
 
     def test_criado(self, conta=1, lado=2):
         # super(TestMapa, self).test_criado(conta=4)
@@ -67,30 +76,29 @@ class TestMapa(TestPlanilha):
         self.assertEqual("As_Paisagens0.n", self.planilha.salas[0][0].norte.nome)
 
         # self.assertEqual([1], self.planilha.salas)
-
     def test__img(self):
-        from vitollino import Cena, SalaCenaNula, Sala, Portal, Inventario, INVENTARIO as INV
+        port = MagicMock
         c0 = self.planilha.local["As_Paisagens0.n"]
-        self.assertIsInstance(c0, Cena)
+        self.assertIsInstance(c0, Paisagem)
         q0 = self.planilha.sala["As_Paisagens0"]
         # self.assertIn("AS", self.planilha.sala, self.planilha.sala)
         q1 = self.planilha.sala["As_Paisagens1"]
-        self.assertIsInstance(q0, Sala)
-        ln = s0 = q0.norte
+        self.assertIsInstance(q0, Paisagens)
+        ln = s0 = q1.norte
         ll = q0.leste
         ls = q0.sul
         lo = q0.oeste
         s1 = q0.leste
-        ln, ll, ls, lo = [Cena("img", nome=c) for c in "aeio"]
-        self.assertEqual("As_Paisagens0.n", s0.nome)
+        ln, ll, ls, lo = [Paisagem("img", nome=c) for c in "aeio"]
+        self.assertEqual("As_Paisagens1.n", s0.nome)
         self.assertEqual("As_Paisagens0.l", s1.nome)
         self.assertEqual("As_Paisagens0", q0.nome)
         # self.assertEqual("s0",self.planilha._im["s0"])
         self.assertIsInstance(INV, Inventario)
-        self.assertIsInstance(s0, Cena)
-        self.assertIsInstance(s0.direita, Portal)
-        self.assertIsInstance(s0.meio, Portal)
-        self.assertIsInstance(q1.norte.meio, Portal)
+        self.assertIsInstance(s0, Paisagem)
+        self.assertIsInstance(s0.direita, port)
+        self.assertIsInstance(s0.meio, port)
+        self.assertIsInstance(q1.norte.meio, port)
         '''
         self.assertIsInstance(q1.norte.meio.portal, Portal)
         self.assertNotIsInstance(s0.meio.portal, Portal)
@@ -175,10 +183,10 @@ class TestTyper(TestCase):
 
     def test_criado(self, conta=4, lado=3):
         self.assertIsInstance(self.new_typer, Typer)
-        self.assertEqual("abcd", self.typer("abcd")())
+        self.assertEqual("abcd", self.typer("abcd"))
         self.assertEqual("ABCD", self.new_typer.str())
         self.assertEqual("abcd", self.new_typer.ref)
         # self.assertEqual("abcd", self.new_typer("abcd"))
-        self.assertEqual("ABCD", self.new_typer("abcd")())
-        self.assertEqual(self.p0, self.pss_typer(self.p0)())
+        self.assertEqual("ABCD", self.new_typer("abcd"))
+        self.assertEqual(self.p0, self.pss_typer(self.p0))
 

@@ -92,9 +92,12 @@ class Labirinto:
 
     def lb(self):
         for indica, sala in enumerate(self.salas[1:]):
-            self.centro.cenas[indica].portal(N=sala.cenas[indica]) if sala != NADA else None
+            self.centro.cenas[indica].meio = sala.cenas[indica]# if sala != NADA else None
             indica_oposto = (indica + 2) % 4
-            sala.cenas[indica_oposto].portal(N=self.centro.cenas[indica_oposto]) if sala != NADA else None
+            sala.cenas[indica_oposto].meio = self.centro.cenas[indica_oposto]# if sala != NADA else None
+            # self.centro.cenas[indica].portal(N=sala.cenas[indica]) if sala != NADA else None
+            # indica_oposto = (indica + 2) % 4
+            # sala.cenas[indica_oposto].portal(N=self.centro.cenas[indica_oposto]) if sala != NADA else None
 
 
 class Mapa(Planilha):
@@ -131,16 +134,17 @@ class Mapa(Planilha):
 
         class NType(Typer):
             def list(self):
-                return NType(_map.imagem[0])(_map.imagem[0])
+                # return NType(self.ref[0])() #_map.imagem
+                return self.ref #_map.imagem
 
             def paisagens(self):
-                return _map.imagem
+                return self.ref
 
             def paisagem(self):
-                paisagens = [[Paisagens(imagem)] for linha in _map.imagem for imagem in linha]
+                paisagens = [[Paisagens(imagem)] for linha in self.ref for imagem in linha]
                 return paisagens
-        return NType(self.imagem[0][0])(self.imagem[0][0])()
-        # return NType(self.imagem[0])(self.imagem[0])()
+        # return NType(self.imagem[0][0])(self.imagem[0][0])()
+        return NType(self.imagem)()
 
 
 class PaisagensNula(Paisagens):
@@ -181,4 +185,4 @@ class Typer:
         return self.ref
 
     def __call__(self, *args, **kwargs):
-        return getattr(self, type(self.ref).__name__.lower())
+        return getattr(self, type(self.ref).__name__.lower())()
