@@ -9,7 +9,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <!-- stylesheets -->
 
     <style>
-      span.curversion::after {content: "🛡24.08hb2";}
+      span.curversion::after {content: "🛡24.09p";}
     </style>
 
     <meta charset="utf-8">
@@ -19,10 +19,10 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/A5yncX/docsify-theme-darcula@v1.0/darcula.css">
-    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.12/brython.min.js "></script>
-    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.12/brython_stdlib.js "></script>
+    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython.min.js "></script>
+    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython_stdlib.js "></script>
     <link rel="stylesheet" href="//unpkg.com/docsify-accordion/src/style.css">
-    <link rel="stylesheet" href="_core/css/lecture.css">
+    <link rel="stylesheet" href="/_core/css/lecture.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"
             integrity="sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -90,15 +90,11 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
         section.cover .cover-main > p:last-child a:last-child:hover {
             background-color: peru !important;
             color: brown !important;
-
-        }
-        .ace_editor {
-            word-spacing: 0 !important;
         }
 
     </style>
  </head>
-<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./_core', './_prog', './','/_core','/']})">
+<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./_core', './_prog', './']})">
     <!--    <div id="pydiv"></div>-->
     <div id="app"></div>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
@@ -106,11 +102,8 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <script type="text/python">
         from browser import window, document, alert, html, timer
         from ScriptWidget import show, build
-
         window.__widget__ = show
         window.__did_got__ = build
-        # Widget()
-
 
     </script>
     <script>
@@ -124,22 +117,16 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
       mermaid.initialize({ startOnLoad: false });
         //var num = 0;
       //mermaid.initialize({ startOnLoad: false });
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-
-      let url_param = "_";
-      if (urlParams.has('rel')) url_param = urlParams.get('rel');
       let url = window.location.hostname; // obter o dominio
       let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
-      const thePaths ={i: "jaie24", b:"sbce", f:"guia", n:"kwarwp",
-      j: git+"jaie24/jaie24/", c: git+"horacio/sbce", g:git+"jaie24/guia", p: git+"horacio"
+      const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"kwarwp", k:"pyjr",
+      j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", m: git+"kwarwp", l: git+"pyjr"
       };
       let url_first = url[0];
-      if (url_param !== "_") url_first = url_param;
       let docBasePath = "/";
         // let url_name = url_splt[url_splt.length - 2];
-      if ("jcgmibfnp".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
-      console.log("got url to path", url_first, url_param, url, docBasePath, "jcgmibfnp".indexOf(url_first) >= 0);
+      if ("jklpgmiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
+      console.log("got url to path", url_first, url, docBasePath, "jklpgmiofn".indexOf(url_first) >= 0);
 
 
       window.$docsify = {
@@ -157,7 +144,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
             '/pyi/(.*)': '/pgintro/$1', // supports regexp
             '/pintro': '/pgintro/README',
             '/kwa': '/kwarwp/README',
-            '/kwb': '/pyjr/o_kwarwp1',
+            '/pyjr/(.*)': '/pyjr/$1',
             '/jaie24': '/README',
             '/soho': '/kwarwp/o_sonho',
             '/jardim': '/sbce/o_jogo',

@@ -19,17 +19,15 @@ Changelog
 .. versionadded::    24.02
    |br| Classes ScriptVito, ScriptWidget (08).
 
-.. versionadded::    24.08
-   |br| top-bottom now default in alignment (21).
-
 |   **Open Source Notification:** This file is part of open source program **Pynoplia**
 |   **Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
 import sys
+# noinspection PyUnresolvedReferences
 from browser import window, ajax, document, html, timer, run_script as python_runner
-from vitollino import Cena, Elemento
+from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
 
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
@@ -57,6 +55,7 @@ widget_code_tb = """
 """
 COD = {}
 HEADER = {}
+MAPAS = {}
 """Store the code and header obtained from the script in the Python file"""
 
 
@@ -70,6 +69,7 @@ def build(name="forest_0.py"):
 
 class ScriptVito:
     def __init__(self, did="0", **params):
+        self.did = did
         self.scene = None
         self.e = Elemento
         self.vit = ''
@@ -78,7 +78,18 @@ class ScriptVito:
         # print(params)
         show_scenario = params.get("show_scenario", True)
         h = None if show_scenario else 1
-        self.scenario(did=did, show_scenario=show_scenario, h=h) #  if show_scenario else None
+        self.scenario(did=did, show_scenario=show_scenario, h=h)  # if show_scenario else None
+
+    def executar(self):
+        # print("executando", curumim, self.curumim, self.scene, self.did, self.mapa, MAPAS[self.did])
+        return MAPAS[self.did][1]
+
+    def prepara(self, mapa):
+        from kwarwp.kwarapp import main as kwp_main, Indio
+        oid = f"_{self.did}_"
+        kwarwp = lambda ind: kwp_main(vitollino=Jogo, medidas=STYLE, mapa=mapa, indios=(ind,), tela=document[oid])
+
+        MAPAS[self.did] = (mapa, kwarwp, Indio)
 
     def scenario(
             self, did="0", show_scenario=True, sky="_media/sky.gif", sun="_media/sun.gif", soil="_media/terra.jpg",
@@ -99,7 +110,7 @@ class ScriptVito:
         c.vai()
         Elemento(img=sun, cena=c)
         Elemento(img=soil, y=100, w=695, h=ground, cena=c)
-        exec(self.vit, dict(c__=c, v__=vitollino))
+        exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=self.prepara))
 
 
 def build_(did="0", name="forest_0.py"):
@@ -142,7 +153,6 @@ class ScriptBuilder:
         self.script_path = "_core/"
         self.get_script(None)
 
-
     def set_script_editor(self, code,
                           script_div_id="", **params):
         self.params.update(params)
@@ -150,7 +160,6 @@ class ScriptBuilder:
         self.params.pop('script_name') if 'script_name' in params else None
         COD[script_div_id] = code.strip()
         HEADER[script_div_id] = dict(code=code, **params)
-
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
@@ -201,13 +210,12 @@ class ScriptWidget:
         ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
 
-
-        if "alignment" in params and params["alignment"] == 'left-right':
+        if "alignment" in params and params["alignment"] == 'top-bottom':
+            document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
+        else:
             document[main_div_id].innerHTML = widget_code_lr % (m, m, m, m, m, m, m, m)
             if "editor_width" in params:
                 document[self.script_div_id].style.width = params["editor_width"]
-        else:
-            document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
 
         document["run-%s" % main_div_id].bind("click", self.run_script)
         document["clear-%s" % main_div_id].bind("click", self.clear_console)
@@ -257,10 +265,11 @@ class ScriptWidget:
     def run_script(self, _):
         editor = self.editor  # window.ace.edit(self.script_div_id)
         document[self.console_pre_id].style.color = "dimgrey"
-        sys.stdout = self
+        sys.stdout,  oid = self, self.main_div_id[1:]
         sys.stderr = ScriptStderr(self.console_pre_id)
+        _, tarefa, kaiowa = MAPAS[oid] if oid in MAPAS else [None]*3
         if self.name_to_run is None:
-            python_runner(editor.getValue())
+            exec(editor.getValue(), dict(a_tarefa=tarefa, Kaiowa=kaiowa))
         else:
             python_runner(editor.getValue(), self.name_to_run)
 
