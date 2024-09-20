@@ -12,6 +12,10 @@ Classes neste módulo:
 Changelog
 ---------
 
+.. versionadded::    24.09
+        Formata estilo da cena para se enquadrar no mapa (07).
+        Apaga o conteúdo da cena quando inicia (07).
+
 .. versionadded::    24.03
         Adiciona nomes para os objetos apresentados (03).
         Comando olha para ler os objetos no caminho (03).
@@ -65,6 +69,23 @@ Ponto = nt("Ponto", "x y")
 """Par de coordenadas na direção horizontal (x) e vertical (y)."""
 Rosa = nt("Rosa", "n l s o")
 """Rosa dos ventos com as direções norte, leste, sul e oeste."""
+Pc = nt("Pc", "oca cur cun paj ped vaz ter tor pic ceu sol flo cer")
+"""            "&": Fab(self.maloc, f"{IMGUR}dZQ8liT.jpg"),  # OCA
+            "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"),  # INDIO
+            "`": Fab(self.indio, f"{IMGUR}nvrwu0r.png"),  # INDIA
+            "p": Fab(self.indio, f"{IMGUR}HeiupbP.png"),  # PAJE
+            "¨": Fab(self.apedra, f"{IMGUR}Sx3OH66.png"),  # PEDRA
+            ".": Fab(self.vazio, f"{IMGUR}npb9Oej.png"),  # VAZIO
+            "_": Fab(self.coisa, f"{IMGUR}sGoKfvs.jpg"),  # SOLO
+            "#": Fab(self.atora, f"{IMGUR}0jSB27g.png"),  # TORA
+            "@": Fab(self.barra, f"{IMGUR}tLLVjfN.png"),  # PICHE
+            "~": Fab(self.coisa, f"{IMGUR}UAETaiP.gif"),  # CEU
+            "*": Fab(self.coisa, f"{IMGUR}PfodQmT.gif"),  # SOL
+            "?": Fab(self.coisa, f"{IMGUR}mOV7r9I.png"),  # FLOR
+            "|": Fab(self.coisa, f"{IMGUR}uwYPNlz.png")  # CERCA
+"""
+PC = Pc(*"& ^ ` p ¨ . _ # @ ~ * ? |".split())
+# PS = Pc(*("⛺👦👧🧔‍♂️️🪨🟫🏞️🪵🕳️🌆🌞🪷🌳".split()))
 
 
 class JogoProxy:
@@ -550,14 +571,28 @@ class Kwarwp:
         return cena'''
 
     def inicia(self):
+        self.v._ativa = False
+        self._inicia()
+        self.v.ativa()
+
+    def _inicia(self):
         """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.
         """
         fabrica, lado, cena, mapa = self.fabrica, self.lado, self.cena, self.mapa
-        # cena.elt.html=""
+        if self.cena:
+            cena.elt.html = ""
         self.os_indios = []
         self.cena = cena = self.v.c(fabrica["_"].imagem, tela=self.tela)
+        hg = (len(self.mapa)+1) * self.lado
+        wd = (len(self.mapa[0])) * self.lado
+        cena.elt.style.width = f"{wd}px"
+        cena.elt.style.height = f"{hg}px"
+        cena.elt.style.minHeight = f"{hg}px"
+        cena.img.style.height = f"{hg}px"
+        cena.img.style.width = f"100%"
+        cena.elt.style.display = "block"
         self.ceu = self.v.a(fabrica["~"].imagem, w=lado * self.col, h=lado - 10, x=0, y=0, cena=cena, vai=self.passo,
-                            style={"padding-top": "10px", "text-align": "center"})
+                            style={"padding-top": "10px", "text-align": "center", "width": "100%"})
         self.sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.executa)
         # print("KW<", self.os_indios)
 
@@ -569,6 +604,16 @@ class Kwarwp:
         """No argumento *vai*, associamos o clique no sol com o método **executa ()** desta classe."""
         """Posiciona os elementos segundo suas posições i, j na matriz mapa"""
         pass
+
+    def vizinho(self, posicao, azimute):
+        """ Encontra um vizinho do objeto para um dado azimute.
+        """
+        destino = (posicao[0] + azimute.x, posicao[1] + azimute.y)
+        """A posição para onde o índio vai depende do vetor de azimute corrente"""
+        taba = self.taba
+        if destino in taba:
+            return taba[destino]
+        return None
 
     def fala(self, texto=""):
         """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.
@@ -589,11 +634,6 @@ class Kwarwp:
     def passo(self, *_):
         """ Ordena a execução do roteiro do índio.
         """
-        # self.o_indio.esquerda()
-        # self.v.executa()
-        # self.o_indio.passo()
-        # self.cena = self.cria(mapa=self.mapa, tela=self.tela)
-
         [indio.passo() for indio in self.os_indios]
 
     def executa(self, *_):
@@ -604,7 +644,7 @@ class Kwarwp:
         # self.o_indio.ativa()
         # self.o_indio.executa()
         self.v._ativa = False
-        self.inicia()
+        self._inicia()
         self.v.ativa()
         [indio.ativa() or indio.executa() for indio in self.os_indios]
         # self.os_indios[0].ativa()

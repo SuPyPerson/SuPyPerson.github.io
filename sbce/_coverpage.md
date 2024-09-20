@@ -1,10 +1,10 @@
-![logo](../../_media/superpython_jogos.svg)
+![logo](../_media/pynoplia_sbc_eb.png)
 
-# Pynoplia SBC-EB <small>24.08</small>
+# Pynoplia SBC-EB <small><span class="curversion"></span></small>
 
 > Usando jogos na educação.
 
 [Jogos na Educação](#sbc-eb-vivendo-e-aprendendo-a-jogar)
-[Primeiro Jogo](/pjog)
+[Primeiro Jogo](o_jogo.md)
 
 

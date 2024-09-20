@@ -1,6 +1,6 @@
 FROM python:3.12.2-slim-bullseye
 LABEL labase.author="carlo@ufrj.br"
-LABEL version="24.08"
+LABEL version="24.08hb"
 LABEL description="Pynoplia - The Python Tools - Learn Python with games"
 COPY ./requirements.txt /etc
 RUN python3 -m pip install --upgrade pip

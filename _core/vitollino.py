@@ -358,7 +358,8 @@ class Inventario:
         self.elt = html.DIV(Id="__inv__") #  , style=self.style)
         self.elt.onclick = self.mostra
         self.limbo = html.DIV(style=self.style)
-        self.limbo.style.left = "4000px"
+        # self.limbo.style.left = "4000px"
+        self.limbo.style['display'] = 'hidden'
         self.mostra()
         _ = self.tela <= self.elt
 
@@ -1129,7 +1130,6 @@ class Cena:
         self.tela = tela or get_doc_pydiv()
         self.xy = xy
         # self.img = img
-        self.nome = nome
         self.dentro = []
         self._esquerda, self._direita, self._meio = esquerda, direita, meio
         self.N, self.O, self.L = [NADA] * 3
@@ -1140,6 +1140,7 @@ class Cena:
         self.elt <= self.img
         self.portal(esquerda=self.portal(O=esquerda), direita=self.portal(L=direita), meio=self.portal(N=meio))
         Cena.c(**kwargs)
+        self.nome = nome
         # self._cria_divs(width)
 
     @property
@@ -1283,7 +1284,7 @@ class Pop:
         self.foi = None
         self.popup = html.DIV(Id="__popup__", Class="overlay")
         self.div = div = html.DIV(Id="__baloon__", Class="popup")
-        self.tit = html.H2()
+        self.tit = html.H2(Class="fala_vit")
         self.a = html.A("×", Class="closet_vit", href="#")
         self.go = html.A(Id="txt_button", Class="button", href="#__popup__")
         self.go.onclick = self._open
@@ -2055,7 +2056,7 @@ h1 {
 
 .popup h2 {
   margin-top: 0;
-  color: #333;
+  color: #333 !important;
   font-family: Tahoma, Arial, sans-serif;
 }
 .popup .closet_vit {
@@ -2074,6 +2075,9 @@ h1 {
   font-weight: bold;
   text-decoration: none;
   color: #333;
+}
+.popup .fala_vit {
+  color: gray;
 }
 .popup .closet_vit:hover {
   color: #06D85F;

@@ -1,2 +1,5 @@
 - [Apresentação](README)
-- [O Primeiro Jogo](/pjog)
+- [O Primeiro Jogo](o_jogo.md)
+- [O Elenco](o_elenco.md)
+- [O Movimento](o_movimento.md)
+- [A Capoeira](a_capoeira.md)

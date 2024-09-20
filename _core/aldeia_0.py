@@ -87,15 +87,14 @@ MAPA = """
 p....&
 ||||||
 """
-Jogo.Kaiowa = Indio
-Jogo.kwarwp = lambda ind: kwarwp_main(vitollino=Jogo, medidas=STYLE, mapa=MAPA, indios=(ind,), tela=c__.tela)
+kwarwp_prepara(MAPA)
 # _VIT_
-from vitollino import Jogo as Povo
-class Curumim(Povo.Kaiowa):
+class Curumim(Kaiowa):
     def executa(self):
         self.direita()
         self.anda()
         self.anda()
         self.fala("oi")
 
-Povo.kwarwp(Curumim).executa()
+a_tarefa(Curumim).executa()
+
