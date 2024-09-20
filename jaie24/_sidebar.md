@@ -1,2 +1,6 @@
 - [Apresentação](README)
-- [O Primeiro Jogo](/pjog)
+- [Exploração](explora)
+- [Formalização](formal)
+- [Refinamento](refina)
+- [Reflexão](reflex)
+- [Instanciação](insta)

@@ -210,12 +210,12 @@ class ScriptWidget:
         ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
 
-        if "alignment" in params and params["alignment"] == 'top-bottom':
-            document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
-        else:
+        if "alignment" in params and params["alignment"] == 'left-right':
             document[main_div_id].innerHTML = widget_code_lr % (m, m, m, m, m, m, m, m)
             if "editor_width" in params:
                 document[self.script_div_id].style.width = params["editor_width"]
+        else:
+            document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
 
         document["run-%s" % main_div_id].bind("click", self.run_script)
         document["clear-%s" % main_div_id].bind("click", self.clear_console)
