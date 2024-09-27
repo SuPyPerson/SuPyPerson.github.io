@@ -7,7 +7,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
  
 
-[![logo](./../_media/snct24_fundao.svg)](https://educacaobasica.sbc.org.br/2024/)
+[![logo](./../_media/snct24_fundao.svg)](https://www.even3.com.br/snctufrj2024/)
 
 #### LABASE
 [footer](footer.md ':include')
