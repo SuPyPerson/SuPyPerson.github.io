@@ -10,6 +10,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Current Version - Milestone 🛡️ Hoplon - <span class="curversion"></span>
 
+# Hoplon 🛡️ preliminares para JAIE, PYJR e SNCT [24.09] - 2024-09-30
+
+# BRANCHES
+## Horacio
+Defined to use [Horacio Pynoplia Server](https://pyno.horacio.selfip.org)
+Testing environment before upload to [Alite Server] (https://pyno.alite.selfip.org)
+
+## Jaie
+Preview of workshop at CBIE 2024
+
+# ADDED
+- ⛲ tabbed editor initial, @ main 🔰. (09/28)
+- ⛲ add cenario module branch dev-5 🔰. (09/09)
+
 # 🛡️ Hoplon - Plataforma primária com quatro aulas
 
 ## Hoplon [Hp🛡24.03a] - 2024-03-21

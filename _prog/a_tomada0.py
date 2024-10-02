@@ -60,10 +60,10 @@ _SET2_ = {
 }  # _SEC_
 from vitollino import Cena, Texto, Jogo, Elemento, INVENTARIO as INV
 from cenario import Planilha, Paisagem, Paisagens
-from random import shuffle
+from random import shuffle, randint
 Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
 ESCONDIDO = -4000
-
+_, __ = -1000, -2000
 
 class UmaGarrafa:
     def __init__(self):
@@ -97,44 +97,53 @@ class UmaGarrafa:
         self.chave.o = 0.4
 
     def tem_bau(self, *_):
-        pass # troque aqui para fazer um baú aparecer
+        self.kayke.foi = lambda *_: INV.some(self.kayke) # kayke sai de cena
+        # troque o _  e invente a explicação que o Kayke viu na carta
+        self.kayke.texto = "_"
+        # troque _ por randint para o baú aparecer em um lugar qualquer
+        self.bau.x = _
+        self.bau.y = _
 
     def acha_garrafa(self, *_):
         self.carta.x = 100 # tras a carta para a cena
-        self.garrafa.vai = self.nada_faz
+        self.garrafa.vai = self.nada_faz # não clica depois da carta
 
     def nada_faz(self, *_):
         pass
 
     def aparece_kayke(self, *_):
-        # escreva aqui algo semelhante a acha_garrafa
-        self.kayke.x = 100
-        pass
+        # escreva aqui algo semelhante a acha_garrafa troque _ por um valor
+        self.kayke.x = _
 
     def precisa_chave(self):
-        pass # faça a chave aparecer
+        self.chave.x = _  # faça a chave aparecer, mude _ por um valor
 
     def tem_chave(self):
-        pass # agora faz alguma coisa quando clica no baú
+        self.chave.x = 0  # faça a chave sumir
+        # troque _ por um texto que descreva o que tem no baú
+        self.bau.texto = "_"
 
 UmaGarrafa()
 _SET3_ = {
-    "script_name": "jo3", "script_div_id": "jo3",
+    "script_name": "to2", "script_div_id": "to2",
     "height": 200, "title": "Povoando o Jardim", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
 # _VIT_
-from vitollino import Sala, Elemento, Texto, Jogo
+from vitollino import Cena, Texto, Jogo, Elemento
+from cenario import Planilha, Paisagens
+ESCONDE = -4000
 Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
-cenas = "japones relogio mirante tomjobim".split()
-jardim = Sala(*[f"/_ativo/jardim/{cena}.jpg" for cena in cenas])
-cena = jardim.sul.vai()
-pessoa = "/_ativo/jardim/{}.png"  # este {} vai ser substituído pelo format
-personagens = "narciso", "ossanha", "tetis"
-narciso, ossanha, tetis = [pessoa.format(personagem) for personagem in personagens]
-tetis = Elemento(tetis, x=50, y=300, h=200, cena=cena, texto="A Fecundidade")
-ossanha = Elemento(ossanha, x=250, y=300, h=200, cena=cena, texto="O Curandeiro")
-narciso = Elemento(narciso, x=450, y=300, h=200, cena=cena, texto="O Orgulhoso")
+
+class UmaAventura:
+    def __init__(self):
+        imagem_da_praia = "_ativo/agentes/praia.jpeg"
+        mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
+        pg = Paisagens(mapa_praia.j[4:])
+        p = pg.norte
+        p.vai()
+
+UmaAventura()
 _SET4_ = {
     "script_name": "jo4", "script_div_id": "jo4",
     "height": 250, "title": "Conversas no Jardim", "show_scenario": False, "console_height": 45

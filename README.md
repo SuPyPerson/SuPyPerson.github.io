@@ -27,7 +27,7 @@ do Pajé. Ela lembra da magia da cobra de fogo, a Python Boitatá.
 
 [![python](https://img.shields.io/github/languages/top/kwarwp/kwarwp)](https://www.python.org/downloads/release/python-383/)
 [![licence](https://img.shields.io/github/license/labase/supyplay)](https://raw.githubusercontent.com/labase/supyplay/main/LICENSE)
-[![github](https://img.shields.io/badge/release-24.03-blue)](https://github.com/SuPyPerson/SuPyPerson.github.io/releases)
+[![github](https://img.shields.io/badge/release-24.10-blue)](https://github.com/SuPyPerson/SuPyPerson.github.io/releases)
 
 [![UFRJ](https://labase.github.io/image/ufrj-logo-8.png)](https://ufrj.br/)
 [![NCE](https://labase.github.io/image/nce-logo-8.png)](http://www.nce.ufrj.br/)

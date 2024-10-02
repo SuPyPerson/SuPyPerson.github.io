@@ -39,5 +39,20 @@ Aqui está um elemento identificado como '_jogo_'
     p.vai()
     ```
 
++ Tirando do Baú +
+  
+  <img id="to2" src onerror="__widget__(this.id)"/>
+ 
+    Vocês encontraram algo no baú. Invente uma aventura ligada a esta descoberta.
+  
+    Agora vamos aprender a usar paisagens e fazer um pequeno roteiro para esta história.
+    ```python
+    imagem_da_praia = "_ativo/agentes/praia.jpeg"
+    mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
+    pg = Paisagens(mapa_praia.j[4:])
+    p = pg.norte
+    p.vai()
+    ```
+
 #### LABASE
 [footer](footer.md ':include')
