@@ -29,7 +29,7 @@ import sys
 from browser import window, ajax, document, html, timer, run_script as python_runner
 from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
-
+from model_facade import MF
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
 
 widget_code_lr = """
@@ -209,6 +209,7 @@ class ScriptWidget:
         self.main_div_id = main_div_id
         ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
+        self.script_title = params["script_name"] if "script_name" in params else main_div_id
 
         if "alignment" in params and params["alignment"] == 'left-right':
             document[main_div_id].innerHTML = widget_code_lr % (m, m, m, m, m, m, m, m)
@@ -261,9 +262,13 @@ class ScriptWidget:
 
     def clear_console(self, _):
         document[self.console_pre_id].innerHTML = ""
+        print(self.script_title)
+        MF.get(self.script_title)
 
     def run_script(self, _):
         editor = self.editor  # window.ace.edit(self.script_div_id)
+        print(f"run_script/{self.script_name}/{self.script_title}")
+        MF.save(f"{self.script_name}/{self.script_title}", editor.getValue())
         document[self.console_pre_id].style.color = "dimgrey"
         sys.stdout,  oid = self, self.main_div_id[1:]
         sys.stderr = ScriptStderr(self.console_pre_id)
@@ -282,3 +287,6 @@ class ScriptWidget:
             "enableSnippets": True,
             "enableLiveAutocompletion": True
         })
+        print(f"get_script/{self.script_name}/{self.script_title}")
+        MF.get(f"{self.script_name}/{self.script_title}")
+

@@ -28,6 +28,7 @@ import tornado.web
 from tornado.ioloop import IOLoop
 from tornado.options import define, options
 from tornado.escape import xhtml_escape
+from _core.couch_facade import MF
 
 # config options
 define('port', default=8585, type=int, help='port to run web server on')
@@ -39,6 +40,23 @@ PORT = options.port
 DEBUG = options.debug
 ROUTE_TO_INDEX = options.route_to_index
 PATH = '/'
+
+
+class CodeHandler(tornado.web.RequestHandler):
+    def get(self,code_path):
+        value = MF.get(code_path[4:])  # remove get/
+        self.write(f"got code: {code_path}/{value}")
+        print(f"got code: {code_path}/{value}")
+
+    def post(self,code_path):
+        msg = self.get_argument('message__', 'No msg received')
+        name = self.get_argument('code_name__', 'No data received').replace(r"/", " ")
+        data = self.get_argument('code_data__', 'No data received')
+        _dict = zip(("message__ code_name__ code_data__".split()),[msg,name,data])
+        code_dict = {k: v for k, v in _dict}
+        print("get code: ", code_path, msg, name, data)
+        value = MF.save(code_dict)
+        self.write(f"saved code: {code_path}/{value}")
 
 
 class DirectoryHandler(tornado.web.StaticFileHandler):
@@ -106,10 +124,12 @@ settings = {
 }
 
 application = tornado.web.Application([
-    (r'/(.*)', DirectoryHandler, {'path': './'})
+    (r"/get_code/(.*)", CodeHandler),
+    (r'/(.*)', DirectoryHandler, {'path': './'}),
 ], **settings)
 
 if __name__ == "__main__":
     print("Listening on port %d..." % PORT)
     application.listen(PORT)
     IOLoop.instance().start()
+
