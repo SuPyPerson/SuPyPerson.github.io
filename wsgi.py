@@ -3,6 +3,7 @@
 """ Web server runner.
 
 Classes neste módulo:
+    - :py:class:`CodeHandler` handle saving and loading code.
     - :py:class:`DirectoryHandler` handle all routes from web.
 
 .. codeauthor:: Carlo Oliveira <carlo@nce.ufrj.br>
@@ -10,6 +11,10 @@ Classes neste módulo:
 
 Changelog
 ---------
+
+.. versionadded::    24.10
+   |br| Added Code Handler class (07).
+
 .. versionchanged::    24.03
    |br| Revert to enable serving index from root (07).
 
@@ -43,19 +48,15 @@ PATH = '/'
 
 
 class CodeHandler(tornado.web.RequestHandler):
-    def get(self,code_path):
+    def get(self, code_path):
         value = MF.get(code_path[4:])  # remove get/
-        self.write(f"got code: {code_path}/{value}")
-        print(f"got code: {code_path}/{value}")
+        # print(f"got code: {code_path}/\n{value}")
+        self.write(str(value))
 
-    def post(self,code_path):
-        msg = self.get_argument('message__', 'No msg received')
-        name = self.get_argument('code_name__', 'No data received').replace(r"/", " ")
-        data = self.get_argument('code_data__', 'No data received')
-        _dict = zip(("message__ code_name__ code_data__".split()),[msg,name,data])
-        code_dict = {k: v for k, v in _dict}
-        print("get code: ", code_path, msg, name, data)
-        value = MF.save(code_dict)
+    def post(self, code_path):
+        names = "message code_name code_data".split()
+        msg, name, data = [self.get_argument(f"{name}__", f"No {name}") for name in names]
+        value = MF.save(msg, name, data)
         self.write(f"saved code: {code_path}/{value}")
 
 

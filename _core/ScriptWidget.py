@@ -13,6 +13,9 @@ Classes neste módulo:
 
 Changelog
 ---------
+.. versionadded::    24.10
+   |br| Spike for saving and loading from db (04).
+
 .. versionadded::    24.02c
    |br| Fix Script Header reader (29).
 
@@ -117,7 +120,9 @@ def build_(did="0", name="forest_0.py"):
     def go():
         _did = f"_{did}"
         # print(did, HEADER[did])
-        ScriptWidget(script_named=name, main_div_id=did, **HEADER[did])
+        namer = HEADER[did].pop("script_namer") if did in HEADER else name
+        header = HEADER[did] if did in HEADER else {}
+        ScriptWidget(script_named=namer, main_div_id=did, **header)
 
     timer.set_timeout(go, 100)
 
@@ -159,7 +164,7 @@ class ScriptBuilder:
         self.code = code
         self.params.pop('script_name') if 'script_name' in params else None
         COD[script_div_id] = code.strip()
-        HEADER[script_div_id] = dict(code=code, **params)
+        HEADER[script_div_id] = dict(code=code, script_namer=self.script_name, **params)
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
@@ -262,12 +267,12 @@ class ScriptWidget:
 
     def clear_console(self, _):
         document[self.console_pre_id].innerHTML = ""
-        print(self.script_title)
-        MF.get(self.script_title)
+        # print(self.script_title)
+        # MF.get(self.script_title)
 
     def run_script(self, _):
         editor = self.editor  # window.ace.edit(self.script_div_id)
-        print(f"run_script/{self.script_name}/{self.script_title}")
+        # print(f"run_script/{self.script_name}/{self.script_title}")
         MF.save(f"{self.script_name}/{self.script_title}", editor.getValue())
         document[self.console_pre_id].style.color = "dimgrey"
         sys.stdout,  oid = self, self.main_div_id[1:]
@@ -279,6 +284,10 @@ class ScriptWidget:
             python_runner(editor.getValue(), self.name_to_run)
 
     def get_script(self, code=None):
+        def got_text(text):
+            self.editor.setValue(text, -1) if text else None
+            # print(f"get_script/{self.script_name}/{self.script_title}\n{text}")
+        MF.get(f"{self.script_name}/{self.script_title}", got_text)
         self.editor.setValue(self.code_text, -1)
         self.editor.setTheme("ace/theme/gruvbox")
         self.editor.getSession().setMode("ace/mode/python")
@@ -287,6 +296,5 @@ class ScriptWidget:
             "enableSnippets": True,
             "enableLiveAutocompletion": True
         })
-        print(f"get_script/{self.script_name}/{self.script_title}")
-        MF.get(f"{self.script_name}/{self.script_title}")
+
 

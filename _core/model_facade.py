@@ -9,6 +9,7 @@ Changelog
 ---------
 .. versionadded::    24.10
    |br| Initial version (03).
+   |br| Working version (04).
 
 |   **Open Source Notification:** This file is part of open source program **Pynoplia**
 |   **Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
@@ -17,13 +18,14 @@ Changelog
 """
 from datetime import datetime as dt
 
-from browser import ajax
+from browser import ajax, alert
 
 
 class RequestSender:
     def __init__(self):
         self.result = ""
         self.user = "arco"
+        self.getter = lambda *_: None
 
     def save(self, code, data):
         # ajax.post(f"get_code/save/{self.user}/{code}", oncomplete=self.read)
@@ -36,16 +38,18 @@ class RequestSender:
         msg = f"{self.user}-{code} @{dt.now().strftime('%Y-%m-%d %H:%M:%S')}"
         req.send({'message__': msg, 'code_name__': f"{self.user}/{code}", 'code_data__': data})
 
-
-    def get(self, code):
+    def get(self, code, getter):
+        self.getter = getter
         ajax.get(f"get_code/get/{self.user}/{code}", oncomplete=self.read)
 
     def read(self, code):
-        self.result = code
-        print(code.read())
+        self.result = code.read()
+        # print(f"get_code/get/{self.result}")
+        self.getter(self.result)
 
     def on_complete(self, msg):
-        print(msg.read())
+        _ = self
+        alert(f"Resultado da Operação: {msg.read()}")
 
 
 MF = RequestSender()
