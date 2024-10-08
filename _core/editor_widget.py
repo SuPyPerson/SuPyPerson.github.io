@@ -20,22 +20,47 @@ from collections import namedtuple
 m = namedtuple("m", "n a i", defaults=(None, lambda *_: None, None))
 
 
+class PaneBuilder:
+    def __init__(self, pane_id, first_id, jogo_id="_jogo_"):
+        self.h, self.p, self.w = PaneEditor.h, PaneEditor.p, PaneEditor.w
+        self.pane_id = pane_id
+        self.first_id = first_id
+        abas = "-bars -display -clapperboard -person-chalkboard -play -xmark".split()
+        actions = ["executa", "limpa", "reinicia", "salva", "pega", "fecha"]
+        actions = ["-play", "-shower", "-backward-step", "-download", "-upload", "-circle-stop"]
+        users = ["alvo", "bola", "casa", "dado"]
+        self.panes = [(self.h.IMG(src=f"{self.p}{img}"), self.w+name) for img, name in enumerate(abas)]
+        self.panes = [m(f"{face}", None, image) for image, face in self.panes]
+        abas = ["-table-list"]+[(aba, lambda ab=aba, *_: self.abre(ab)) for aba in abas]
+        uses = ["-user-secret"]+[(aba, lambda ab=aba, *_: self.user(ab)) for aba in users]
+        actions = ["-bullseye"]+[(aba, lambda ab=aba, *_: self.user(ab)) for aba in actions]
+        menus = [abas, uses, actions, "-download", "-upload", "-circle-stop"]
+        self.pane = PaneEditor(pane_id, self.panes, menus)
+        self.pane.show()
+
+    def abre(self, aba):
+        pass
+
+    def user(self, member):
+        pass
+
+
 class PaneEditor:
     h = None
     d = None
     p = "https://picsum.photos/600/450?random="
-    w = "fa-solid fa-"
+    w = "fa-solid fa"
 
-    def __init__(self, pane=None):
+    def __init__(self, pane=None, panes=None, menus=None):
         self.pane = pane
         self.tabs = self.h.NAV()  # Class="tab_link")
         _ = pane <= self.tabs
         self.panes = [(self.h.IMG(src=f"{self.p}{img}")) for img in range(3)]
-        self.button = self.build_button("Abra o exercício", self.show, pane=self.d["pydiv"], elt=self.h.BUTTON)
-        self.panes = [m(f"exercício{face}", None, image) for face, image in enumerate(self.panes)]
+        # self.button = self.build_button("Abra o exercício", self.show, pane=self.d["pydiv"], elt=self.h.BUTTON)
+        self.panes = panes or [m(f"exercício{face}", None, image) for face, image in enumerate(self.panes)]
         self.panes = self.create_panes()
         menu = [pn.repr() for pn in self.panes]
-        menus = zip("bars play xmark".split(), (self.nop(), self.play, self.hide))
+        menus = zip("-bars -play -xmark".split(), (self.nop(), self.play, self.hide))
         menu += [m(f"{self.w}{face}", action, None) for face, action in menus]
         menu = [menu.pop(-3)] + menu[:-2] + menu[-2:]
         self.menus = ms = self.create_menu(menu, parent=self.tabs)
@@ -277,14 +302,29 @@ menuitem > menu > menuitem.hover > menu > menuitem{
    transform:translateX(0) translateY(0%);
    opacity: 1;
 }
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
 """
 
 
-def main(browser):
+def main(browser, oid, fid="to0", base=None):
+    base = base or "_modal_"
     PaneEditor.h = browser.html
     PaneEditor.d = browser.document
     style = PaneEditor.h.STYLE(CSS)
     style.innerHtml = CSS
     _ = browser.document.head <= style
-    _ = PaneEditor(browser.document["_modal_"])
+    # _ = PaneEditor(browser.document[base])
+    _ = PaneBuilder(browser.document[base], first_id=fid, jogo_id=oid)
+

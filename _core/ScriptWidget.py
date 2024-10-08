@@ -29,7 +29,7 @@ Changelog
 """
 import sys
 # noinspection PyUnresolvedReferences
-from browser import window, ajax, document, html, timer, run_script as python_runner
+from browser import window, ajax, document, html, timer  # , run_script as python_runner
 from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
 from model_facade import MF
@@ -63,11 +63,40 @@ MAPAS = {}
 
 
 def show(did="0"):
-    build_(did=did, name="forest_0.py")
+    button_(did=did, name="forest_0.py") if "@@" in did else build_(did=did, name="forest_0.py")
 
 
-def build(name="forest_0.py"):
+def build(name="forest_0.py", oid=None, fid=None, base=None):
     ScriptBuilder(script_name=name).get_script(name)
+    if oid:
+        from editor_widget import main
+        import browser
+
+        modal = html.DIV(Id="_modal_", Class="modal")
+        try:
+            _ = document["_modal_"]
+        except:
+            document.body.insertAdjacentElement("beforeend", modal)
+            print("build insertAdjacentElement")
+
+            main(browser, oid=oid, fid=fid, base=base)
+
+
+def button_(did, name="example"):
+    def go():
+        did_ = did   # .replace("@@", "")
+        _did = f"_{did_}"
+        print(did_, HEADER)
+        head = HEADER[did_] if did_ in HEADER else ""
+        namer = head.pop("title") if head and "title" in head else name
+        go_ = head.pop("panel_show") if head and "panel_show" in head else lambda *_: None
+        header = HEADER[did_] if did_ in HEADER else {}
+        button = html.BUTTON(f"Ativar {namer}")
+        # button.onclick(lambda *_: go_())
+        button.bind("click", lambda *_: None)
+        _ = document[did_].insertAdjacentElement("afterend", button)
+
+    timer.set_timeout(go, 150)
 
 
 class ScriptVito:
@@ -152,6 +181,7 @@ class ScriptBuilder:
             the ``name`` keyword to run ``__main__`` section of a Python script
         """
         self.script_name = script_name
+        self.script_bundle = {}
         self.code = ""
         self.params = params
         self.name_to_run = params.get("name", None)
@@ -164,7 +194,8 @@ class ScriptBuilder:
         self.code = code
         self.params.pop('script_name') if 'script_name' in params else None
         COD[script_div_id] = code.strip()
-        HEADER[script_div_id] = dict(code=code, script_namer=self.script_name, **params)
+        header_dict = dict(code=code, script_namer=self.script_name, panel_show=lambda *_: None, **params)
+        self.script_bundle[script_div_id] = HEADER[script_div_id] = header_dict
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
@@ -281,11 +312,11 @@ class ScriptWidget:
         if self.name_to_run is None:
             exec(editor.getValue(), dict(a_tarefa=tarefa, Kaiowa=kaiowa))
         else:
-            python_runner(editor.getValue(), self.name_to_run)
+            exec(editor.getValue(), self.name_to_run)
 
     def get_script(self, code=None):
         def got_text(text):
-            self.editor.setValue(text, -1) if text else None
+            self.editor.setValue(text if len(text) > 4 else self.code_text, -1)
             # print(f"get_script/{self.script_name}/{self.script_title}\n{text}")
         MF.get(f"{self.script_name}/{self.script_title}", got_text)
         self.editor.setValue(self.code_text, -1)

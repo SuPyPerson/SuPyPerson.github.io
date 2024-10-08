@@ -6,14 +6,14 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > E, de repente, o rádio tocou</br>
 > Cena de cinema </br>
 
-<img src onerror="__did_got__('../../_prog/a_tomada0.py')"></img>
-<div id="_jogo_" style="position:relative; left:50px; min-height: 500px">
+<img src onerror="__did_got__('../../_prog/a_tomada0.py', oid='_jogo_', fid='to0')"></img>
+<div id="_editor_widget_" style="position:relative; left:50px; min-height: 500px">
 Aqui está um elemento identificado como '_jogo_'
 </div>
 
 + Uma Mensagem na Garrafa +
  
-  <img id="to0" src onerror="__widget__(this.id)"/>
+  <img id="to0@@" src onerror="__widget__(this.id)"/>
  
     Os Agentes da ESCOLA são chamados para investigar uma mensagem encontrada numa garrafa.
   
@@ -26,7 +26,7 @@ Aqui está um elemento identificado como '_jogo_'
 
 + Aventuras na Praia +
   
-  <img id="to1" src onerror="__widget__(this.id)"/>
+  <img id="to1@@" src onerror="__widget__(this.id)"/>
  
     A mensagem fala sobre um baú perdido na praia.
   
@@ -41,7 +41,7 @@ Aqui está um elemento identificado como '_jogo_'
 
 + Tirando do Baú +
   
-  <img id="to2" src onerror="__widget__(this.id)"/>
+  <img id="to2@@" src onerror="__widget__(this.id)"/>
  
     Vocês encontraram algo no baú. Invente uma aventura ligada a esta descoberta.
   
