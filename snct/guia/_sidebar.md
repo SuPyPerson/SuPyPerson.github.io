@@ -1,10 +1,8 @@
-- [Apresentação](README)
-- [Guia do Agente](http://localhost:8080/?rel=c)
+- [Apresentação](../README)
+- [Caderno do Agente](http://localhost:8080/?rel=n)
 - [Início](inicial.md)
 - [Conhecendo os Biomas](biomas.md)
 - [Trilhando o Caminho](caminhos.md)
 - [Perigos para a Natureza](perigos.md)
 - [Cuidando dos Biomas](cuidando.md)
 - [Guardiões da floresta](guardando.md)
-
-
