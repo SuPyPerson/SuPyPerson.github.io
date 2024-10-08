@@ -6,7 +6,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > E agora para algo totalmente diferente! <br>
 > Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
 
-Os povos originários são os guardiões dos biomas. Escolha no [Guia do Agente](http://bit.ly/SNCT_24_F) uma opção de jogo
+Os povos originários são os guardiões dos biomas. Escolha no [Guia do Agente](http://bit.ly/SNCT_24_G) uma opção de jogo
 
 ```python
 from vitollino import Jogo, Cena
