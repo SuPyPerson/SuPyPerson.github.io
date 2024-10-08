@@ -14,7 +14,7 @@ Vamos fazer um jogo com animais da amazônia
 ```python
 bichos = "escolha um bicho da amazônia: a-tracajá b- elefante c-jacaré"
 bicho = input(bichos)
-while bicho not in "ac"
+while bicho not in "ac":
     bicho = input(bichos)
 input("você acertou")
 ```
@@ -49,6 +49,30 @@ Vamos fazer um jogo com animais do pantanal
 
 ```python
 bichos = "escolha um bicho do pantanal: a-tracajá b- elefante c-jacaré"
+bicho = input(bichos)
+while bicho not in "ac"
+    bicho = input(bichos)
+input("você acertou")
+```
+
+## O cerrado
+
+Vamos fazer um jogo com animais do cerrado
+
+```python
+bichos = "escolha um bicho do cerrado: a-tracajá b- elefante c-jacaré"
+bicho = input(bichos)
+while bicho not in "ac"
+    bicho = input(bichos)
+input("você acertou")
+```
+
+## O pampa
+
+Vamos fazer um jogo com animais do pampa
+
+```python
+bichos = "escolha um bicho do pampa: a-tracajá b- elefante c-jacaré"
 bicho = input(bichos)
 while bicho not in "ac"
     bicho = input(bichos)

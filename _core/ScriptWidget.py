@@ -201,6 +201,7 @@ class ScriptWidget:
         """
         mid = main_div_id
         m = main_div_id = f"_{main_div_id}"
+        document[mid].insertAdjacentElement("afterend", html.DIV(Id=m))
         self.script_name = script_named
         self.script_div_id = "script-%s" % main_div_id
         self.name_to_run = params.get("name", None)
