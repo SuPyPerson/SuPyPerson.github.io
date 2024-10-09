@@ -2,7 +2,7 @@
 Open Source program Pynoplia - Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
 PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 -->
-# O Agente da SNCT - Cuidando dos Biomas
+# O Agente da SNCT - Guardiões da Terra
 > E agora para algo totalmente diferente! <br>
 > Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
 
@@ -21,6 +21,7 @@ Vai aparecer o seu jogo no espaço abaixo quando apertar o botão <b>Executar</b
 ```python
 from vitollino import Jogo, Cena
 # pegue no guia algo para criar uma cena
+# procure incrementar o diálogo entre Rosalinda e Karajá
 ```
 
 #### LABASE

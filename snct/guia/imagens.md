@@ -8,7 +8,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
 | Amazônia            | Pantanal           | Cerrado                 |
 |---------------------|--------------------|-------------------------|
-| ![pic][am1]         | ![pic][pan1]       | ![pic][cer1]            |
+| ![pic][ama1]        | ![pic][pan1]       | ![pic][cer1]            |
 | _cenas/amazonia.jpg | _cenas/pntanal.jpg | _cenas/desmatamento.jpg |
 
 | Mata Atlântica            | Caatinga              | Pampa                    |
@@ -16,9 +16,12 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 | ![pic][atl1]              | ![pic][caa1]          | ![pic][pam1]             |
 | _cenas/mata-atlantica.jpg | _cenas/caatinga1.jpeg | _cenas/pantanal1.jpeg    |
 
-[am1]: ../../_cenas/amazonia.jpg
+[am1a]: ../../_cenas/amazonia.jpg
 [pan1]: ../../_cenas/pntanal.jpg
 [cer1]: ../../_cenas/desmatamento.jpg
 [atl1]: ../../_cenas/mata-atlantica.jpg
 [caa1]: ../../_cenas/caatinga1.jpeg
 [pam1]: ../../_cenas/pantanal1.jpeg
+
+#### LABASE
+[footer](footer.md ':include')

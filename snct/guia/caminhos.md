@@ -2,8 +2,7 @@
 Open Source program Pynoplia - Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
 PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 -->
-# Guia do Agente da SNCT
-## Conhecendo os Biomas
+# Guia do Agente da SNCT - Trilhando os Caminhos
 > E agora para algo totalmente diferente! <br>
 > Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
 

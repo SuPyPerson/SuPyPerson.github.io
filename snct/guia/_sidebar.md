@@ -5,4 +5,4 @@
 - [Trilhando o Caminho](caminhos.md)
 - [Perigos para a Natureza](perigos.md)
 - [Cuidando dos Biomas](cuidando.md)
-- [Guardiões da floresta](guardando.md)
+- [Guardiões da Floresta](guardando.md)
