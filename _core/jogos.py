@@ -578,6 +578,60 @@ class Swap:
         self.venceu.vai() if all(resultado) else None
         return all(resultado)
 
+class Sequencia:
+    """Usa um editor de imagem (/) e recorta a imagem em linhas geracionais.
+       No game, o jogador terá que clicar nas linhas em ordem certa para montar a imagem corretamente.
+    """
+    def __init__(self, esta_cena, chama_quando_acerta=lambda: True, dim=(200,20, 200, 50), topo=(50, 100),
+                 blocos = ()):
+        posiciona_proxima = self.posiciona_proxima
+        class LinhaGeracional:
+            """Representa cada uma das linhas recortadas da imagem original"""
+            def __init__(self, linha, posicao):
+                self.x, self.y, self.w, _ = x,y,w,h = dim
+                self.posicao = posicao # posição original no topo da página
+                self.linha = Elemento(linha, x=x+ posicao*w, y=y, w=w, h=h, cena=esta_cena)
+                self.linha.vai = self.clica_e_posiciona_a_linha #quando clica, monta a imagem
+            def zera(self):
+                self.linha.x = self.x+self.posicao*self.w  # posiciona cada peça com 200 pixels de distância
+                self.linha.y = self.y  # posiciona a peça no topo da página
+                self.linha.vai = self.clica_e_posiciona_a_linha
+            def clica_e_posiciona_a_linha(self, *_):
+                x, y = posiciona_proxima(self.posicao)
+                if y:  # se o y retornou zero é porque o posiciona próxima detectou montagem errada
+                    self.linha.x, self.linha.y = x, y # monta a linha na imagem
+                    self.linha.vai = lambda *_:None #desativa o click da linha
+
+        # coloca cada uma das linhas embaralhadas
+        self.x, self.y, w_, h_ = dim
+        blocos = blocos or [HERDO1, HERDO3, HERDO2, HERDO0]
+        self.linhas = [
+            LinhaGeracional(linha=uma_linha, posicao=uma_posicao)
+            for uma_posicao, uma_linha in enumerate(blocos)]
+        self.acertou = chama_quando_acerta
+        self.inicia, self.linha_inicial = topo
+        self.topo = self.linha_inicial
+        self.altura_da_linha = h_  # cada peça do herdograma tem esta altura
+        self.posicoes_montadas = []  #lista das linhas já montadas no herdograma
+        self.posicoes_corretas = [3, 0, 2, 1]  # lista das linhas montadas corretamente
+
+    def posiciona_proxima(self, posicao):
+        """Chamado pelo clique (vai) de cada peça. Atualiza a próxima posição da peça.
+           Calcula se montou correto, comparando com a lista de posições corretas.
+           Se já montou quatro peças, e não acerto sinaliza com zero, para iniciar o jogo.
+        """
+        self.linha_inicial += self.altura_da_linha  # incrementa a posição para montar na linha de baixo
+        self.posicoes_montadas += [posicao]  # adiciona o índice desta peça na lista de peças montadas
+        if self.posicoes_montadas == self.posicoes_corretas:
+            self.acertou()  # invoca a ação acertou se montou nas posições corretas
+            return self.inicia, self.linha_inicial
+        else:
+            if len(self.posicoes_montadas) == 4:  # se montou quatro peças incorretas reinicia o game
+                [linha.zera() for linha in self.linhas]  # volta as peças para o topo
+                self.posicoes_montadas = []  # indica que nenhuma peça foi montada
+                self.linha_inicial = self.topo  # inicia a altura de montagem da primeira peça
+                return 0, 0  #  retorna uma posição inválida para sinalizar a peça
+        return self.inicia, self.linha_inicial
 
 def main():
     cena = J.c(Associa.CENA)
@@ -595,3 +649,7 @@ if __name__ == "__main__":
 
     STYLE.update(width=850, height="650px")
     # Cubos(CENAS, tw=500, nx=2, ny=2)
+HERDO0="https://i.imgur.com/9jsxjLw.png"
+HERDO1="https://i.imgur.com/w60bNMG.png"
+HERDO2="https://i.imgur.com/RztgWA1.png"
+HERDO3="https://i.imgur.com/FZOhJhb.png"
