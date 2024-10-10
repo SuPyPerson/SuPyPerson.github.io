@@ -11,9 +11,9 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 Vamos fazer um jogo com animais da amazônia
 
 ```python
-bichos = "escolha um bicho da amazônia: a-tracajá b- elefante c-jacaré"
+bichos = "escolha um bicho da amazônia: a-anta, b-lobo guará, c-capivara, d-tatu."
 bicho = input(bichos)
-while bicho not in "ac":
+while bicho not in "acd":
     bicho = input(bichos)
 input("você acertou")
 ```
@@ -23,9 +23,9 @@ input("você acertou")
 Vamos fazer um jogo com animais da mata atlântica
 
 ```python
-bichos = "escolha um bicho da mata atlântica: a-tracajá b- elefante c-jacaré"
+bichos = "escolha um bicho da mata atlântica: a-quati, b-mico leão-dourado, c-coruja."
 bicho = input(bichos)
-while bicho not in "ac"
+while bicho not in "ab":
     bicho = input(bichos)
 input("você acertou")
 ```
@@ -35,9 +35,9 @@ input("você acertou")
 Vamos fazer um jogo com animais da caatinga
 
 ```python
-bichos = "escolha um bicho da caatinga: a-tracajá b- elefante c-jacaré"
+bichos = "escolha um bicho da caatinga: a-onça-parda, b-tatu-bola, c-gambá, d-mocó."
 bicho = input(bichos)
-while bicho not in "ac"
+while bicho not in "c":
     bicho = input(bichos)
 input("você acertou")
 ```
@@ -47,9 +47,9 @@ input("você acertou")
 Vamos fazer um jogo com animais do pantanal
 
 ```python
-bichos = "escolha um bicho do pantanal: a-tracajá b- elefante c-jacaré"
+bichos = "escolha um bicho do pantanal: a-onça pintada, b-ariranha, c-arara azul."
 bicho = input(bichos)
-while bicho not in "ac"
+while bicho not in "c":
     bicho = input(bichos)
 input("você acertou")
 ```
@@ -59,9 +59,9 @@ input("você acertou")
 Vamos fazer um jogo com animais do cerrado
 
 ```python
-bichos = "escolha um bicho do cerrado: a-tracajá b- elefante c-jacaré"
+bichos = "escolha um bicho do cerrado: a-lontra, b-tatu-canastra, c-tamanduà, d-catitu, e-macaco-prego"
 bicho = input(bichos)
-while bicho not in "ac"
+while bicho not in "a":
     bicho = input(bichos)
 input("você acertou")
 ```
@@ -71,9 +71,9 @@ input("você acertou")
 Vamos fazer um jogo com animais do pampa
 
 ```python
-bichos = "escolha um bicho do pampa: a-tracajá b- elefante c-jacaré"
+bichos = "escolha um bicho do pampa: a-tachã, b-tuco-tuco, c-sapinho de barriga vermelha, d-beija flor da barba azul."
 bicho = input(bichos)
-while bicho not in "ac"
+while bicho not in "d":
     bicho = input(bichos)
 input("você acertou")
 ```
