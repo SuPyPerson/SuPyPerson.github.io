@@ -412,18 +412,20 @@ class Cubos:
         # self.write(set(cubo.inx for cubo in self.cubos))
         return len(set(cubo.inx for cubo in self.cubos)) == 1
 
+
 from browser.timer import set_timeout
+
 """Usa o timer do navegador para dar um tempinho inicial"""
 SF = {"font-size": "30px", "transition": "left 1s, top 1s"}
 """Dá o tamanho da letra da legenda e faz a legenda se movimentar suavemente quando inicia e acerta"""
-VAZIO = "https://i.imgur.com/npb9Oej.png"
+VAZIO = "../_ativo/kwarwp/vazio.png"
 
 
 class Associa:
     """ Jogo que associa o nome de um objeto com o seu desenho
     """
-    CENA = "https://i.imgur.com/AD1wScZ.jpg"
-    CELULA = "https://i.imgur.com/tcCj6nw.png"
+    CENA = "../_ativo/kwarwp/kwarwp.png"
+    CELULA = "../_ativo/kwarwp/vazio.png"
 
     class Nome:
         """ Cria uma legenda a ser arrastada para a lacuna correta
@@ -454,7 +456,7 @@ class Associa:
             self.o_nome.elt.html = f"{nome}"
             """Adiciona o nome no elemento que é a legenda"""
             set_timeout(self.inicia, 1500 + 300 * tit)
-            """Inicia um cronômetro (1.5 seg) para o jogador ter um tempinho para ver a solução, cada legenda leva mais tempo"""
+            """Inicia um cronômetro (1.5 seg) para o jogador ver a solução, cada legenda leva mais tempo"""
 
         def acertou(self, ev=None, nome=None):
             """Quando o jogador acerta, apaga as interrogações da lacuna e posiciona a legenda sobre a lacuna"""
@@ -526,7 +528,7 @@ class Swap:
                 px, py = indice % dw * pw, indice // dw * ph
                 """posição horizontal e vertical em pixels onde o desenho da peça está na imagem"""
                 super().__init__(img, x=lx, y=ly, w=pw, h=ph, drag=True, cena=cena)
-                """chama o construtor do Elemento Vitollino passandoa as informações necessárias"""
+                """chama o construtor do Elemento Vitollino passando as informações necessárias"""
                 self.siz = (w, h)
                 """redimensiona a figura da imagem para o tamanho fornecido"""
                 self.elt.Id = f"_swap_{local}"
@@ -578,29 +580,35 @@ class Swap:
         self.venceu.vai() if all(resultado) else None
         return all(resultado)
 
+
 class Sequencia:
     """Usa um editor de imagem (/) e recorta a imagem em linhas geracionais.
        No game, o jogador terá que clicar nas linhas em ordem certa para montar a imagem corretamente.
     """
-    def __init__(self, esta_cena, chama_quando_acerta=lambda: True, dim=(200,20, 200, 50), topo=(50, 100),
-                 blocos = ()):
+
+    def __init__(self, esta_cena, chama_quando_acerta=lambda: True, dim=(200, 20, 200, 50), topo=(50, 100),
+                 blocos=()):
         posiciona_proxima = self.posiciona_proxima
+
         class LinhaGeracional:
             """Representa cada uma das linhas recortadas da imagem original"""
+
             def __init__(self, linha, posicao):
-                self.x, self.y, self.w, _ = x,y,w,h = dim
-                self.posicao = posicao # posição original no topo da página
-                self.linha = Elemento(linha, x=x+ posicao*w, y=y, w=w, h=h, cena=esta_cena)
-                self.linha.vai = self.clica_e_posiciona_a_linha #quando clica, monta a imagem
+                self.x, self.y, self.w, _ = x, y, w, h = dim
+                self.posicao = posicao  # posição original no topo da página
+                self.linha = Elemento(linha, x=x + posicao * w, y=y, w=w, h=h, cena=esta_cena)
+                self.linha.vai = self.clica_e_posiciona_a_linha  # quando clica, monta a imagem
+
             def zera(self):
-                self.linha.x = self.x+self.posicao*self.w  # posiciona cada peça com 200 pixels de distância
+                self.linha.x = self.x + self.posicao * self.w  # posiciona cada peça com 200 pixels de distância
                 self.linha.y = self.y  # posiciona a peça no topo da página
                 self.linha.vai = self.clica_e_posiciona_a_linha
+
             def clica_e_posiciona_a_linha(self, *_):
                 x, y = posiciona_proxima(self.posicao)
                 if y:  # se o y retornou zero é porque o posiciona próxima detectou montagem errada
-                    self.linha.x, self.linha.y = x, y # monta a linha na imagem
-                    self.linha.vai = lambda *_:None #desativa o click da linha
+                    self.linha.x, self.linha.y = x, y  # monta a linha na imagem
+                    self.linha.vai = lambda *_: None  # desativa o click da linha
 
         # coloca cada uma das linhas embaralhadas
         self.x, self.y, w_, h_ = dim
@@ -612,7 +620,7 @@ class Sequencia:
         self.inicia, self.linha_inicial = topo
         self.topo = self.linha_inicial
         self.altura_da_linha = h_  # cada peça do herdograma tem esta altura
-        self.posicoes_montadas = []  #lista das linhas já montadas no herdograma
+        self.posicoes_montadas = []  # lista das linhas já montadas no herdograma
         self.posicoes_corretas = [3, 0, 2, 1]  # lista das linhas montadas corretamente
 
     def posiciona_proxima(self, posicao):
@@ -630,8 +638,9 @@ class Sequencia:
                 [linha.zera() for linha in self.linhas]  # volta as peças para o topo
                 self.posicoes_montadas = []  # indica que nenhuma peça foi montada
                 self.linha_inicial = self.topo  # inicia a altura de montagem da primeira peça
-                return 0, 0  #  retorna uma posição inválida para sinalizar a peça
+                return 0, 0  # retorna uma posição inválida para sinalizar a peça
         return self.inicia, self.linha_inicial
+
 
 def main():
     cena = J.c(Associa.CENA)
@@ -644,12 +653,13 @@ def main():
     ribossomo = associa.nome(nome="ribossomo", tit=3, x=560, y=40)
     cena.vai()
 
+
 if __name__ == "__main__":
     from vitollino import STYLE
 
     STYLE.update(width=850, height="650px")
     # Cubos(CENAS, tw=500, nx=2, ny=2)
-HERDO0="https://i.imgur.com/9jsxjLw.png"
-HERDO1="https://i.imgur.com/w60bNMG.png"
-HERDO2="https://i.imgur.com/RztgWA1.png"
-HERDO3="https://i.imgur.com/FZOhJhb.png"
+HERDO0 = "https://i.imgur.com/9jsxjLw.png"
+HERDO1 = "https://i.imgur.com/w60bNMG.png"
+HERDO2 = "https://i.imgur.com/RztgWA1.png"
+HERDO3 = "https://i.imgur.com/FZOhJhb.png"

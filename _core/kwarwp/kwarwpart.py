@@ -14,6 +14,9 @@
 
     Changelog
     ---------
+    .. versionadded::    24.10
+        Novos nomes para os aparatos usando o nome da imagem (10).
+
     .. versionadded::    24.03
         Adiciona nomes para os objetos da classe (03).
 
@@ -61,7 +64,8 @@ class Nome:
     @staticmethod
     def nomear(img):
         img = img or "nadinha.xxx"
-        return Nome.NOMES.get(img.split(".")[-2][-7:], "")
+        # return Nome.NOMES.get(img.split(r"/")[-1].split(".")[-2], "")
+        return img.split(r"/")[-1].split(".")[-2].upper()
 
 
 class Nulo:
