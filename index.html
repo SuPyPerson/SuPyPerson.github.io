@@ -13,10 +13,12 @@ SNCT and Guide Fix - Pre Agent Note - Jogos Swap Associa - fix bioma.md
     <link rel="shortcut icon" href="/_media/pynoplia.png" type="image/x-icon"/>
     <link rel="stylesheet" href="/_lib/fa6.4.2_all.min.css"/>
     <link rel="stylesheet" href="/_lib/darcula.css">
-    <script type=" text/javascript " src="/_lib/brython3.11.3.min.js"></script>
-    <script type=" text/javascript " src="/_lib/brython3.11.3_stdlib.js"></script>
-<!--<script type=" text/javascript " src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.11.3/brython.min.js"></script>-->
-<!--<script type=" text/javascript " src="https://cdnjs.cloudflare.com/ajax/libs/brython/3.11.3/brython_stdlib.min.js"></script>-->
+<!--    <script type=" text/javascript " src="/_lib/brython3.11.3.min.js"></script>-->
+<!--    <script type=" text/javascript " src="/_lib/brython3.11.3_stdlib.js"></script>-->
+    <script type=" text/javascript " src="/_lib/brython3.13.0.min.js"></script>
+    <script type=" text/javascript " src="/_lib/brython3.13.0_stdlib.min.js"></script>
+<!--<script type=" text/javascript " src="https://cdn.jsdelivr.net/npm/brython@3.13.0/brython.min.js"></script>-->
+<!--<script type=" text/javascript " src="https://cdn.jsdelivr.net/npm/brython@3.13.0/brython_stdlib.min.js"></script>&ndash;&gt;-->
     <link rel="stylesheet" href="/_lib/accordion_style.css">
     <link rel="stylesheet" href="/_core/css/lecture.css">
     <script src="/_lib/ace1.36.2.min.js"></script>
@@ -82,10 +84,10 @@ SNCT and Guide Fix - Pre Agent Note - Jogos Swap Associa - fix bioma.md
 
     </style>
  </head>
-<!--<body>-->
-<!--<brython-options debug="1" cache="true" pythonpath="_prog _core"></brython-options>-->
+<body>
+<brython-options debug="1" cache="true" pythonpath="/_prog /_core"></brython-options>
 
-<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['_prog', '_core']})">
+<!--<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['_prog', '_core']})">-->
     <!--    'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_core',
      'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_prog']})">
     <div id="pydiv"></div>-->
@@ -95,8 +97,12 @@ SNCT and Guide Fix - Pre Agent Note - Jogos Swap Associa - fix bioma.md
     <script type="text/python">
         from browser import window, document, alert, html, timer
         from ScriptWidget import show, build
+        def clipboard_show(bt):
+            btp = bt.parent.previousSibling
+            window.navigator.clipboard.writeText(btp.text)
         window.__widget__ = show
         window.__did_got__ = build
+        window.__copy_clip__ = clipboard_show
 
     </script>
     <script>

@@ -111,6 +111,7 @@ class ScriptVito:
         Elemento(img=sun, cena=c)
         Elemento(img=soil, y=100, w=695, h=ground, cena=c)
         exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=self.prepara))
+        # exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=lambda m: self.prepara(m)))
 
 
 def build_(did="0", name="forest_0.py"):

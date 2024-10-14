@@ -11,37 +11,40 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 Vamos fazer um jogo com animais da amazônia
 
 ```python
-bichos = "escolha um bicho da amazônia: a-anta, b-lobo guará, c-capivara, d-tatu."
+bichos = "escolha um bicho da amazônia: a-anta, b-urso, c-capivara, d-tatu."
 bicho = input(bichos)
 while bicho not in "acd":
     bicho = input(bichos)
 input("você acertou")
 ```
-
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 ## A mata atlântica
 
 Vamos fazer um jogo com animais da mata atlântica
 
 ```python
-bichos = "escolha um bicho da mata atlântica: a-quati, b-mico leão-dourado, c-coruja."
-bicho = input(bichos)
-while bicho not in "ab":
-    bicho = input(bichos)
-input("você acertou")
+bichos = dict(a="quati", b="pinguim", c="coruja", d="sucuri")
+escolha = "escolha um bicho da mata atlântica: " + str(bichos)
+bicho = input(escolha)
+while bicho not in "ac":
+    pergunta = f"{bichos[bicho]} não é, "+escolha
+    bicho = input(pergunta)
+input("você acertou" if bicho else "você desistiu")
 ```
-
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 ## A caatinga
 
 Vamos fazer um jogo com animais da caatinga
 
 ```python
-bichos = "escolha um bicho da caatinga: a-onça-parda, b-tatu-bola, c-gambá, d-mocó."
+bichos = "escreva certo um animal da caatinga: comó, bamgá, caracrá, amerise."
 bicho = input(bichos)
-while bicho not in "c":
-    bicho = input(bichos)
-input("você acertou")
+while bicho not in "carcará gambá seriema mocó":
+    pergunta = f"{bicho} não é, "+ bichos
+    bicho = input(pergunta)
+input(f"você acertou, {bicho} é um animal da caatinga" if bicho else "você desistiu")
 ```
-
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 ## O pantanal
 
 Vamos fazer um jogo com animais do pantanal
@@ -53,7 +56,7 @@ while bicho not in "c":
     bicho = input(bichos)
 input("você acertou")
 ```
-
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 ## O cerrado
 
 Vamos fazer um jogo com animais do cerrado
@@ -65,7 +68,7 @@ while bicho not in "a":
     bicho = input(bichos)
 input("você acertou")
 ```
-
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 ## O pampa
 
 Vamos fazer um jogo com animais do pampa
@@ -77,14 +80,15 @@ while bicho not in "d":
     bicho = input(bichos)
 input("você acertou")
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 ## A fauna
 
 - PANTANAL- ONÇA PINTADA, ARIRANHA, ARARA AZUL GRANDE.
-- AMAZÔNIA- ANTA, LOBO GUARÀ, CAPIVARA, TATU.
+- AMAZÔNIA- ANTA, LOBO GUARÁ, CAPIVARA, TATU.
 - MATA ATLÂNTICA- QUATI, MICO-LEÃO-DOURADO, CORUJA.
-- CAATINGA- ONÇA-PARDA, TATU-BOLA, GAMBÀ, MOCÒ.
+- CAATINGA- ONÇA-PARDA, TATU-BOLA, GAMBÁ, MOCÓ.
 - PAMPA- TACHÃ, TUCO-TUCO, SAPINHO DE BARRIGA VERMELHA, BEIJA FLOR DA BARBA AZUL.
-- CERRADO- LONTRA, TATU-CANASTRA, TAMANDUÀ, CATITU, MACACO-PREGO.
+- CERRADO- LONTRA, TATU-CANASTRA, TAMANDUÁ, CAITITU, MACACO-PREGO.
 
 #### LABASE
 [footer](footer.md ':include')
