@@ -14,6 +14,7 @@ Os povos originários são os guardiões dos biomas. Escolha uma opção de jogo
 from vitollino import Jogo, Cena
 # pegue no guia algo para criar uma cena
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 ## Demarcando o território Indígena
 
@@ -21,6 +22,7 @@ from vitollino import Jogo, Cena
 from vitollino import Jogo, Cena
 # pegue no guia algo para criar uma cena
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 ## As Nações originárias e os biomas
 
@@ -36,6 +38,7 @@ associa.nome(nome="pantanal", tit=0, x=270, y=210)
 associa.nome(nome="amazônia", tit=1, x=250, y=120)
 associa.nome(nome="caatinga", tit=2, x=450, y=190)
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 ## Denunciando maus tratos
 
@@ -43,6 +46,7 @@ associa.nome(nome="caatinga", tit=2, x=450, y=190)
 from vitollino import Jogo, Cena
 # pegue no guia algo para criar uma cena
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 ## Reconhecendo o valor do Indígena
 
@@ -50,6 +54,7 @@ from vitollino import Jogo, Cena
 from vitollino import Jogo, Cena
 # pegue no guia algo para criar uma cena
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 #### LABASE
 [footer](footer.md ':include')

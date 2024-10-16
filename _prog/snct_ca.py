@@ -18,7 +18,7 @@ _SET1_ = {
 # procure dicas no Guia
 from vitollino import Cena, Jogo
 Jogo(style=dict(height="450px", width="600px"), did="_jogo_").z()
-Cena("_cenas/pantanal1.jpeg").vai()
+Cena("_cenas/pantanal1.jpg").vai()
 _SET2_ = {
     "script_name": "caderno_per", "script_div_id": "caderno_per",
     "height": 200, "title": "Perigos para os Biomas", "show_scenario": False, "console_height": 45
@@ -28,7 +28,7 @@ _SET2_ = {
 # procure dicas no Guia
 from vitollino import Cena, Jogo, Elemento
 Jogo(style=dict(height="450px", width="600px"), did="_jogo_").z()
-a_cena = Cena("_cenas/pantanal1.jpeg").vai()
+a_cena = Cena("_cenas/pantanal1.jpg").vai()
 Elemento("_ativo/rosalinda.png", x=200, y=300, cena=a_cena)
 _SET3_ = {
     "script_name": "caderno_cui", "script_div_id": "caderno_cui",
@@ -39,7 +39,7 @@ _SET3_ = {
 # procure dicas no Guia
 from vitollino import Cena, Jogo, Elemento
 Jogo(style=dict(height="450px", width="600px"), did="_jogo_").z()
-a_cena = Cena("_cenas/pantanal1.jpeg").vai()
+a_cena = Cena("_cenas/pantanal1.jpg").vai()
 fala = "A ação humana pode degradar um bioma."
 Elemento("_ativo/rosalinda.png", x=200, y=300, texto=fala, cena=a_cena)
 _SET4_ = {

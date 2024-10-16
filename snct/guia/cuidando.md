@@ -38,6 +38,7 @@ Arapuca(100, 340, 3, 2)
 Arapuca(300, 180, 3, 3)
 Arapuca(400, 350, 3, 4)
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 ## Protegendo a flora
 
@@ -66,6 +67,7 @@ class Fogo:
         
 Fogo()
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 ## Protegendo o ambiente
 
@@ -73,6 +75,7 @@ Fogo()
 from vitollino import Jogo, Cena
 # pegue no guia algo para criar uma cena
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 ## Protegendo a água
 
@@ -80,6 +83,7 @@ from vitollino import Jogo, Cena
 from vitollino import Jogo, Cena
 # pegue no guia algo para criar uma cena
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 ## Protegendo a atmosfera
 
@@ -87,6 +91,7 @@ from vitollino import Jogo, Cena
 from vitollino import Jogo, Cena
 # pegue no guia algo para criar uma cena
 ```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 #### LABASE
 [footer](footer.md ':include')
