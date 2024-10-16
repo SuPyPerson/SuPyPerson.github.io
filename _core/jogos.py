@@ -531,7 +531,7 @@ class Swap:
                 """chama o construtor do Elemento Vitollino passando as informações necessárias"""
                 self.siz = (w, h)
                 """redimensiona a figura da imagem para o tamanho fornecido"""
-                self.elt.Id = f"_swap_{local}"
+                self.elt.id = f"_swap_{local}"
                 """rotula o elemento da peça com a posição onde foi alocada"""
                 self.pos = (-px, -py)
                 """reposiciona a figura da imagem para o pedaço que vai aparecer na peça"""
@@ -543,24 +543,21 @@ class Swap:
                 ev.stopPropagation()
                 src_id = ev.data['text']
                 local = int(src_id.split('_')[-1])
-                print(f"local -> {local} | indice -> {self.indice}")
+                local = swap.locais[local]
+                # print(f"local -> {local} | indice -> {self.indice}")
                 self.dropped(ev, local)
 
             def dropped(self, ev, local):
-                o_outro = swap.pecas[local].pra_la(self, self.x, self.y, local)
-                o_local = swap.pecas[local].local
-                print(f"indice, o outro -> {self.indice} @ {self.local} <-> {o_outro} @ {o_local}")
+                # o_outro = swap.pecas[local].pra_la(self, self.x, self.y, local)
+                # o_local = swap.pecas[local].local
+
+                m, u = self, local  # swap.pecas[local]
+                # u.x, u.y, m.x, m.y = m.x, m.y, u.x, u.y
+                u.x, u.y, u.local, m.x, m.y, m.local = m.x, m.y, m.local, u.x, u.y, u.local
+                # swap.pecas[m.local], swap.pecas[u.local] = swap.pecas[u.local], swap.pecas[m.local]
+
+                # print(f"indice, o outro -> {self.indice} @ {self.local} <-> {o_outro} @ {o_local}")
                 swap.montou()
-
-            def pra_la(self, peca, x, y, local):
-                self.local = peca.pra_ca(self.x, self.y, self.local)
-                self.x, self.y = x, y
-                return self.indice
-
-            def pra_ca(self, x, y, local):
-                self.local, local = local, self.local
-                self.x, self.y = x, y
-                return local
 
             def certo(self):
                 return self.indice == self.local
@@ -572,11 +569,12 @@ class Swap:
         pecas = list(range(dw * dh))
         shuffle(pecas)
         self.pecas = [Peca(local, indice) for local, indice in enumerate(pecas)]
+        self.locais ={peca.local: peca for peca in self.pecas}
         self.venceu = venceu or J.n(cena, "Voce venceu!")
 
     def montou(self):
         resultado = [peca.certo() for peca in self.pecas]
-        print(resultado)
+        # print(resultado)
         self.venceu.vai() if all(resultado) else None
         return all(resultado)
 
