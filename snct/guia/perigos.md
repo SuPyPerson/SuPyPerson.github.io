@@ -51,7 +51,7 @@ pasto = Cena("_cenas/pastagem.webp")
 def vai_pasto(evento=None):
     pasto.vai()
 fazendeiro = Elemento("_ativo/snct/fazendeiro.png", x=200, y=150, texto=fala, cena=cena1, foi=vai_pasto)
-gabi = Elemento("_ativo/snct/gabi.png", x=450, y=120, texto=resposta, cena=cena1)
+gabi = Elemento("_ativo/snct/gabi.png", x=450, y=120, texto=resposta, cena=pasto)
 ```
 <button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 ## As queimadas

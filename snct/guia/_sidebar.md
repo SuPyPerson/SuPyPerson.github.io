@@ -7,3 +7,4 @@
 - [Guia dos Cuidados](cuidando.md)
 - [Guia dos Guardiões](guardando.md)
 - [Guia das Imagens](imagens.md)
+- [Créditos](creditos.md)
