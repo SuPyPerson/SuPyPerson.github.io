@@ -6,5 +6,7 @@
 - [Perigos para a Natureza](perigos.md)
 - [Cuidando dos Biomas](cuidando.md)
 - [Guardiões da floresta](guardando.md)
+- [Créditos](guia/creditos.md)
+
 
 
