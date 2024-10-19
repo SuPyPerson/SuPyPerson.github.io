@@ -12,6 +12,9 @@ Classes neste módulo:
 Changelog
 ---------
 
+.. versionadded::    24.10
+        Move aparatos do imgur para o diretório local (11).
+
 .. versionadded::    24.09
         Formata estilo da cena para se enquadrar no mapa (07).
         Apaga o conteúdo da cena quando inicia (07).
@@ -59,7 +62,8 @@ Changelog
 from collections import namedtuple as nt, deque
 from .kwarwpart import Vazio, Piche, Oca, Tora, Pedra, NULO, Nome
 
-IMGUR = "https://i.imgur.com/"
+# IMGUR = "https://i.imgur.com/"
+ORIGIN = "../_ativo/kwarwp/"
 """Prefixo do site imgur."""
 MAPA_INICIO = """
 ..#^¨..
@@ -84,13 +88,18 @@ Pc = nt("Pc", "oca cur cun paj ped vaz ter tor pic ceu sol flo cer")
             "?": Fab(self.coisa, f"{IMGUR}mOV7r9I.png"),  # FLOR
             "|": Fab(self.coisa, f"{IMGUR}uwYPNlz.png")  # CERCA
 """
-PC = Pc(*"& ^ ` p ¨ . _ # @ ~ * ? |".split())
+PCK = "& ^ ` p ¨ . _ # @ ~ * ? |".split()
+pc = "oca curumim cunha paje pedra vazio solo tora piche ceu sol flor cerca".split()
+FABRICA = {key: aparato for key, aparato in zip(PCK, pc)}
+PC = Pc(*PCK)
+
+
 # PS = Pc(*("⛺👦👧🧔‍♂️️🪨🟫🏞️🪵🕳️🌆🌞🪷🌳".split()))
 
 
 class JogoProxy:
     """ Proxy que enfileira comandos gráficos.
-    
+
     :param vitollino: Empacota o engenho de jogo Vitollino.
     :param elt: Elemento que vai ser encapsulado pelo proxy.
     :param proxy: Referência para o objeto proxy parente.
@@ -130,21 +139,21 @@ class JogoProxy:
 
     def a(self, *args, **kwargs):
         """Método fábrica - Encapsula a criação de elementos
-        
+
         :param args: Coleção de argumentos posicionais.
         :param kwargs: Coleção de argumentos nominais.
         :return: Proxy para um Elemento construído com estes argumentos.
-        
+
         """
         return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v, proxy=self)
 
     def e(self, *args, **kwargs):
         """Método fábrica - Encapsula a criação de elementos ativos, que executam roteiros.
-        
+
         :param args: Coleção de argumentos posicionais.
         :param kwargs: Coleção de argumentos nominais.
         :return: Proxy para um Elemento construído com estes argumentos.
-        
+
         """
         return JogoProxy(elt=self.ae(*args, **kwargs), vitollino=self.v, proxy=self, master=True)
 
@@ -177,11 +186,11 @@ class JogoProxy:
 
     def c(self, *args, **kwargs):
         """Encapsula a criação de cenas - apenas delega.
-        
+
         :param args: Coleção de argumentos posicionais.
         :param kwargs: Coleção de argumentos nominais.
         :return: Uma Cena do Vitollino construída com estes argumentos.
-        
+
         """
         return self.v.c(*args, **kwargs)
 
@@ -416,9 +425,9 @@ class Indio:
 
     def ocupou(self, ocupante):
         """ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
-        
+
         :param ocupante: O candidato a ocupar a posição corrente.
-        
+
         Este ocupante vai entrar no elemento do Vitollino e definitivamente se tornar
         o ocupante da vaga. Com isso ele troca o estado do método acessa para primeiro
         consultar a si mesmo, o ocupante corrente usando o protocolo definido em
@@ -466,7 +475,7 @@ class Indio:
 
     def ocupa(self, vaga, *_):
         """ Pedido por uma vaga para ocupar a posição nela.
-        
+
         :param vaga: A vaga que será ocupada pelo componente.
 
         No caso do índio, requisita que a vaga seja ocupada por ele.
@@ -480,7 +489,7 @@ class Indio:
 
     def acessa(self, ocupante):
         """ Pedido de acesso a essa posição, delegada ao ocupante pela vaga.
-        
+
         :param ocupante: O componente candidato a ocupar a vaga já ocupada pelo índio.
 
         No caso do índio, ele age como um obstáculo e não prossegue com o protocolo.
@@ -490,7 +499,7 @@ class Indio:
 
 class Kwarwp:
     """ Jogo para ensino de programação.
-    
+
         :param vitollino: Empacota o engenho de jogo Vitollino.
         :param mapa: Um texto representando o mapa do desafio.
         :param medidas: Um dicionário usado para redimensionar a tela.
@@ -502,6 +511,7 @@ class Kwarwp:
     def __init__(self, vitollino=None, mapa=None, medidas=None, indios=(), tela=None):
         if medidas is None:
             medidas = {}
+
         Kwarwp.KW = self
         Vazio.VITOLLINO = self.v = vitollino()
         self.tela = tela
@@ -536,6 +546,7 @@ class Kwarwp:
         Fab = nt("Fab", "objeto imagem")
         """Esta tupla nomeada serve para definir o objeto construído e sua imagem."""
 
+        '''
         self.fabrica = {
             "&": Fab(self.maloc, f"{IMGUR}dZQ8liT.jpg"),  # OCA
             "^": Fab(self.indio, f"{IMGUR}UCWGCKR.png"),  # INDIO
@@ -550,7 +561,13 @@ class Kwarwp:
             "*": Fab(self.coisa, f"{IMGUR}PfodQmT.gif"),  # SOL
             "?": Fab(self.coisa, f"{IMGUR}mOV7r9I.png"),  # FLOR
             "|": Fab(self.coisa, f"{IMGUR}uwYPNlz.png")  # CERCA
-        }
+        }'''
+        Fab = nt("Fab", "objeto imagem")
+        meth = [self.maloc, self.indio, self.indio, self.indio, self.apedra, self.vazio,
+                self.coisa, self.atora, self.barra, self.coisa, self.coisa, self.coisa, self.coisa]
+
+        self.fabrica = {key: Fab(met, f"{ORIGIN}{img}.png") for met, key, img in zip(meth, PCK, pc)}
+
         """Dicionário que define o tipo e a imagem do objeto para cada elemento."""
         # mapa = mapa if mapa != "" else self.mapa
         """Cria um cenário com imagem de terra de chão batido, céu e sol"""
@@ -583,7 +600,7 @@ class Kwarwp:
             cena.elt.html = ""
         self.os_indios = []
         self.cena = cena = self.v.c(fabrica["_"].imagem, tela=self.tela)
-        hg = (len(self.mapa)+1) * self.lado
+        hg = (len(self.mapa) + 1) * self.lado
         wd = (len(self.mapa[0])) * self.lado
         cena.elt.style.width = f"{wd}px"
         cena.elt.style.height = f"{hg}px"
@@ -595,6 +612,7 @@ class Kwarwp:
                             style={"padding-top": "10px", "text-align": "center", "width": "100%"})
         self.sol = self.v.a(fabrica["*"].imagem, w=60, h=60, x=0, y=40, cena=cena, vai=self.executa)
         # print("KW<", self.os_indios)
+        # print(fabrica["*"].imagem)
 
         self.taba = {(i, j): fabrica[imagem].objeto(fabrica[imagem].imagem, x=i * lado, y=j * lado + lado, cena=cena)
                      for j, linha in enumerate(mapa) for i, imagem in enumerate(linha)}
@@ -657,7 +675,7 @@ class Kwarwp:
         :param x: Coluna em que o elemento será posicionado.
         :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
-        
+
         Cria uma vaga vazia e coloca o componente dentro dela.
         """
         coisa = Tora(imagem, x=0, y=0, cena=cena, taba=self)
@@ -672,7 +690,7 @@ class Kwarwp:
         :param x: Coluna em que o elemento será posicionado.
         :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
-        
+
         Cria uma vaga vazia e coloca o componente dentro dela.
         """
         coisa = Pedra(imagem, x=0, y=0, cena=cena, taba=self)
@@ -687,7 +705,7 @@ class Kwarwp:
         :param x: Coluna em que o elemento será posicionado.
         :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
-        
+
         Cria uma maloca normalmente associada ao fim do jogo.
         """
         coisa = Oca(imagem, x=0, y=0, cena=cena, taba=self)
@@ -701,7 +719,7 @@ class Kwarwp:
         :param x: Coluna em que o elemento será posicionado.
         :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
-        
+
         Cria uma vaga vazia e coloca o componente dentro dela.
         """
         coisa = Piche(imagem, x=0, y=0, cena=cena, taba=self)
@@ -715,7 +733,7 @@ class Kwarwp:
         :param x: Coluna em que o elemento será posicionado.
         :param y: Linha em que o elemento será posicionado.
         :param cena: Cena em que o elemento será posicionado.
-        
+
         Cria uma vaga vazia e coloca o componente dentro dela.
         """
         coisa = Indio(imagem, x=0, y=0, cena=cena, taba=self)
@@ -757,7 +775,7 @@ class Kwarwp:
 
 def main(vitollino, medidas=None, mapa=None, indios=(), tela=None):
     """ Rotina principal que invoca a classe Kwarwp.
-    
+
     :param tela: Local no DOM do navegador onde o jogo vai ser feito.
     :param indios: A lista de índios que participam desta aventura.
     :param mapa: O mapa da aldeia a ser utilizada na aventura.

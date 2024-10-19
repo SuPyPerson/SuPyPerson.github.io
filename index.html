@@ -1,6 +1,8 @@
-<!---
+<!--- 🔰  New version 24.10h2 main 🛡️ (10/15)
 Open Source program Pynoplia - Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
 PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
+SNCT and Guide Fix - Pre Agent Note - Jogos Swap Associa - fix bioma.md - Brython 3.11 -
+Cuidando - fix Swap 🔰 Guide cuida + prot + guard fix - 🔰 Credits v0 24.10h3 main🛡️(10/18)
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -10,26 +12,18 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/_media/pynoplia.png" type="image/x-icon"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/A5yncX/docsify-theme-darcula@v1.0/darcula.css">
-    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython.min.js "></script>
-    <script type=" text/javascript " src=" https://cdn.jsdelivr.net/npm/brython@3.11/brython_stdlib.js "></script>
-    <link rel="stylesheet" href="//unpkg.com/docsify-accordion/src/style.css">
+    <link rel="stylesheet" href="/_lib/fa6.4.2_all.min.css"/>
+    <link rel="stylesheet" href="/_lib/darcula.css">
+    <script type=" text/javascript " src="/_lib/brython3.11.3.min.js"></script>
+    <script type=" text/javascript " src="/_lib/brython3.11.3_stdlib.js"></script>
+<!--    <script type=" text/javascript " src="/_lib/brython3.13.0.min.js"></script>-->
+<!--    <script type=" text/javascript " src="/_lib/brython3.13.0_stdlib.min.js"></script>-->
+    <link rel="stylesheet" href="/_lib/accordion_style.css">
     <link rel="stylesheet" href="/_core/css/lecture.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"
-            integrity="sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-python.min.js"
-        integrity="sha512-DUdq0nHbbCHQMqQNALNivk5tAdpFWOpm3mplXDwBqIpXD6/vfgXp8fESbfsnePQT3jZKVI3mCbEQumz/S4IHPA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/theme-gruvbox.min.js"
-            integrity="sha512-csAdQ+MAmg252+rlVpEgxnAzlzPBBEDzi8QSoaMyV1lJqMZuzASQUDyTpT1W2gGqrRLioKPaX0ylDwkMXxzDsw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ext-language_tools.min.js"
-            integrity="sha512-22wocMmMcRBM2la/vRMi/ZkYQMCAYMGxh8H2unSWmsBo0zELkk1/nZeTbZ4rykAny3y43yM3x7MwuhrE0Lksxg=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/_lib/ace1.36.2.min.js"></script>
+    <script src="/_lib/mode1.36.2-python.min.js.js"></script>
+    <script src="/_lib/theme-1.36.2gruvbox.min.js"></script>
+    <script src="_lib/ext1.36.2-language_tools.min.js"></script>
     <style>
         .accordion {
           background-color: #222322;
@@ -89,19 +83,25 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
     </style>
  </head>
-<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:[
-    '_core', '_prog']})">
-<!--    'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_core',-->
-<!--     'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_prog']})">-->
-    <!--    <div id="pydiv"></div>-->
+<!--<body>-->
+<!--<brython-options debug="1" cache="true" pythonpath="/_prog /_core"></brython-options>-->
+
+<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['_prog', '_core']})">
+    <!--    'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_core',
+     'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_prog']})">
+    <div id="pydiv"></div>-->
     <div id="app"></div>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css" />
-    <script src="//cdn.jsdelivr.net/npm/mermaid@9.4.3/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="/_lib/mermaid.min.css" />
+    <script src="/_lib/mermaid.min.js"></script>
     <script type="text/python">
         from browser import window, document, alert, html, timer
         from ScriptWidget import show, build
+        def clipboard_show(bt):
+            btp = bt.parent.previousSibling
+            window.navigator.clipboard.writeText(btp.text)
         window.__widget__ = show
         window.__did_got__ = build
+        window.__copy_clip__ = clipboard_show
 
     </script>
     <script>
@@ -121,14 +121,14 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
       let url = window.location.hostname; // obter o dominio
       let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
-      const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"snct", k:"pyjr",
+      const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"snct", k:"pyjr", c:"snct/guia",
       j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", m: git+"snct/snct", l: git+"pyjr"
       };
       let url_first = release //url[0];
       let docBasePath = "pyjr";
         // let url_name = url_splt[url_splt.length - 2];
-      if ("jklpgmiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
-      console.log("got url to path", url_first, url, docBasePath, "jklpgmiofn".indexOf(url_first) >= 0);
+      if ("cjklpgmiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
+      console.log("got url to path", url_first, url, docBasePath, "cjklpgmiofn".indexOf(url_first) >= 0);
 
 
       window.$docsify = {
@@ -191,15 +191,15 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
       };
 
     </script>
-    <script src="//unpkg.com/docsify-accordion/src/index.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/ga.min.js"></script>
-  <script src="//unpkg.com/docsify/lib/docsify.min.js" data-ga="UA-107835557-1"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/external-script.min.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/emoji.min.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/zoom-image.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.28/components/prism-python.min.js"></script>
-<script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/A5yncX/docsify-theme-darcula@v1.0/darcula.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-funky.min.css" integrity="sha512-KaCkQvJ0dQIhdJ0Am5LM3sgXA+Y0LWpbxkfKACZnlOqDvk54lZaWYk/sQiJGNRuSyFpe24jpjwJ4q+u3Rbez5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="/_lib/accordion.index.js"></script>
+    <script src="/_lib/ga.min.js"></script>
+    <script src="/_lib/docsify.min.js"></script>
+    <script src="/_lib/external-script.min.js"></script>
+    <script src="/_lib/emoji.min.js"></script>
+    <script src="/_lib/zoom-image.min.js"></script>
+    <script src="/_lib/prism-python.min.js"></script>
+<script src="/_lib/docsify-sidebar-collapse.min.js"></script>
+<link rel="stylesheet" href="/_lib/darcula.min.css">
+<link rel="stylesheet" href="/_lib/prism-funky.min.css" />
 
 </body>

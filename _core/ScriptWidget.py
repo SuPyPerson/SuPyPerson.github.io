@@ -143,6 +143,7 @@ class ScriptVito:
         Elemento(img=sun, cena=c)
         Elemento(img=soil, y=100, w=695, h=ground, cena=c)
         exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=self.prepara))
+        # exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=lambda m: self.prepara(m)))
 
 
 def build_(did="0", name="forest_0.py"):
@@ -237,6 +238,7 @@ class ScriptWidget:
         """
         mid = main_div_id
         m = main_div_id = f"_{main_div_id}"
+        document[mid].insertAdjacentElement("afterend", html.DIV(Id=m))
         self.script_name = script_named
         self.script_div_id = "script-%s" % main_div_id
         self.name_to_run = params.get("name", None)

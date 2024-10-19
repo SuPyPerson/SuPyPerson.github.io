@@ -7,5 +7,6 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 # Pynoplia SNCT 24 <small><span class="curversion"></span></small>
 
 [GitHub](https://github.com/SuPyPerson/SuPyPerson.github.io)
+[Guia do Agente](http://bit.ly/SNCT_24_G)
 [Apresentação](README)
 [Início](inicial.md)

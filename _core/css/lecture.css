@@ -266,8 +266,8 @@ td.value { text-align: left; }
 .smallpar {
     font-size: small;
 }
-
+img[alt=pic] { width: 200px; }
 .ace_editor {word-spacing: 0 !important;}
 
-span.curversion::after {content: " 🛡️ 24.10hp";}
+span.curversion::after {content: " 🛡️ 24.10h3";}
 
