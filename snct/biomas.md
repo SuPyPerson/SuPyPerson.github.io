@@ -13,8 +13,9 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
 <img id="caderno_bio" src onerror="__widget__(this.id)"></img>
 
-Vamos fazer um jogo com animais.
-Escolha em **BIOMAS** no [Guia do Agente](https://bit.ly/SNCT_24_G) uma opção de jogo
+Vamos fazer um jogo com animais na aba **[   caderno   ]**. 
+Escolha na aba **[   guia   ]** uma opção de jogo.
+Aperte o botão <b>[&nbsp;<i class="fa-solid fa-play"></i>&nbsp;]</b> para executar seu jogo.
 
 ```python
 # procure dicas no Guia

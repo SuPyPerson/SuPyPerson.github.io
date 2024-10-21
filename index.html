@@ -12,7 +12,7 @@ Cuidando - fix Swap 🔰 Guide cuida + prot + guard fix - 🔰 Credits v0 24.10h
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/_media/pynoplia.png" type="image/x-icon"/>
-    <link rel="stylesheet" href="/_lib/fa6.4.2_all.min.css"/>
+    <link rel="stylesheet" href="/_lib/fa6.6.all.min.css"/>
     <link rel="stylesheet" href="/_lib/darcula.css">
     <script type=" text/javascript " src="/_lib/brython3.11.3.min.js"></script>
     <script type=" text/javascript " src="/_lib/brython3.11.3_stdlib.js"></script>
@@ -20,6 +20,7 @@ Cuidando - fix Swap 🔰 Guide cuida + prot + guard fix - 🔰 Credits v0 24.10h
 <!--    <script type=" text/javascript " src="/_lib/brython3.13.0_stdlib.min.js"></script>-->
     <link rel="stylesheet" href="/_lib/accordion_style.css">
     <link rel="stylesheet" href="/_core/css/lecture.css">
+    <link rel="stylesheet" href="/_core/css/editor.css">
     <script src="/_lib/ace1.36.2.min.js"></script>
     <script src="/_lib/mode1.36.2-python.min.js.js"></script>
     <script src="/_lib/theme-1.36.2gruvbox.min.js"></script>
@@ -95,10 +96,22 @@ Cuidando - fix Swap 🔰 Guide cuida + prot + guard fix - 🔰 Credits v0 24.10h
     <script src="/_lib/mermaid.min.js"></script>
     <script type="text/python">
         from browser import window, document, alert, html, timer
-        from ScriptWidget import show, build
+        from ScriptWidget import show, build, PLB
+        import ScriptWidget as sw
+        from browser.session_storage import storage
         def clipboard_show(bt):
             btp = bt.parent.previousSibling
+            storage[PLB] = btp.text
             window.navigator.clipboard.writeText(btp.text)
+        try:
+            sw.SPR = window.__SP_RELEASE__
+        except Exception as e:
+            queryString = window.location.search;
+            urlParams = window.URLSearchParams.new(queryString);
+            sw.SPR = urlParams.get('rel') or "@"
+        print("urlParams.get('rel')", sw.SPR)
+
+
         window.__widget__ = show
         window.__did_got__ = build
         window.__copy_clip__ = clipboard_show
@@ -127,7 +140,7 @@ Cuidando - fix Swap 🔰 Guide cuida + prot + guard fix - 🔰 Credits v0 24.10h
       let url_first = release //url[0];
       let docBasePath = "pyjr";
         // let url_name = url_splt[url_splt.length - 2];
-      if ("cjklpgmiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
+      if ("cjklpgmiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]; window.__SP_RELEASE__ = release;}
       console.log("got url to path", url_first, url, docBasePath, "cjklpgmiofn".indexOf(url_first) >= 0);
 
 
@@ -191,12 +204,12 @@ Cuidando - fix Swap 🔰 Guide cuida + prot + guard fix - 🔰 Credits v0 24.10h
       };
 
     </script>
-    <script src="/_lib/accordion.index.js"></script>
     <script src="/_lib/ga.min.js"></script>
     <script src="/_lib/docsify.min.js"></script>
+    <script src="/_lib/accordion.index.js"></script>
     <script src="/_lib/external-script.min.js"></script>
     <script src="/_lib/emoji.min.js"></script>
-    <script src="/_lib/zoom-image.min.js"></script>
+<!--    <script src="/_lib/zoom-image.min.js"></script>-->
     <script src="/_lib/prism-python.min.js"></script>
 <script src="/_lib/docsify-sidebar-collapse.min.js"></script>
 <link rel="stylesheet" href="/_lib/darcula.min.css">

@@ -5,11 +5,11 @@ Os Agentes são chamados para conhecer, prevenir e remediar os problemas referen
 
 ## Orientação Acadêmica
 
-Carlo Emmanoel Tolla de Oliveira D.Sc. [¹](#contatos)  Claudia Lage Rebello da Motta [¹](#contatos)
+Carlo Emmanoel Tolla de Oliveira D.Sc. [¹](#contatos)  Claudia Lage Rebello da Motta D.Sc. [¹](#contatos)
 
 ## Consultoria Pedagógica
 
-Carla Verônica Machado Marques D.Sc. [¹](#contatos) Ana Paula Cavadas Rodrigues [²](#contatos)
+Carla Verônica Machado Marques D.Sc. [¹](#contatos) Ana Paula Cavadas Rodrigues M.Sc. [²](#contatos)
 
 ## Arquitetura e Engenharia de Software + DevOps
 
@@ -26,7 +26,7 @@ Carla Verônica Machado Marques D.Sc. [¹](#contatos) Ana Paula Cavadas Rodrigue
 
 ## Design e Identidade Visual
 
-🍩[Marília Campos Galvão](http:Mariliagalvao.activufrj.nce.ufrj.br)🍩
+🍩[Marília Campos Galvão M.Sc.](http:Mariliagalvao.activufrj.nce.ufrj.br)🍩
 
 ## Equipe Técnica
 
