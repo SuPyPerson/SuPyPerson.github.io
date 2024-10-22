@@ -52,5 +52,6 @@ Carla Verônica Machado Marques D.Sc. [¹](#contatos) Ana Paula Cavadas Rodrigue
 #### 1 carlaveronica@nce.ufrj.br, clrmotta@nce.ufrj.br, carlo@nce.ufrj.br
 #### 2 apcavadas@gmail.com
 #### [SuperPython-Jogos](http:Superpython_Jogos.activufrj.nce.ufrj.br)
+#### [Apresentação](../../_media/talk/macae.sozi.html)
 #### LABASE
 [footer](footer.md ':include')
