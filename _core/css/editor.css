@@ -169,3 +169,60 @@ nav {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+.accordion {
+  background-color: #222322;
+  color: #ccc;
+}
+.accordion.active {
+  background: rgba(0, 0, 0, 0.1);
+  border-left: 3px solid #014f17;
+}
+ul.accordion-wrapper > li > .accordion-content-container {
+  display: block;
+  margin: 0 20px 20px 20px;
+  padding: 0 15px 20px;
+  background: #333433;
+  cursor: default;
+  overflow: hidden;
+}
+
+.panel {
+    display: none;
+}
+.panel.opened {
+    display: block;
+    background-color: #333;
+}
+img[alt="Data Content"] { width: 200px; }
+.cover-main blockquote {
+    color: #6b0584;
+}
+.cover-main h1 a span {
+    color: black;
+}
+
+.cover-main h3 a span {
+    color: darkslategray;
+}
+section.cover .cover-main > p:last-child a {
+    color: green !important;
+}
+
+section.cover .cover-main > p:last-child a:hover {
+    color: green !important;
+}
+
+/**
+- last button
+ */
+section.cover .cover-main > p:last-child a:last-child {
+    background-color: indigo !important;
+    color: white !important;
+}
+
+section.cover .cover-main > p:last-child a:last-child:hover {
+    background-color: peru !important;
+    color: brown !important;
+}
+
+
