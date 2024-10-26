@@ -8,149 +8,34 @@ Cuidando - fix Swap 🔰 Guide cuida + prot + guard fix - 🔰 Credits v0 24.10h
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/_lib/ace1.36.2.min.js"></script>
+    <script src="/_lib/mode1.36.2-python.min.js.js"></script>
+    <script src="/_lib/theme-1.36.2gruvbox.min.js"></script>
+    <script src="_lib/ext1.36.2-language_tools.min.js"></script>
     <title>Pynoplia</title>
     <!-- stylesheets -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/_media/pynoplia.png" type="image/x-icon"/>
-    <p></p>
     <script type=" text/javascript " src="/_lib/brython3.11.3.min.js"></script>
     <script type=" text/javascript " src="/_lib/brython3.11.3_stdlib.js"></script>
-    <script type="text/python" src="_core/main_index.py"></script>
 <!--    <script type=" text/javascript " src="/_lib/brython3.13.0.min.js"></script>-->
 <!--    <script type=" text/javascript " src="/_lib/brython3.13.0_stdlib.min.js"></script>-->
-    <script src="/_lib/ace1.36.2.min.js"></script>
-    <script src="/_lib/mode1.36.2-python.min.js.js"></script>
-    <script src="/_lib/theme-1.36.2gruvbox.min.js"></script>
-    <script src="_lib/ext1.36.2-language_tools.min.js"></script>
+    <script type="text/python" src="_core/main_index.py"></script>
  </head>
 <!--<body>-->
 <!--<brython-options debug="1" cache="true" pythonpath="/_prog /_core"></brython-options>-->
 
 <body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['_prog', '_core']})">
     <!--    'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_core',
-     'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_prog']})">
-    <div id="pydiv"></div>-->
+     'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_prog']})">-->
     <div id="app"></div>
-    <script src="/_lib/mermaid.min.js"></script>
-    <script type="text/python">
-        from browser import window, document, alert, html, timer
-        from ScriptWidget import show, build, PLB
-        import ScriptWidget as sw
-        from browser.session_storage import storage
-        def clipboard_show(bt):
-            btp = bt.parent.previousSibling
-            storage[PLB] = btp.text
-            window.navigator.clipboard.writeText(btp.text)
-        try:
-            sw.SPR = window.__SP_RELEASE__
-        except Exception as e:
-            queryString = window.location.search;
-            urlParams = window.URLSearchParams.new(queryString);
-            sw.SPR = urlParams.get('rel') or "@"
-        print("urlParams.get('rel')", sw.SPR)
-
-
-        window.__widget__ = show
-        window.__did_got__ = build
-        window.__copy_clip__ = clipboard_show
-
-    </script>
-    <script>
-        function config_doc(docConf){
-            window.$docsify = docConf
-        }
-
-    </script>
-    <script>
-      var num = 0;
-      mermaid.initialize({ startOnLoad: false });
-        //var num = 0;
-      //mermaid.initialize({ startOnLoad: false });
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const release = urlParams.get('rel')
-
-      let url = window.location.hostname; // obter o dominio
-      let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
-      const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"snct", k:"pyjr", c:"snct/guia",
-      j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", m: git+"snct/snct", l: git+"pyjr"
-      };
-      let url_first = release //url[0];
-      let docBasePath = "pyjr";
-        // let url_name = url_splt[url_splt.length - 2];
-      if ("cjklpgmiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]; window.__SP_RELEASE__ = release;}
-      console.log("got url to path", url_first, url, docBasePath, "cjklpgmiofn".indexOf(url_first) >= 0);
-
-
-      window.$docsify = {
-            // basePath: '/jaie24/',
-            basePath: docBasePath,
-            coverpage: ["/", "/jaie24/"],
-            executeScript: false,
-            accordify: {
-                prerenderComments: true,                    // default
-                selectors: ['h1','h2','h3','h4','h5','h6'], // default value
-                debug: false,                               // default value
-            },
-
-          alias: {
-            '/pyi/(.*)': '/pgintro/$1', // supports regexp
-            '/pintro': '/pgintro/README',
-            '/kwa': '/kwarwp/README',
-            '/pyjr/(.*)': '/pyjr/$1',
-            '/jaie24': '/README',
-            '/soho': '/kwarwp/o_sonho',
-            '/jardim': '/sbce/o_jogo',
-            '/changelog':
-              'https://raw.githubusercontent.com/docsifyjs/docsify/master/CHANGELOG',
-            '/.*/_sidebar.md': '/_sidebar.md', // See #301
-          },
-        markdown: {
-          smartypants: false,
-          renderer: {
-            code: function (code, lang) {
-              if (lang == "mermaid") {
-                return `<div class="mermaid">${mermaid.render("mermaid-svg-" + num++, code)}</div>`;
-              }
-              return this.origin.code.apply(this, arguments);
-            },
-          },
-        },
-        name: 'Pynoplia',
-        nameLink: {
-            // 'jaie24/': '#/jaie24/',
-            '/': '#/',
-          },
-        // Sidebar Configuration
-        auto2top: true,
-        loadSidebar: true,
-          mergeSidebar: true,
-        // loadSidebar: './_sidebar.md',
-        loadNavbar: true,
-        maxLevel: 3,
-        // Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
-        subMaxLevel: 2,
-          sidebarDisplayLevel: 1,
-
-        // Search Plugin Configuration
-        search: {
-        placeholder: 'Type to search',
-        noData: 'No matches found.',
-        // Headline depth, 1 - 6
-        depth: 2,
-        },
-      };
-
-    </script>
-    <script src="/_lib/ga.min.js"></script>
+    <!--<script src="/_lib/main_index.js"></script>
     <script src="/_lib/docsify.min.js"></script>
+    <script src="/_lib/ga.min.js"></script>
     <script src="/_lib/accordion.index.js"></script>
     <script src="/_lib/external-script.min.js"></script>
     <script src="/_lib/emoji.min.js"></script>
-<!--    <script src="/_lib/zoom-image.min.js"></script>-->
     <script src="/_lib/prism-python.min.js"></script>
-<script src="/_lib/docsify-sidebar-collapse.min.js"></script>
-<p></p>
-
+    <script src="/_lib/docsify-sidebar-collapse.min.js"></script>    -->
 </body>
