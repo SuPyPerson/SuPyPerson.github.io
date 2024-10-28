@@ -420,9 +420,12 @@ class Inventario:
             acao = lambda *_: None
         self.inventario[nome_item] = acao
 
+    def some(self, _item):
+        _ = self.limbo <= _item
+
     def tira(self, nome_item):
         item_img = document[nome_item]
-        self.limbo <= item_img
+        _ = self.limbo <= item_img
         result = self.item.pop(nome_item) if nome_item in self.item else self.inventario.pop(nome_item, None)
         return result
 
@@ -663,7 +666,7 @@ class Elemento(Elemento_):
         
             :param tex: texto que o elemento deve falar
         """
-        self._texto = self._texto or Texto(self.cena, tex, foi=self._foi)
+        self._texto = Texto(self.cena, tex, foi=self._foi)
         self.vai = self._texto.vai
 
     @property

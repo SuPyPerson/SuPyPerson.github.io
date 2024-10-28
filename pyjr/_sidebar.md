@@ -9,3 +9,4 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 - [Povoando o Jardim](../sbce/o_elenco)
 - [O Jardim Floresce](../sbce/o_movimento)
 - [Capoeira no Mato](../sbce/a_capoeira)
+- [Criando Tomadas](tomada_inicial.md)

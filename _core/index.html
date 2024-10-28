@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- fonts -->
     <link rel="stylesheet" href="css/lecture.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <link rel="shortcut icon" href="../_media/pynoplia.png" type="image/x-icon"/>
     <!-- script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.8.0/www/src/brython.js"></script -->
@@ -25,6 +28,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ext-language_tools.min.js"
             integrity="sha512-22wocMmMcRBM2la/vRMi/ZkYQMCAYMGxh8H2unSWmsBo0zELkk1/nZeTbZ4rykAny3y43yM3x7MwuhrE0Lksxg=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .modal {
+          display: none; /* Hidden by default */
+          position: fixed; /* Stay in place */
+          z-index: 1; /* Sit on top */
+          left: 0;
+          top: 0;
+          width: 100%; /* Full width */
+          height: 100%; /* Full height */
+          overflow: auto; /* Enable scroll if needed */
+          background-color: rgb(0,0,0); /* Fallback color */
+          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+    </style>
 </head>
 <body onload="brython()" bgcolor="black">
     <script  type="text/javascript">
@@ -37,7 +54,7 @@
     </script>
 <script type="text/python">
     import browser
-    from editor import main
+    from editor_widget import main
     main(browser)
 </script>
   <div id="pyparent" class="card">
@@ -47,5 +64,6 @@
       </div>
       <div id="pyedit"></div>
   </div>
+  <div id="_modal_" class="modal"></div>
 </body>
 </html>
