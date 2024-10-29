@@ -22,7 +22,7 @@ from browser import window, document, alert, html, timer
 class Head:
     """Add all stuff to head section"""
     # SL = "editor lecture fa6.6.all.min darcula mermaid.min darcula.min prism-funky.min".split()
-    SL = "editor lecture fa6.6.all.min darcula darcula.min prism-funky.min".split()
+    SL = "fa6.6.all.min darcula darcula.min prism-funky.min accordion_style lecture editor".split()
     STLIB = (f"/_core/css/{st}.css" for st in SL)
     HEAD = document.head
     BODY = document.body

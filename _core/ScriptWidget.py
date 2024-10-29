@@ -33,7 +33,10 @@ from browser.session_storage import storage
 from browser.local_storage import storage as store
 from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
-GUIDE = "https://supyperson.github.io/?rel=c"
+from os import getenv
+GUIDE = getenv("GUIDE","https://supyperson.github.io/?rel=g")
+# GUIDE = getenv("GUIDE","http://localhost:8080/?rel=f")
+print("GUIDE:", GUIDE)
 PLB = "_PYNO_LOCAL_BOARD"
 SPR = "@"
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
@@ -201,7 +204,7 @@ class ScriptWidget:
         menu = zip("play paste xmark".split(),
                    (self.run_script, lambda *_: self.paste_script(), self.clear_console))
         panes = {"caderno": self.widget_code(m, is_long=True)}
-        panes.update({"guia": self.create_script_tag()}) if SPR in "n" else None
+        panes.update({"guia": self.create_script_tag()}) if SPR in "nif" else None
         functions = zip("rotate piggy-bank receipt".split(),
                         (lambda *_: self.get_script(), lambda *_: self.save_script(), lambda *_: self.load_script()))
         if "alignment" in params and params["alignment"] == 'left-right':
