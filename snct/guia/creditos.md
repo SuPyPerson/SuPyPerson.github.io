@@ -13,36 +13,36 @@ Carla Verônica Machado Marques D.Sc. [¹](#contatos) Ana Paula Cavadas Rodrigue
 
 ## Arquitetura e Engenharia de Software + DevOps
 
-🖥️🖥️🖥️[Carlo E. T. Oliveira](http:carlo.activufrj.nce.ufrj.br)🖥️🖥️🖥️
+🖥️🖥️🖥️[Carlo E. T. Oliveira](http://carlo.activufrj.nce.ufrj.br)🖥️🖥️🖥️
 
 ## Desenvolvimento de Software
 
-🖥️ [Carlo E. T. Oliveira](http:carlo.activufrj.nce.ufrj.br) 🖥️
-[JULIA BARBOSA DE FARIAS](http:julia068.activufrj.nce.ufrj.br) 🖥️
+🖥️ [Carlo E. T. Oliveira](http://carlo.activufrj.nce.ufrj.br) 🖥️
+[JULIA BARBOSA DE FARIAS](http://julia068.activufrj.nce.ufrj.br) 🖥️
 
 ## Cenografia e Aparatos
-🏝️[RAQUEL BRAYNER SANTOS](http:Raquel_Brayner.activufrj.nce.ufrj.br)🏝️
-[MILENA VENTURA](http:milenaventura.activufrj.nce.ufrj.br)🏝️
+🏝️[RAQUEL BRAYNER SANTOS](http://Raquel_Brayner.activufrj.nce.ufrj.br)🏝️
+[MILENA VENTURA](http://milenaventura.activufrj.nce.ufrj.br)🏝️
 
 ## Design e Identidade Visual
 
-🍩[Marília Campos Galvão M.Sc.](http:Mariliagalvao.activufrj.nce.ufrj.br)🍩
+🍩[Marília Campos Galvão M.Sc.](http://Mariliagalvao.activufrj.nce.ufrj.br)🍩
 
 ## Equipe Técnica
 
-⚒️[Aghata Vitoria Marinho da Silva](http:aghatavitoria.activufrj.nce.ufrj.br)⚒️
-[Allyce Gomes](http:Allyce12535.activufrj.nce.ufrj.br)⚒️
-[Allyne Gomes](http:Allyne_Gomes.activufrj.nce.ufrj.br)⚒️
-[Kayke Gomes](http:kaykegomes.activufrj.nce.ufrj.br)⚒️
-[kayllane gomes](http:bb_lindaaa2.activufrj.nce.ufrj.br)⚒️
-[Kevin Gabriel](http:021.kevin_Gabriel.activufrj.nce.ufrj.br)⚒️
-[Khauane Cabral](http:cabral.activufrj.nce.ufrj.br)⚒️
-[Maysa Da Rocha](http:qlf.maysa_13.activufrj.nce.ufrj.br)⚒️
-[Ramon Dezedias](http:ramonzinnzn.activufrj.nce.ufrj.br)⚒️
-[Raphaely Victoria Moreira da Silva](http:Raphaely.activufrj.nce.ufrj.br)⚒️
-[Ryan kayque Emiliano Gonçalves Guimarães](http:Olhosdeaguia.activufrj.nce.ufrj.br)⚒️
-[Sthefany Vieira](http:stvieira.activufrj.nce.ufrj.br)⚒️
-[Yago Ribeiro de Medeiros](http:R.medeiros.activufrj.nce.ufrj.br)⚒️
+⚒️[Aghata Vitoria Marinho da Silva](http://aghatavitoria.activufrj.nce.ufrj.br)⚒️
+[Allyce Gomes](http://Allyce12535.activufrj.nce.ufrj.br)⚒️
+[Allyne Gomes](http://Allyne_Gomes.activufrj.nce.ufrj.br)⚒️
+[Kayke Gomes](http://kaykegomes.activufrj.nce.ufrj.br)⚒️
+[kayllane gomes](http://bb_lindaaa2.activufrj.nce.ufrj.br)⚒️
+[Kevin Gabriel](http://021.kevin_Gabriel.activufrj.nce.ufrj.br)⚒️
+[Khauane Cabral](http://cabral.activufrj.nce.ufrj.br)⚒️
+[Maysa Da Rocha](http://qlf.maysa_13.activufrj.nce.ufrj.br)⚒️
+[Ramon Dezedias](http://ramonzinnzn.activufrj.nce.ufrj.br)⚒️
+[Raphaely Victoria Moreira da Silva](http://Raphaely.activufrj.nce.ufrj.br)⚒️
+[Ryan kayque Emiliano Gonçalves Guimarães](http://Olhosdeaguia.activufrj.nce.ufrj.br)⚒️
+[Sthefany Vieira](http://stvieira.activufrj.nce.ufrj.br)⚒️
+[Yago Ribeiro de Medeiros](http://R.medeiros.activufrj.nce.ufrj.br)⚒️
 
 
 ୨୧┄┈୨୧‧⁺̣˚̣̣*̣̩⋆̩·̩̩୨˚̣̣̣̣͙୧·̩̩⋆̩*̣̩˚̣̣⁺̣‧୨୧┈┈୨୧୨୧┄┈୨୧‧⁺̣˚̣̣*̣̩⋆̩·̩̩୨˚̣̣̣̣͙୧·̩̩⋆̩*̣̩˚̣̣⁺̣‧୨୧┈┈୨୧
@@ -51,7 +51,7 @@ Carla Verônica Machado Marques D.Sc. [¹](#contatos) Ana Paula Cavadas Rodrigue
 
 #### 1 carlaveronica@nce.ufrj.br, clrmotta@nce.ufrj.br, carlo@nce.ufrj.br
 #### 2 apcavadas@gmail.com
-#### [SuperPython-Jogos](http:Superpython_Jogos.activufrj.nce.ufrj.br)
+#### [SuperPython-Jogos](http://Superpython_Jogos.activufrj.nce.ufrj.br)
 #### [Apresentação](https://supyperson.github.io/_media/talk/macae.sozi.html)
 #### LABASE
 [footer](footer.md ':include')
