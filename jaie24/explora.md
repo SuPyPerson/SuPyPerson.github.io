@@ -7,6 +7,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
 
 <img src onerror="__did_got__('../../_prog/jaie_explora.py')"></img>
+<div id="_jogo_">Aqui tem um marcador chamado _jogo_ onde o os cenários vão surgir</div>
 
 + Python em Dez Minutos +
 
@@ -14,25 +15,14 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
   <img id="caderno_ten" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
-
+    Vamos aqui criar jogos para aprender alguns conceitos de Python.
 + Criando Cenários +
 
   ## Criando Cenários
 
   <img id="caderno_cen" src onerror="__widget__(this.id)"></img>
-  
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    Vamos iniciar o uso da biblioteca Vitollino para poder criar jogos gráficos.
+    Use o guia para obter mais dicas de jogos e uso dos cenários.
 
 + Atores e Objetos +
 

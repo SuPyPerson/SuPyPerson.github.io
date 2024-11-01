@@ -38,6 +38,35 @@ input(f"você acertou, {bicho} é um animal da caatinga" if bicho else "você de
 <a name="vi-cen-"></a>
 - A biblioteca Vitollino é parte integrante da plataforma e provê um conjunto de facilidades para o desenvolvimento de jogos. O cenário é criado a partir das classes Cena, Sala, Labirinto e Mapa. Imagens prontas estão disponíveis na biblioteca do “Guia do Agente”.
 
+Os Agentes da ESCOLA são chamados para investigar uma mensagem encontrada numa garrafa.
+### A Praia
+Vamos aprender a usar uma planilha com imagens
+```python
+from vitollino import Cena, Jogo
+from cenario import Planilha, Paisagem
+Jogo(style=dict(height="450px", width="600px"), did="_jogo_").z()
+imagem_da_praia = "_ativo/agentes/praia.jpeg"
+mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
+p = Paisagem(mapa_praia.j[0]).vai()
+```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
+
+A mensagem fala sobre um baú perdido na praia.
+### As Paisagens
+Agora vamos aprender a usar paisagens e fazer uma pequena narrativa para esta história.
+```python
+from vitollino import Cena, Jogo
+from cenario import Planilha, Paisagem
+Jogo(style=dict(height="450px", width="600px"), did="_jogo_").z()
+imagem_da_praia = "_ativo/agentes/praia.jpeg"
+mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
+pg = Paisagens(mapa_praia.j)
+p = pg.norte
+p.vai()
+Texto(pg.norte, "Temos uma bela praia Aqui").vai()
+```
+<button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
+
 ## Atores e Objetos
 <a name="vi-ato-"></a>
 - A biblioteca fornece as classe Elemento e Inventário que permitem incluir personagens e artefatos em cena. Permite também movimentar e criar animações limitadas. Personagens podem navegar entre as diversas cenas do cenário e reagir a interações do jogador. Objetos podem ser colocados no inventário e podem ser programados para interagir com outros objetos.

@@ -34,11 +34,15 @@ from browser.local_storage import storage as store
 from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
 from os import getenv
-GUIDE = getenv("GUIDE","https://supyperson.github.io/?rel=g")
+# {i: "jaie24", o: "sbce", f: "guia", n: "snct", k: "pyjr", c: "snct/guia",
+# j: git + "jaie24/jaie24/", p: git + "sbce/sbce", g: git + "jaie24/guia", m: git + "snct/snct",l: git + "pyjr"
+SPR = "k"
+GUIA = {k: v for k, v in zip("ionkjpml", "ffccggcf")}
+HOST = "localhost:8080"
+GUIDE = getenv("GUIDE", "https://supyperson.github.io/?rel=g")
 # GUIDE = getenv("GUIDE","http://localhost:8080/?rel=f")
-print("GUIDE:", GUIDE)
+# print("GUIDE:", GUIDE)
 PLB = "_PYNO_LOCAL_BOARD"
-SPR = "@"
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
 COD = {}
 HEADER = {}
@@ -269,11 +273,18 @@ class ScriptWidget:
         store[PLB+self.guide_anchor] = self.editor.getValue()
 
     def create_script_tag(self, src=None):
-        # GUIDE = "http://localhost:8080/?rel=c"
+        GUIDE = f"{HOST}?rel={GUIA[SPR]}#/"
         src = src or GUIDE
-        src += self.guide_anchor
-        # print("create_script_tag", src)
-        _tag = html.IFRAME(src=src, title="Guia do Agente", name="_if_" + self.guide_anchor, width="100%", height="600")
+        # src += self.guide_anchor
+        anchor = self.guide_anchor.split("#")
+        src = f"{src}{anchor[1]}#{anchor[-1]}"
+        oid, anchor = "_if_"+"-".join(anchor), anchor[-1]
+
+        _tag = html.IFRAME(src=src, id=f"oi-{oid}", title="Guia do Agente", name=oid, width="100%", height="600")
+        iframe = document.getElementById(f"oi-{oid}")
+        print("create_script_tag", self.guide_anchor, src, anchor, iframe)  # , iframe.contentWindow, iframe.contentDocument)
+        innerDoc = _tag.contentDocument or _tag.contentWindow.document if _tag.contentWindow else None
+        innerDoc.getElementById(anchor).scrollIntoView() if innerDoc else None
         return _tag
 
     def widget_code(self, name, actions=None, is_long=False, button=None):

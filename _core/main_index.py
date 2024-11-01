@@ -26,9 +26,8 @@ class Head:
     STLIB = (f"/_core/css/{st}.css" for st in SL)
     HEAD = document.head
     BODY = document.body
-    J1 = "ace1.36.2.min mode1.36.2-python.min.js theme-1.36.2gruvbox.min ext1.36.2-language_tools.min mermaid.min"
-    J2 = ("main_index external-script.min docsify.min ga.min accordion.index"
-          " docsify-sidebar-collapse.min")
+    J1 = "ace1.36.2.min mode1.36.2-python.min.js theme-1.36.2gruvbox.min ext1.36.2-language_tools.min"
+    J2 = "external-script.min docsify.min accordion.index docsify-sidebar-collapse.min"
     SCT = (f"/_lib/{st}.js" for st in J1.split())
     SCB = (f"/_lib/{st}.js" for st in J2.split())
 
@@ -39,24 +38,27 @@ class Head:
         window.docBasePath = "snct"
         [append(st(src=hr)) for hr in self.SCT]
         [append(ln(rel="stylesheet", href=hr)) for hr in self.STLIB]
-        self.scripter()
-        timer.set_timeout(self.pos_scripter, 100)
+        append(st(src="/_lib/main_index.js"), self.BODY)
+        # self.scripter()
+        timer.set_timeout(self.scripter, 100)
+        timer.set_timeout(self.pos_scripter, 200)
+        timer.set_timeout(self.poster_scripter, 400)
 
     def scripter(self, st=html.SCRIPT, *_):
         def append(child, node=self.HEAD):
             _ = node <= child
-        # append(st("/_lib/main_index.js", self.BODY))
-        # [append(st(type="text/javascript", src=hr)) for hr in self.SCT]
-        [append(st(src=hr), self.BODY) for hr in self.SCB]
+        append(st(src="/_lib/ga.min.js"), self.BODY)
 
     def pos_scripter(self, st=html.SCRIPT, *_):
         def append(child, node=self.HEAD):
             _ = node <= child
+        [append(st(src=hr), self.BODY) for hr in self.SCB]
+
+    def poster_scripter(self, st=html.SCRIPT, *_):
+        def append(child, node=self.HEAD):
+            _ = node <= child
+
         append(st(src="/_lib/prism-python.min.js"), self.BODY)
-        # [append(st(type="text/javascript", src=hr)) for hr in self.SCT]
-        # [append(st(src=hr), self.BODY) for hr in self.SCB]
-        # [append(st(type="text/javascript", src=hr)) for hr in self.SCT]
-        # [append(st(type="text/javascript", src=hr), self.BODY) for hr in self.SCB]
 
 
 def initial():
@@ -76,6 +78,7 @@ def initial():
         queryString = window.location.search
         urlParams = window.URLSearchParams.new(queryString)
         sw.SPR = urlParams.get('rel') or "@"
+        sw.HOST = window.location.origin
     print("urlParams.get('rel')", sw.SPR)
 
     window.__widget__ = show
