@@ -18,6 +18,7 @@ Changelog
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
+from vitollino import NoEv
 from vitollino import Sala, Cena, NADA
 
 ROSA = ["n", "l", "s", "o"]
@@ -59,10 +60,23 @@ class Paisagem(Cena):
         super().__init__("", tela=tela, **kwargs)
         self.elt.html = ""
         self.elt.style = style
+        self._foi = lambda *_: None
 
     def rename(self, nome):
         self.nome = nome
         return self
+
+    def vai(self, ev=NoEv()):
+        super().vai()
+        self._foi(ev)
+
+    @property
+    def foi(self):
+        return self._foi
+
+    @foi.setter
+    def foi(self, foi):
+        self._foi = foi
 
 
 class Paisagens(Sala):

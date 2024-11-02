@@ -33,9 +33,16 @@ from browser.session_storage import storage
 from browser.local_storage import storage as store
 from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
-GUIDE = "https://supyperson.github.io/?rel=c"
+from os import getenv
+# {i: "jaie24", o: "sbce", f: "guia", n: "snct", k: "pyjr", c: "snct/guia",
+# j: git + "jaie24/jaie24/", p: git + "sbce/sbce", g: git + "jaie24/guia", m: git + "snct/snct",l: git + "pyjr"
+SPR = "k"
+GUIA = {k: v for k, v in zip("ionkjpml", "ffccggcf")}
+HOST = "localhost:8080"
+GUIDE = getenv("GUIDE", "https://supyperson.github.io/?rel=g")
+# GUIDE = getenv("GUIDE","http://localhost:8080/?rel=f")
+# print("GUIDE:", GUIDE)
 PLB = "_PYNO_LOCAL_BOARD"
-SPR = "@"
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
 COD = {}
 HEADER = {}
@@ -201,7 +208,7 @@ class ScriptWidget:
         menu = zip("play paste xmark".split(),
                    (self.run_script, lambda *_: self.paste_script(), self.clear_console))
         panes = {"caderno": self.widget_code(m, is_long=True)}
-        panes.update({"guia": self.create_script_tag()}) if SPR in "n" else None
+        panes.update({"guia": self.create_script_tag()}) if SPR in "nif" else None
         functions = zip("rotate piggy-bank receipt".split(),
                         (lambda *_: self.get_script(), lambda *_: self.save_script(), lambda *_: self.load_script()))
         if "alignment" in params and params["alignment"] == 'left-right':
@@ -266,12 +273,22 @@ class ScriptWidget:
         store[PLB+self.guide_anchor] = self.editor.getValue()
 
     def create_script_tag(self, src=None):
-        # GUIDE = "http://localhost:8080/?rel=c"
+        def go_anchor():
+            iframe = _tag  # hdoc.getElementById(f"oi-{oid}")
+            innerDoc = _tag.contentDocument or _tag.contentWindow.document if _tag.contentWindow else None
+            print("create_script_tag", self.guide_anchor, src, anchor, iframe, innerDoc, innerDoc.getElementById(anchor))  # , iframe.contentWindow, iframe.contentDocument)
+            # innerDoc.getElementById(anchor).scrollIntoView() if innerDoc else None
+            innerDoc.getElementById(anchor).scrollTo(dict(behavior="smooth")) if innerDoc else None
+
+        GUIDE = f"{HOST}?rel={GUIA[SPR]}#/"
         src = src or GUIDE
-        src += self.guide_anchor
-        # print("create_script_tag", src)
-        _tag = html.IFRAME(src=src, title="Guia do Agente", name="_if_" + self.guide_anchor, width="100%", height="600")
-        return _tag
+        # src += self.guide_anchor
+        anchor = self.guide_anchor.split("#")
+        src = f"{src}{anchor[1]}#{anchor[-1]}"
+        oid, anchor = "_if_"+"-".join(anchor), anchor[-1]
+
+        _tag = html.IFRAME(src=src, id=f"oi-{oid}", title="Guia do Agente", name=oid, width="100%", height="600")
+        return _tag, go_anchor
 
     def widget_code(self, name, actions=None, is_long=False, button=None):
         def paste(*_):
@@ -303,7 +320,7 @@ class ScriptWidget:
             ], Class="script-container", Id=f"script-container-{name}"),
         ]
         # widget.extend(buttons)
-        return widget
+        return widget, lambda *_: None
 
     def write(self, strn):
         def set_svg():
