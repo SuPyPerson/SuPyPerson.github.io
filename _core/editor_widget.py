@@ -32,7 +32,7 @@ class PaneEditor:
         self.tabs = self.h.NAV()  # Class="tab_link")
         self.panes = panes or {f"exercício{img}": (self.h.IMG(src=f"{self.p}{img}")) for img in range(3)}
         # self.button = self.build_button("Abra o exercício", self.show, pane=self.d["pydiv"], elt=self.h.BUTTON)
-        self.panes = [m(face, None, image) for face, image in self.panes.items()]
+        self.panes = [m(face, action, image) for face, (image, action) in self.panes.items()]
         self.panes = self.create_panes()
         main_ = [m(f"{self.w}bars", self.nop, None)]
         menus = menu or zip("bars play xmark".split(), (self.nop(), self.play, self.hide))
@@ -59,8 +59,9 @@ class PaneEditor:
         this = self
 
         class Pane:
-            def __init__(self, h, panne=None, name=None):
-                self.name = panne.n
+            def __init__(self, h, panne=None, *_):
+                # print("create_panes", panne, panne.a)
+                self.name, self.go = panne.n, panne.a
                 self.pane = pane_ = h.DIV(panne.i, Class="tab_content")
                 _ = _pane <= pane_
 
@@ -75,9 +76,10 @@ class PaneEditor:
                 this.open_pane()
                 # self.tab.classList.add("active")
                 self.pane.style.display = "block"
+                self.go()
 
-        def create(panne, name=None):
-            return Pane(self.h, panne, name)
+        def create(panne):
+            return Pane(self.h, panne)
         _pane = self.pane
         panes = [create(panne) for panne in self.panes]
         return panes
