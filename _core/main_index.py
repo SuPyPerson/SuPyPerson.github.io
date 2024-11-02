@@ -30,6 +30,8 @@ class Head:
     J2 = "external-script.min docsify.min accordion.index docsify-sidebar-collapse.min"
     SCT = (f"/_lib/{st}.js" for st in J1.split())
     SCB = (f"/_lib/{st}.js" for st in J2.split())
+    REL = dict(i="JAIE24", o="SBCE", f="JAIE Guia", n="SNCT", k="Py Jr.", c="SNCT Guia",
+               j="JAIE24/", p="SBCE", g="JAIE Guia", m="SNCT", l="Py Jr.")
 
     def __init__(self, ln=html.LINK, st=html.SCRIPT):
         def append(child, node=self.HEAD):
@@ -84,6 +86,7 @@ def initial():
     window.__widget__ = show
     window.__did_got__ = build
     window.__copy_clip__ = clipboard_show
+    document.title = f"Pynoplia {Head.REL[sw.SPR]}"
 
 
 def docsy():
