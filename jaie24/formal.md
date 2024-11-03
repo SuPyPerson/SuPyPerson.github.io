@@ -6,13 +6,14 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > E agora para algo totalmente diferente! <br>
 > Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
 
-<img src onerror="__did_got__('aldeia_0.py')"></img>
+<img src onerror="__did_got__('../../_prog/jaie_formal.py')"></img>
+<div id="_jogo_">Aqui tem um marcador chamado _jogo_ onde os cenários vão surgir.</div>
 
 + Cena da Praia +
 
  ## Cena da Praia
 
-  <img id="al0" src onerror="__widget__(this.id)"></img>
+  <img id="formaliza_cen" src onerror="__widget__(this.id)"></img>
   
     Um minuto de silêncio,
     Peço ao amigo leitor
@@ -25,7 +26,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
  ## Agentes e Missões
 
-  <img id="al1" src onerror="__widget__(this.id)"></img>
+  <img id="formaliza_age" src onerror="__widget__(this.id)"></img>
   
     Um minuto de silêncio,
     Peço ao amigo leitor
@@ -36,7 +37,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
 + A Missão Científica e Matemática +
  ## A Missão Científica
-  <img id="al2" src onerror="__widget__(this.id)"></img>
+  <img id="formaliza_cie" src onerror="__widget__(this.id)"></img>
   
     Um minuto de silêncio,
     Peço ao amigo leitor
@@ -48,7 +49,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 + A Missão Literária e Histórica +
  ## A Missão Literária
 
-  <img id="al3" src onerror="__widget__(this.id)"></img>
+  <img id="formaliza_lit" src onerror="__widget__(this.id)"></img>
   
     Um minuto de silêncio,
     Peço ao amigo leitor
