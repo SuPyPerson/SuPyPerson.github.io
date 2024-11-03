@@ -276,7 +276,6 @@ class ScriptWidget:
         def go_anchor():
             iframe = _tag  # hdoc.getElementById(f"oi-{oid}")
             innerDoc = _tag.contentDocument or _tag.contentWindow.document if _tag.contentWindow else None
-            print("create_script_tag", self.guide_anchor, src, anchor, iframe, innerDoc, innerDoc.getElementById(anchor))  # , iframe.contentWindow, iframe.contentDocument)
             # innerDoc.getElementById(anchor).scrollIntoView() if innerDoc else None
             innerDoc.getElementById(anchor).scrollTo(dict(behavior="smooth")) if innerDoc else None
 
@@ -288,7 +287,7 @@ class ScriptWidget:
         oid, anchor = "_if_"+"-".join(anchor), anchor[-1]
 
         _tag = html.IFRAME(src=src, id=f"oi-{oid}", title="Guia do Agente", name=oid, width="100%", height="600")
-        return _tag, go_anchor
+        return _tag, lambda *_: None
 
     def widget_code(self, name, actions=None, is_long=False, button=None):
         def paste(*_):
