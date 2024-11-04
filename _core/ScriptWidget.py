@@ -260,17 +260,29 @@ class ScriptWidget:
         window.navigator.clipboard.writeText(editor)
         # alert(f"{self.guide_anchor} foi salvo temporariamente")
 
+    def exec_from_load(self, module, stor=store):
+        src = PLB+module if stor is store else ""
+        if src in stor:
+            # exec(stor[src], dict(__use__=self.exec_from_load))
+            _code = stor[src]
+            return _code
+        else:
+            alert(f"{PLB+module} não estava salvo")
+        return ""
+
     def load_script(self, stor=store):
-        src = PLB+self.guide_anchor if stor is store else ""
+        # src = PLB+self.guide_anchor if stor is store else ""
+        src = PLB+self.main_div_id if stor is store else ""
         if src in stor:
             self.get_script(stor[src])
         else:
-            alert(f"{self.guide_anchor} não estava salvo")
+            alert(f"{self.main_div_id} não estava salvo")
         # stor[src] = self.editor.getValue()
         # alert(f"{self.guide_anchor} foi salvo temporariamente")
 
     def save_script(self, src=None):
-        store[PLB+self.guide_anchor] = self.editor.getValue()
+        # store[PLB+self.guide_anchor] = self.editor.getValue()
+        store[PLB+self.main_div_id] = self.editor.getValue()
 
     def create_script_tag(self, src=None):
         def go_anchor():
@@ -337,7 +349,8 @@ class ScriptWidget:
         sys.stderr = ScriptStderr(self.console_pre_id)
         _, tarefa, kaiowa = MAPAS[oid] if oid in MAPAS else [None]*3
         if self.name_to_run is None:
-            exec(editor.getValue(), dict(a_tarefa=tarefa, Kaiowa=kaiowa))
+            exec(editor.getValue(),
+                 dict(a_tarefa=tarefa, Kaiowa=kaiowa, __name__="__main__", __use__=self.exec_from_load))
         else:
             python_runner(editor.getValue(), self.name_to_run)
 
