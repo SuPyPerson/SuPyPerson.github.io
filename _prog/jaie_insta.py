@@ -1,7 +1,7 @@
 # Open Source program Pynoplia - Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
 # PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 _SET0_ = {
-    "script_name": "caderno_refina", "script_div_id": "refina_rep",
+    "script_name": "caderno_instancia", "script_div_id": "instancia_pon",
     "height": 200, "title": "Repensando a História", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # no vitollino here
@@ -24,7 +24,7 @@ class Cenario:
 if __name__ == "__main__":
     Cenario().vai()
 _SET1_ = {
-    "script_name": "caderno_refina", "script_div_id": "refina_def",
+    "script_name": "caderno_instancia", "script_div_id": "instancia_pre",
     "height": 200, "title": "Define Conversa", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # no vitollino here
@@ -51,7 +51,7 @@ class TomadaLiteratura:
 if __name__ == "__main__":
     TomadaLiteratura(JOGO).vai()
 _SET2_ = {
-    "script_name": "caderno_refina", "script_div_id": "refina_enc",
+    "script_name": "caderno_instancia", "script_div_id": "instancia_mel",
     "height": 200, "title": "Encapsula Conversa", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # no vitollino here
@@ -83,7 +83,7 @@ class TomadaCiente:
 if __name__ == "__main__":
     TomadaCiente().associa().vai()
 _SET3_ = {
-    "script_name": "caderno_refina", "script_div_id": "refina_mon",
+    "script_name": "caderno_instancia", "script_div_id": "instancia_ult",
     "height": 200, "title": "Montagem Geral", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # no vitollino here
@@ -92,8 +92,8 @@ _SET3_ = {
 # salve as seções anteriores clicando no porquinho 🐖
 from vitollino import Jogo
 JOGO = Jogo(style=dict(height="450px", width="600px"), did="_jogo_")
-exec(__use__("_refina_rep"))  # importa o módulo Repensando o Storyboard
-exec(__use__("_refina_def"))
+exec(__use__("_instancia_rep"))  # importa o módulo Repensando o Storyboard
+exec(__use__("_instancia_def"))
 c = Cenario(2, 4).vai()
 TomadaLiteratura(JOGO, c.cena).vai()
 

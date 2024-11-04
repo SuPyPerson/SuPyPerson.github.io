@@ -6,53 +6,33 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > E agora para algo totalmente diferente! <br>
 > Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
 
-<img src onerror="__did_got__('aldeia_0.py')"></img>
+<img src onerror="__did_got__('../../_prog/jaie_insta.py')"></img>
 
 + As Pontas Soltas +
  ## As Pontas Soltas
 
-  <img id="al0" src onerror="__widget__(this.id)"></img>
+  <img id="instancia_pon" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    Novas equipes de especialistas são formadas para cada disciplina abordada. 
 
 + Preenchendo as Lacunas +
  ## Preenche as Lacunas
-  <img id="al2" src onerror="__widget__(this.id)"></img>
+  <img id="instancia_pre" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    As equipes fazem um apanhado do que falta ou que pode ser melhorado.
 
 + Melhorando o Resultado +
  ## Melhorar o Resultado
 
-  <img id="al1" src onerror="__widget__(this.id)"></img>
+  <img id="instancia_mel" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    A partir das orientações dos especialistas, um documento de melhorias será criado.
 
 + Última Passada +
  ## Última Passada
 
-  <img id="al3" src onerror="__widget__(this.id)"></img>
+  <img id="instancia_ult" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    Hora de assumir a autoria e montar uma cena de créditos.
 
 [footer](footer.md ':include')
