@@ -25,6 +25,7 @@ Changelog
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
 import sys
+from pydoc import replace
 from urllib.request import urlopen
 
 # noinspection PyUnresolvedReferences
@@ -200,6 +201,7 @@ class ScriptWidget:
         self.name_to_run = params.get("name", None)
         self.console_pre_id = "result_pre-%s" % main_div_id
         self.script_path = "_core/"
+        self.script_title = params.get("title", "main").replace(" ","_")+".py"
         self.main_div_id = main_div_id
         ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
@@ -283,6 +285,7 @@ class ScriptWidget:
     def save_script(self, src=None):
         # store[PLB+self.guide_anchor] = self.editor.getValue()
         store[PLB+self.main_div_id] = self.editor.getValue()
+        MF.save(f"{self.script_name}/{self.script_title}", self.editor.getValue())
 
     def create_script_tag(self, src=None):
         def go_anchor():
