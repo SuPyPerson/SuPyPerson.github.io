@@ -15,12 +15,16 @@
 Classes neste módulo:
 
     :py:class:`Cubos` Quebra Cabeça com cubos que rolam.
-
     :py:class:`Roteiro` Facilitador de criação de roteiros.
+    :py:class:`Swap` Jogo de arrumar as peças de uma imagem.
+    :py:class:`Associa` Arrasta o nome para a posição certa.
 
 
 Changelog
 ---------
+.. versionadded::    24.10
+        Adicionou Swap e Associa.
+
 .. versionadded::    22.04
         Criação do módulo de jogos.
 
@@ -38,7 +42,7 @@ Changelog
 .. _`Ajuda do SuperPython`: https://supygirls.readthedocs.io
 
 """
-from vitollino import Cena, Elemento, Texto
+from vitollino import Cena, Elemento, Texto, JOGO as J
 from random import sample
 # from browser import alert
 from collections import namedtuple
@@ -152,7 +156,7 @@ class Roteiro:
 
 
 class Sprite:
-    def __init__(self, img="", index=1, dx=1, dy=1, w=900, h=500, o=1, b=0, s=1, **kwargs):
+    def __init__(self, img="", index=1, dx=1, dy=1, w=900, h=500, o=1, b=0, s=1, **_):
         sty = dict(width=f"{w}px", height=f"{h}px", overflow="hidden", filter=f"blur({b}px)", scale=s, opacity=o)
 
         class Img:
@@ -409,8 +413,285 @@ class Cubos:
         return len(set(cubo.inx for cubo in self.cubos)) == 1
 
 
+from browser.timer import set_timeout
+
+"""Usa o timer do navegador para dar um tempinho inicial"""
+SF = {"font-size": "30px", "transition": "left 1s, top 1s"}
+"""Dá o tamanho da letra da legenda e faz a legenda se movimentar suavemente quando inicia e acerta"""
+VAZIO = "../_ativo/kwarwp/vazio.png"
+
+
+class Associa:
+    """ Jogo que associa o nome de um objeto com o seu desenho
+    """
+    CENA = "../_ativo/kwarwp/kwarwp.png"
+    CELULA = "../_ativo/kwarwp/vazio.png"
+
+    class Nome:
+        """ Cria uma legenda a ser arrastada para a lacuna correta
+
+        As legendas aparecem inicialmente no local certo e depois de um intervalo vão para o canto esquerdo
+
+        :param nome: o nome que aparece na legenda
+        :param  tit: a posição que a legenda assume no lado esquerdo
+        :param    x: a posição horizontal da legenda
+        :param    y: a posição vertical da legenda
+        :param jogo: o jogo que esta legenda aparece
+        :param cena: a cena onde o jogo aparece
+        :param lacuna: imagem de fundo da lacuna
+        :param legenda: imagem de fundo da legenda
+        """
+
+        def __init__(self, nome, tit, x, y, cena, jogo, caixa=160, borda=100,
+                     lacuna=VAZIO, legenda=VAZIO, era="??????????"):
+            self.nome, self.tit, self.x, self.y, self.jogo, self.borda, self.era = nome, tit, x, y, jogo, borda, era
+            titulo = f"n_{tit}"
+            """Este título serve para marcar cada legenda. É usado pelo drop para conferir se é a legenda certa"""
+            drop = {titulo: self.acertou}
+            """este dicionário determina que somente a legenda que tenha este título vai acionar o método acertou"""
+            self.lacuna = J.a(lacuna, x=x, y=y, w=160, h=40, style=SF, cena=cena, drop=drop)
+            """Cria um elemento que posiciona a lacuna e aceita um drop do elemento que tem o título correto"""
+            self.o_nome = J.a(legenda, tit=titulo, x=x, y=y, w=caixa, h=40, style=SF, cena=cena, drag=True)
+            """Cria um elemento que posiciona a legenda e tem o título aceito pela lacuna e pode ser arrastado"""
+            self.o_nome.elt.html = f"{nome}"
+            """Adiciona o nome no elemento que é a legenda"""
+            set_timeout(self.inicia, 1500 + 300 * tit)
+            """Inicia um cronômetro (1.5 seg) para o jogador ver a solução, cada legenda leva mais tempo"""
+
+        def acertou(self, ev=None, nome=None):
+            """Quando o jogador acerta, apaga as interrogações da lacuna e posiciona a legenda sobre a lacuna"""
+            self.lacuna.elt.html = ""
+            self.o_nome.x = self.x
+            self.o_nome.y = self.y
+            self.jogo.pontuar()
+
+        def inicia(self, ev=None):
+            """Quando inicia coloca interrogações na lacuna e posiciona a legenda à esquerda"""
+            self.lacuna.elt.html = self.era
+            self.o_nome.x = self.borda
+            self.o_nome.y = 50 + 40 * self.tit
+
+    def __init__(self, cena, acertou=None, acertos=4, caixa=160, borda=100):
+        self.cena, self.caixa, self.borda, self.acertos = cena, caixa, borda, acertos
+        self.pontua = 0
+        self.acertou = acertou or self.acerta
+        '''
+        self.mito = self.Nome(nome="mitocôndria", tit=0, x=650, y=150, jogo=self, cena=self.cena)
+        self.nucle = self.Nome(nome="núcleo",  tit=1, x=550, y=220, jogo=self, cena=self.cena)
+        self.reticulo = self.Nome(nome="retículo", tit=2, x=450, y=100, jogo=self, cena=self.cena)
+        self.ribossomo = self.Nome(nome="ribossomo",  tit=3, x=560, y=40, jogo=self, cena=self.cena)
+        #self.cena.vai()'''
+
+    def nome(self, nome, tit=0, x=650, y=150, lacuna=VAZIO, legenda=VAZIO, era="??????????"):
+        return self.Nome(nome=nome, tit=tit, x=x, y=y, caixa=self.caixa, borda=self.borda,
+                         jogo=self, cena=self.cena, lacuna=lacuna, legenda=legenda, era=era)
+
+    def acerta(self):
+        J.n(self.cena, "Você acertou tudo! Parabéns!").vai()
+
+    def pontuar(self):
+        self.pontua += 1
+        if self.pontua == self.acertos:
+            self.acertou()
+
+
+class Swap:
+    """ Jogo que embaralha as partes de um desenho e usa drag and drop para rearrumar.
+
+        As peças aparecem inicialmente embaralhadas e devem ser arrastadas para o local onde deveriam estar
+
+        :param    j: Referência ao Jogo do Vitollino.
+        :param  img: A imagem que deve ser embaralhada
+        :param cena: A cena onde o jogo aparece
+        :param    x: A posição horizontal da imagem
+        :param    y: A posição vertical da imagem
+        :param    w: A largura da imagem
+        :param    h: A altura da imagem
+        :param   dw: Quantidade de colunas que recortam a imagem
+        :param   dh: Quantidade de linhas que recortam a imagem
+        :param venceu: Fonção a ser chamada quando vence
+        :param   dim: (deslocamentos x e y do quadro e número de peças em uma linha)
+    """
+
+    def __init__(self, j, img, cena, w=900, h=400, x=100, y=50, dw=3, dh=3, venceu=None, dim=(0, 0, 1)):
+        swap = self
+        ox, oy, factor = dim
+        factor = factor if factor >= 1 else 1
+
+        class Peca(j.a):
+            """ A Peça representa um recorte da imagem que vai ser embaralhada.
+            """
+
+            def __init__(self, local, indice, drag=True):
+                self.local, self.indice = local, indice
+                """ local em que a peça foi colocada; local onde a peça deveria estar"""
+                pw, ph = w // dw, h // dh
+                """largura e altura da peça"""
+                lx, ly = x + local % (dw * factor) * pw, y + local // (dw * factor) * ph
+                """posição horizontal e vertical em pixels onde a peça será desenhada"""
+                px, py = indice % dw * pw, indice // dw * ph
+                """posição horizontal e vertical em pixels onde o desenho da peça está na imagem"""
+                super().__init__(img, x=lx, y=ly, w=pw, h=ph, drag=drag, cena=cena,
+                                 vai=lambda ev, s=self, t=swap, *_: t.clica(ev=ev, parte=s))
+                """chama o construtor do Elemento Vitollino passando as informações necessárias"""
+                self.siz = (w, h)
+                """redimensiona a figura da imagem para o tamanho fornecido"""
+                self.elt.id = f"_swap_{local}"
+                """rotula o elemento da peça com a posição onde foi alocada"""
+                self.pos = (-px, -py)
+                """reposiciona a figura da imagem para o pedaço que vai aparecer na peça"""
+                self.elt.ondrop = lambda ev: self.drop(ev)
+                """captura o evento drop da peça para ser tratado pelo método self.drop"""
+
+            def delete(self):
+                self.elt.remove()
+
+            def drop(self, ev):
+                ev.preventDefault()
+                ev.stopPropagation()
+                src_id = ev.data['text']
+                local = int(src_id.split('_')[-1])
+                local = swap.locais[local]
+                # print(f"local -> {local} | indice -> {self.indice}")
+                self.dropped(ev, local)
+
+            def dropped(self, ev, local):
+                m, u = self, local  # swap.pecas[local]
+                u.x, u.y, u.local, m.x, m.y, m.local = m.x+ox, m.y+oy, m.local, u.x, u.y, u.local
+                swap.montou()
+
+            def certo(self):
+                # print(self.indice, self.local)
+                return self.indice == self.local
+
+            def __repr__(self):
+                return str(self.indice)
+
+        self.peca = Peca
+        self.pecas = []
+        self.locais = {}
+        self.dim = dim
+        self.monta(Peca, dh, dw)
+        self.venceu = venceu or J.n(cena, "Voce venceu!")
+
+    def clica(self, ev=None, parte=None):
+        ev.preventDefault()
+        ev.stopPropagation()
+
+    def monta(self, peca, dh, dw):
+        from random import shuffle
+        pecas = list(range(dw * dh))
+        shuffle(pecas)
+        self.pecas = [peca(local, inx) for local, inx in enumerate(pecas)]
+        self.locais = {peca.local: peca for peca in self.pecas}
+
+    def montou(self):
+        resultado = [peca.certo() for peca in self.pecas]
+        # print(resultado)
+        self.venceu.vai() if all(resultado) else None
+        return all(resultado)
+
+
+class Sequencia(Swap):
+    """ Jogo que embaralha as partes de um desenho e usa click para rearrumar.
+
+        As peças aparecem inicialmente embaralhadas e devem ser arrastadas para o local onde deveriam estar
+       No game, o jogador terá que clicar nas linhas em ordem certa para montar a imagem corretamente.
+
+        :param    j: Referência ao Jogo do Vitollino.
+        :param  img: A imagem que deve ser embaralhada
+        :param cena: A cena onde o jogo aparece
+        :param    x: A posição horizontal da imagem
+        :param    y: A posição vertical da imagem
+        :param    w: A largura da imagem
+        :param    h: A altura da imagem
+        :param   dw: Quantidade de colunas que recortam a imagem
+        :param   dh: Quantidade de linhas que recortam a imagem
+    """
+    # def __init__(self, esta_cena, chama_quando_acerta=lambda: True, dim=(200, 20, 200, 50), topo=(50, 100),
+    #              blocos=()): https://i.imgur.com/XkwPfk5.png
+
+    def __init__(self, j, img, cena, w=900, h=400, x=100, y=50, dw=3, dh=3, venceu=None, dim=(0, 0, 1)):
+        self.ox, self.oy, _ = dim
+        self.posiciona_atual = self.ox, self.oy, 0
+        super().__init__(j, img, cena, w, h, x, y, dw, dh, venceu, dim=dim)
+        self.dims = dw, w // dw, h // dh
+        self.montar = self.peca, dw, dh
+
+    @property
+    def x(self):
+        return self.posiciona_atual[0]
+
+    @x.setter
+    def x(self, _):
+        pass
+
+    @property
+    def y(self):
+        return self.posiciona_atual[1]
+
+    @y.setter
+    def y(self, _):
+        pass
+
+    @property
+    def local(self):
+        return self.posiciona_atual[2]-1
+
+    @local.setter
+    def local(self, _):
+        pass
+
+    def monta(self, peca, dh, dw):
+        from random import shuffle
+        self.posiciona_atual = self.ox, self.oy, 0
+        pecas = list(range(dw * dh))
+        shuffle(pecas)
+        self.pecas = [peca(local, inx) for local, inx in enumerate(pecas)]
+        self.locais = {peca.local: self for peca in self.pecas}
+
+    def clica(self, ev=0, parte=None):
+        ev.preventDefault()
+        ev.stopPropagation()
+        self.montou_()
+        parte.dropped(ev, self)
+        parte.vai = lambda *_: None
+
+    def montou_(self):
+        x, y, local = self.posiciona_atual
+        dw, pw, ph = self.dims
+        self.posiciona_atual = self.ox + (local % dw) * pw, self.oy + (local // dw) * ph, local + 1
+        # print("yes", local, self.dims, (local % dw), (local // dw), self.posiciona_atual)
+
+    def montou(self):
+        resultado = [peca.certo() for peca in self.pecas]
+        # print(resultado, sum(resultado)+3, self.posiciona_atual[2])
+        if sum(resultado)+3 < self.posiciona_atual[2]:
+            # print("montou parte.delete()")
+            [parte.delete() for parte in self.pecas]
+            self.monta(*self.montar)
+        self.venceu.vai() if all(resultado) else None
+        return all(resultado)
+
+
+def main():
+    cena = J.c(Associa.CENA)
+    celula = J.a(Associa.CELULA, x=300, y=50, w=600, h=500, cena=cena)
+    # Swap(j=J, img=Associa.CELULA, cena=cena, w=600,h=500,x=300,y=50,dw=3,dh=3)
+    associa = Associa(cena, caixa=300, borda=20)
+    mito = associa.nome(nome="mitocôndria", tit=0, x=650, y=150)
+    nucle = associa.nome(nome="núcleo", tit=1, x=550, y=220)
+    reticulo = associa.nome(nome="reticulo", tit=2, x=450, y=100)
+    ribossomo = associa.nome(nome="ribossomo", tit=3, x=560, y=40)
+    cena.vai()
+
+
 if __name__ == "__main__":
     from vitollino import STYLE
 
     STYLE.update(width=850, height="650px")
     # Cubos(CENAS, tw=500, nx=2, ny=2)
+HERDO0 = "https://i.imgur.com/9jsxjLw.png"
+HERDO1 = "https://i.imgur.com/w60bNMG.png"
+HERDO2 = "https://i.imgur.com/RztgWA1.png"
+HERDO3 = "https://i.imgur.com/FZOhJhb.png"

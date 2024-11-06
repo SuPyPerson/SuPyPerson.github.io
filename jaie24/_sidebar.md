@@ -4,3 +4,4 @@
 - [Refinamento](refina)
 - [Reflexão](reflex)
 - [Instanciação](insta)
+- [Galeria de Imagens](../guia/galeria.md)

@@ -13,9 +13,6 @@ Classes neste módulo:
 
 Changelog
 ---------
-.. versionadded::    24.10
-   |br| Spike for saving and loading from db (04).
-
 .. versionadded::    24.02c
    |br| Fix Script Header reader (29).
 
@@ -28,34 +25,25 @@ Changelog
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
 import sys
+from urllib.request import urlopen
+
 # noinspection PyUnresolvedReferences
-from browser import window, ajax, document, html, timer  # , run_script as python_runner
+from browser import window, ajax, document, html, alert, timer, aio, run_script as python_runner
+from browser.session_storage import storage
+from browser.local_storage import storage as store
 from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
-from model_facade import MF
+from os import getenv
+# {i: "jaie24", o: "sbce", f: "guia", n: "snct", k: "pyjr", c: "snct/guia",
+# j: git + "jaie24/jaie24/", p: git + "sbce/sbce", g: git + "jaie24/guia", m: git + "snct/snct",l: git + "pyjr"
+SPR = "k"
+GUIA = {k: v for k, v in zip("ionkjpml", "ffccggcf")}
+HOST = "localhost:8080"
+GUIDE = getenv("GUIDE", "https://supyperson.github.io/?rel=g")
+# GUIDE = getenv("GUIDE","http://localhost:8080/?rel=f")
+# print("GUIDE:", GUIDE)
+PLB = "_PYNO_LOCAL_BOARD"
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
-
-widget_code_lr = """
-  <div class="script-title" id="title-%s"></div>
-  <div class="script-container" id="script-container-%s">
-    <div id="script-%s" class="script-editor"></div>
-    <div id="result-%s" class="script-result"><pre id="result_pre-%s"></pre></div>
-  </div>  
-  <button class="script-button" id="run-%s" type="button">Executar</button>
-  <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
-  <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
-"""
-
-widget_code_tb = """
-  <div class="script-title" id="title-%s"></div>
-  <div class="script-container" id="script-container-%s">
-    <div id="script-%s" class="script-editor-long"></div>
-    <div id="result-%s" class="script-result-long"><pre id="result_pre-%s"></pre></div>
-  </div>  
-  <button class="script-button" id="run-%s" type="button">Executar</button>
-  <button class="script-button" id="clear-%s" type="button">Limpar Console</button>
-  <button class="script-button" id="reset-%s" type="button">Reiniciar</button>
-"""
 COD = {}
 HEADER = {}
 MAPAS = {}
@@ -63,40 +51,11 @@ MAPAS = {}
 
 
 def show(did="0"):
-    button_(did=did, name="forest_0.py") if "@@" in did else build_(did=did, name="forest_0.py")
+    build_(did=did, name="forest_0.py")
 
 
-def build(name="forest_0.py", oid=None, fid=None, base=None):
+def build(name="forest_0.py"):
     ScriptBuilder(script_name=name).get_script(name)
-    if oid:
-        from editor_widget import main
-        import browser
-
-        modal = html.DIV(Id="_modal_", Class="modal")
-        try:
-            _ = document["_modal_"]
-        except:
-            document.body.insertAdjacentElement("beforeend", modal)
-            print("build insertAdjacentElement")
-
-            main(browser, oid=oid, fid=fid, base=base)
-
-
-def button_(did, name="example"):
-    def go():
-        did_ = did   # .replace("@@", "")
-        _did = f"_{did_}"
-        print(did_, HEADER)
-        head = HEADER[did_] if did_ in HEADER else ""
-        namer = head.pop("title") if head and "title" in head else name
-        go_ = head.pop("panel_show") if head and "panel_show" in head else lambda *_: None
-        header = HEADER[did_] if did_ in HEADER else {}
-        button = html.BUTTON(f"Ativar {namer}")
-        # button.onclick(lambda *_: go_())
-        button.bind("click", lambda *_: None)
-        _ = document[did_].insertAdjacentElement("afterend", button)
-
-    timer.set_timeout(go, 150)
 
 
 class ScriptVito:
@@ -131,7 +90,7 @@ class ScriptVito:
 
         _did = f"_{did}"
         edi = html.DIV(Id=_did)
-        vit = html.DIV(Id=_did + "_", style={"min-height": h})
+        vit = html.DIV(Id=_did + "_", style={"min-height": h, "margin-top": "25px"})
         _ = document[did].parentNode <= vit
         _ = document[did].parentNode <= edi
         if not show_scenario:
@@ -143,15 +102,14 @@ class ScriptVito:
         Elemento(img=sun, cena=c)
         Elemento(img=soil, y=100, w=695, h=ground, cena=c)
         exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=self.prepara))
+        # exec(self.vit, dict(c__=c, v__=vitollino, kwarwp_prepara=lambda m: self.prepara(m)))
 
 
 def build_(did="0", name="forest_0.py"):
     def go():
         _did = f"_{did}"
         # print(did, HEADER[did])
-        namer = HEADER[did].pop("script_namer") if did in HEADER else name
-        header = HEADER[did] if did in HEADER else {}
-        ScriptWidget(script_named=namer, main_div_id=did, **header)
+        ScriptWidget(script_named=name, main_div_id=did, **HEADER[did])
 
     timer.set_timeout(go, 100)
 
@@ -181,7 +139,6 @@ class ScriptBuilder:
             the ``name`` keyword to run ``__main__`` section of a Python script
         """
         self.script_name = script_name
-        self.script_bundle = {}
         self.code = ""
         self.params = params
         self.name_to_run = params.get("name", None)
@@ -194,8 +151,7 @@ class ScriptBuilder:
         self.code = code
         self.params.pop('script_name') if 'script_name' in params else None
         COD[script_div_id] = code.strip()
-        header_dict = dict(code=code, script_namer=self.script_name, panel_show=lambda *_: None, **params)
-        self.script_bundle[script_div_id] = HEADER[script_div_id] = header_dict
+        HEADER[script_div_id] = dict(code=code, **params)
 
     def get_scripts_callback(self, request):
         def do_tup(refx, codex):
@@ -222,7 +178,7 @@ class ScriptBuilder:
 
 class ScriptWidget:
 
-    def __init__(self, script_named=None, main_div_id='', **params):
+    def __init__(self, script_name=None, main_div_id='', **params):
         """ Creates a widget in a given DIV
         @param params :
           - height: integer in pixels
@@ -237,7 +193,9 @@ class ScriptWidget:
         """
         mid = main_div_id
         m = main_div_id = f"_{main_div_id}"
-        self.script_name = script_named
+        document[mid].insertAdjacentElement("afterend", html.DIV(Id=m, Class="script-main-div_"))
+        self.script_name = script_name
+        self.guide_anchor = f"#{script_name.split('_')[-1]}"
         self.script_div_id = "script-%s" % main_div_id
         self.name_to_run = params.get("name", None)
         self.console_pre_id = "result_pre-%s" % main_div_id
@@ -245,19 +203,22 @@ class ScriptWidget:
         self.main_div_id = main_div_id
         ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
-        self.script_title = params["script_name"] if "script_name" in params else main_div_id
-
+        from editor_widget import main
+        import browser
+        menu = zip("play paste xmark".split(),
+                   (self.run_script, lambda *_: self.paste_script(), self.clear_console))
+        panes = {"caderno": self.widget_code(m, is_long=True)}
+        panes.update({"guia": self.create_script_tag()}) if SPR in "nif" else None
+        functions = zip("rotate piggy-bank receipt".split(),
+                        (lambda *_: self.get_script(), lambda *_: self.save_script(), lambda *_: self.load_script()))
         if "alignment" in params and params["alignment"] == 'left-right':
-            document[main_div_id].innerHTML = widget_code_lr % (m, m, m, m, m, m, m, m)
+            main(browser, menu=menu, panes=panes, pane=document[main_div_id], functions=functions)
             if "editor_width" in params:
                 document[self.script_div_id].style.width = params["editor_width"]
+            # _ = document[main_div_id] <= self.widget_code(m, main())
         else:
-            document[main_div_id].innerHTML = widget_code_tb % (m, m, m, m, m, m, m, m)
-
-        document["run-%s" % main_div_id].bind("click", self.run_script)
-        document["clear-%s" % main_div_id].bind("click", self.clear_console)
-        document["reset-%s" % main_div_id].bind("click", self.get_script)
-
+            main(browser, menu=menu, panes=panes, pane=document[main_div_id], functions=functions)
+            # _ = document[main_div_id] <= self.widget_code(m, is_long=True)
         # Set title (number and name) of the script
         index = params.get("index", None)
         title = params.get("title", None)
@@ -290,36 +251,112 @@ class ScriptWidget:
             del document["clear-%s" % main_div_id]
             del document["reset-%s" % main_div_id]
 
+    def paste_script(self):
+        src = PLB
+        editor = self.editor.getValue()
+        clip = storage.get(src, editor)
+        self.get_script(clip)
+        storage[src] = editor
+        window.navigator.clipboard.writeText(editor)
+        # alert(f"{self.guide_anchor} foi salvo temporariamente")
+
+    def exec_from_load(self, module, stor=store):
+        src = PLB+module if stor is store else ""
+        if src in stor:
+            # exec(stor[src], dict(__use__=self.exec_from_load))
+            _code = stor[src]
+            return _code
+        else:
+            alert(f"{PLB+module} não estava salvo")
+        return ""
+
+    def load_script(self, stor=store):
+        # src = PLB+self.guide_anchor if stor is store else ""
+        src = PLB+self.main_div_id if stor is store else ""
+        if src in stor:
+            self.get_script(stor[src])
+        else:
+            alert(f"{self.main_div_id} não estava salvo")
+        # stor[src] = self.editor.getValue()
+        # alert(f"{self.guide_anchor} foi salvo temporariamente")
+
+    def save_script(self, src=None):
+        # store[PLB+self.guide_anchor] = self.editor.getValue()
+        store[PLB+self.main_div_id] = self.editor.getValue()
+
+    def create_script_tag(self, src=None):
+        def go_anchor():
+            iframe = _tag  # hdoc.getElementById(f"oi-{oid}")
+            innerDoc = _tag.contentDocument or _tag.contentWindow.document if _tag.contentWindow else None
+            # innerDoc.getElementById(anchor).scrollIntoView() if innerDoc else None
+            innerDoc.getElementById(anchor).scrollTo(dict(behavior="smooth")) if innerDoc else None
+
+        GUIDE = f"{HOST}?rel={GUIA[SPR]}#/"
+        src = src or GUIDE
+        # src += self.guide_anchor
+        anchor = self.guide_anchor.split("#")
+        src = f"{src}{anchor[1]}#{anchor[-1]}"
+        oid, anchor = "_if_"+"-".join(anchor), anchor[-1]
+
+        _tag = html.IFRAME(src=src, id=f"oi-{oid}", title="Guia do Agente", name=oid, width="100%", height="600")
+        return _tag, lambda *_: None
+
+    def widget_code(self, name, actions=None, is_long=False, button=None):
+        def paste(*_):
+            # async def do_paste():
+            async def do_paste(*_):
+                print("widget_code before")
+                text = await window.navigator.clipboard.readText()
+                print("widget_code", text[100:])
+
+                self.get_script(text)
+
+            timer.set_timeout(lambda *_: aio.run(do_paste()), 300)
+            return
+        h = html
+        actions = actions or (self.run_script, paste, self.clear_console, self.get_script,)
+        editor, result = ("script-editor-long", "script-result-long") if is_long else ("script-editor", "script-result")
+        buttons = [h.BUTTON("︎▶ Executar", Class="script-button", Id=f"run-{name}"),
+                   h.BUTTON("➕ Colar", Class="script-button", Id=f"paste-{name}"),
+                   h.BUTTON("⭕ Limpar Console", Class="script-button", Id=f"clear-{name}"),
+                   h.BUTTON("🔁 Reiniciar", Class="script-button", Id=f"reset-{name}")]
+        buttons = button or buttons
+        [button.bind("click", action) for button, action in zip(buttons, actions)]
+
+        widget = [
+            h.DIV(Class="script-title", Id=f"title-{name}"),
+            h.DIV([
+                h.DIV(Class=editor, Id=f"script-{name}"),
+                h.DIV(h.PRE(id=f"result_pre-{name}"), Class=result, Id=f"result-{name}"),
+            ], Class="script-container", Id=f"script-container-{name}"),
+        ]
+        # widget.extend(buttons)
+        return widget, lambda *_: None
+
     def write(self, strn):
         def set_svg():
             _ = document[self.console_pre_id] <= strn
 
         timer.set_timeout(set_svg, 10)
 
-    def clear_console(self, _):
+    def clear_console(self, *_):
         document[self.console_pre_id].innerHTML = ""
-        # print(self.script_title)
-        # MF.get(self.script_title)
 
-    def run_script(self, _):
+    def run_script(self, *_):
         editor = self.editor  # window.ace.edit(self.script_div_id)
-        # print(f"run_script/{self.script_name}/{self.script_title}")
-        MF.save(f"{self.script_name}/{self.script_title}", editor.getValue())
         document[self.console_pre_id].style.color = "dimgrey"
         sys.stdout,  oid = self, self.main_div_id[1:]
         sys.stderr = ScriptStderr(self.console_pre_id)
         _, tarefa, kaiowa = MAPAS[oid] if oid in MAPAS else [None]*3
         if self.name_to_run is None:
-            exec(editor.getValue(), dict(a_tarefa=tarefa, Kaiowa=kaiowa))
+            exec(editor.getValue(),
+                 dict(a_tarefa=tarefa, Kaiowa=kaiowa, __name__="__main__", __use__=self.exec_from_load))
         else:
-            exec(editor.getValue(), self.name_to_run)
+            python_runner(editor.getValue(), self.name_to_run)
 
     def get_script(self, code=None):
-        def got_text(text):
-            self.editor.setValue(text if len(text) > 4 else self.code_text, -1)
-            # print(f"get_script/{self.script_name}/{self.script_title}\n{text}")
-        MF.get(f"{self.script_name}/{self.script_title}", got_text)
-        self.editor.setValue(self.code_text, -1)
+        code = code if code is not None else self.code_text
+        self.editor.setValue(code, -1)
         self.editor.setTheme("ace/theme/gruvbox")
         self.editor.getSession().setMode("ace/mode/python")
         self.editor.setOptions({
@@ -327,5 +364,3 @@ class ScriptWidget:
             "enableSnippets": True,
             "enableLiveAutocompletion": True
         })
-
-
