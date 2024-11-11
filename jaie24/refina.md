@@ -6,53 +6,37 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > E agora para algo totalmente diferente! <br>
 > Aprenda Python resolvendo, modificando e criando jogos e desafios. <br>
 
-<img src onerror="__did_got__('aldeia_0.py')"></img>
+<img src onerror="__did_got__('../../_prog/jaie_refina.py')"></img>
+<div id="_jogo_">Aqui tem um marcador chamado _jogo_ onde os cenários vão surgir.</div>
 
 + Repensado o StoryBoard +
  ## Repensado o StoryBoard
 
-  <img id="al0" src onerror="__widget__(this.id)"></img>
+  <img id="refina_rep" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    Uma nova maquete de localidades será construída
+    segundo os requisitos do jogo escolhido para cada equipe.
 
 + Definindo a Conversa +
  ## Definindo a Conversa
-  <img id="al2" src onerror="__widget__(this.id)"></img>
+  <img id="refina_def" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    Defina como os módulos se entrelaçam e como cada um
+    oferece os pontos de chamada para compor a unidade final.
 
 + Tomada de Cena +
  ## Tomada de Cena
 
-  <img id="al1" src onerror="__widget__(this.id)"></img>
+  <img id="refina_enc" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    Será construído um conjunto de tomadas de cena e
+    ações utilitárias pertinentes ao componentes da trama.
 
 + Montando a Criatura +
  ## Montando a Criatura
 
-  <img id="al3" src onerror="__widget__(this.id)"></img>
+  <img id="refina_mon" src onerror="__widget__(this.id)"></img>
   
-    Um minuto de silêncio,
-    Peço ao amigo leitor
-    Pelo massacre expedido
-    Que causara grito e dor.
-    Chamamos dizimação,
-    Esses atos de horror.
+    Basicamente este módulo importa os módulos construídos pelos participantes e conecta as cenas
 
 [footer](footer.md ':include')

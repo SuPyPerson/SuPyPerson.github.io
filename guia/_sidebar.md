@@ -5,4 +5,5 @@
   - [Refinamento](refina.md)
   - [Reflexão](reflete.md)
   - [Instanciação](instancia.md)
+- [Galeria de Imagens](galeria.md)
 - [Biblioteca para Jogos](manual_jogos)

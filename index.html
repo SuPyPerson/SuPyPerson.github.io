@@ -3,203 +3,32 @@ Open Source program Pynoplia - Copyright © 2024  Carlo Oliveira** <carlo@nce.uf
 PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 SNCT and Guide Fix - Pre Agent Note - Jogos Swap Associa - fix bioma.md - Brython 3.11 -
 Cuidando - fix Swap 🔰 Guide cuida + prot + guard fix - 🔰 Credits v0 24.10h3 main🛡️(10/18)
+⛲ 🛠️ Xiphos ⚔️ 24.10x1 + font Awesome main (10/20) migrate + js + main_index 🔰. main (10/26)
+⛲ 🛠️ Xiphos ⚔️ 24.11x0 + change title main (11/01) ⚔️ξίφος⚔️ 24.11xj0 main & jaie24 (11/04)
 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/_lib/ace1.36.2.min.js"></script>
+    <script src="/_lib/mode1.36.2-python.min.js.js"></script>
+    <script src="/_lib/theme-1.36.2gruvbox.min.js"></script>
+    <script src="_lib/ext1.36.2-language_tools.min.js"></script>
     <title>Pynoplia</title>
     <!-- stylesheets -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/_media/pynoplia.png" type="image/x-icon"/>
-    <link rel="stylesheet" href="/_lib/fa6.4.2_all.min.css"/>
-    <link rel="stylesheet" href="/_lib/darcula.css">
     <script type=" text/javascript " src="/_lib/brython3.11.3.min.js"></script>
     <script type=" text/javascript " src="/_lib/brython3.11.3_stdlib.js"></script>
 <!--    <script type=" text/javascript " src="/_lib/brython3.13.0.min.js"></script>-->
 <!--    <script type=" text/javascript " src="/_lib/brython3.13.0_stdlib.min.js"></script>-->
-    <link rel="stylesheet" href="/_lib/accordion_style.css">
-    <link rel="stylesheet" href="/_core/css/lecture.css">
-    <script src="/_lib/ace1.36.2.min.js"></script>
-    <script src="/_lib/mode1.36.2-python.min.js.js"></script>
-    <script src="/_lib/theme-1.36.2gruvbox.min.js"></script>
-    <script src="_lib/ext1.36.2-language_tools.min.js"></script>
-    <style>
-        .accordion {
-          background-color: #222322;
-          color: #ccc;
-        }
-        .accordion.active {
-          background: rgba(0, 0, 0, 0.1);
-          border-left: 3px solid #014f17;
-        }
-        ul.accordion-wrapper > li > .accordion-content-container {
-          display: block;
-          margin: 0 20px 20px 20px;
-          padding: 0 15px 20px;
-          background: #333433;
-          cursor: default;
-          overflow: hidden;
-        }
-
-        .panel {
-            display: none;
-        }
-        .panel.opened {
-            display: block;
-            background-color: #333;
-        }
-        img[alt="Data Content"] { width: 200px; }
-        .cover-main blockquote {
-            color: #6b0584;
-        }
-        .cover-main h1 a span {
-            color: black;
-        }
-
-        .cover-main h3 a span {
-            color: darkslategray;
-        }
-        section.cover .cover-main > p:last-child a {
-            color: green !important;
-        }
-
-        section.cover .cover-main > p:last-child a:hover {
-            color: green !important;
-        }
-
-        /**
-        - last button
-         */
-        section.cover .cover-main > p:last-child a:last-child {
-            background-color: indigo !important;
-            color: white !important;
-        }
-
-        section.cover .cover-main > p:last-child a:last-child:hover {
-            background-color: peru !important;
-            color: brown !important;
-        }
-
-    </style>
+    <script type="text/python" src="_core/main_index.py"></script>
  </head>
 <!--<body>-->
 <!--<brython-options debug="1" cache="true" pythonpath="/_prog /_core"></brython-options>-->
 
 <body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['_prog', '_core']})">
     <!--    'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_core',
-     'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_prog']})">
-    <div id="pydiv"></div>-->
+     'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_prog']})">-->
     <div id="app"></div>
-    <link rel="stylesheet" href="/_lib/mermaid.min.css" />
-    <script src="/_lib/mermaid.min.js"></script>
-    <script type="text/python">
-        from browser import window, document, alert, html, timer
-        from ScriptWidget import show, build
-        def clipboard_show(bt):
-            btp = bt.parent.previousSibling
-            window.navigator.clipboard.writeText(btp.text)
-        window.__widget__ = show
-        window.__did_got__ = build
-        window.__copy_clip__ = clipboard_show
-
-    </script>
-    <script>
-        function config_doc(docConf){
-            window.$docsify = docConf
-        }
-
-    </script>
-    <script>
-      var num = 0;
-      mermaid.initialize({ startOnLoad: false });
-        //var num = 0;
-      //mermaid.initialize({ startOnLoad: false });
-      const queryString = window.location.search;
-      const urlParams = new URLSearchParams(queryString);
-      const release = urlParams.get('rel')
-
-      let url = window.location.hostname; // obter o dominio
-      let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
-      const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"snct", k:"pyjr", c:"snct/guia",
-      j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", m: git+"snct/snct", l: git+"pyjr"
-      };
-      let url_first = release //url[0];
-      let docBasePath = "pyjr";
-        // let url_name = url_splt[url_splt.length - 2];
-      if ("cjklpgmiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]}
-      console.log("got url to path", url_first, url, docBasePath, "cjklpgmiofn".indexOf(url_first) >= 0);
-
-
-      window.$docsify = {
-            // basePath: '/jaie24/',
-            basePath: docBasePath,
-            coverpage: ["/", "/jaie24/"],
-            executeScript: false,
-            accordify: {
-                prerenderComments: true,                    // default
-                selectors: ['h1','h2','h3','h4','h5','h6'], // default value
-                debug: false,                               // default value
-            },
-
-          alias: {
-            '/pyi/(.*)': '/pgintro/$1', // supports regexp
-            '/pintro': '/pgintro/README',
-            '/kwa': '/kwarwp/README',
-            '/pyjr/(.*)': '/pyjr/$1',
-            '/jaie24': '/README',
-            '/soho': '/kwarwp/o_sonho',
-            '/jardim': '/sbce/o_jogo',
-            '/changelog':
-              'https://raw.githubusercontent.com/docsifyjs/docsify/master/CHANGELOG',
-            '/.*/_sidebar.md': '/_sidebar.md', // See #301
-          },
-        markdown: {
-          smartypants: false,
-          renderer: {
-            code: function (code, lang) {
-              if (lang == "mermaid") {
-                return `<div class="mermaid">${mermaid.render("mermaid-svg-" + num++, code)}</div>`;
-              }
-              return this.origin.code.apply(this, arguments);
-            },
-          },
-        },
-        name: 'Pynoplia',
-        nameLink: {
-            // 'jaie24/': '#/jaie24/',
-            '/': '#/',
-          },
-        // Sidebar Configuration
-        auto2top: true,
-        loadSidebar: true,
-          mergeSidebar: true,
-        // loadSidebar: './_sidebar.md',
-        loadNavbar: true,
-        maxLevel: 3,
-        // Set subMaxLevel to 0 to remove automatic display of page table of contents (TOC) in Sidebar
-        subMaxLevel: 2,
-          sidebarDisplayLevel: 1,
-
-        // Search Plugin Configuration
-        search: {
-        placeholder: 'Type to search',
-        noData: 'No matches found.',
-        // Headline depth, 1 - 6
-        depth: 2,
-        },
-      };
-
-    </script>
-    <script src="/_lib/accordion.index.js"></script>
-    <script src="/_lib/ga.min.js"></script>
-    <script src="/_lib/docsify.min.js"></script>
-    <script src="/_lib/external-script.min.js"></script>
-    <script src="/_lib/emoji.min.js"></script>
-    <script src="/_lib/zoom-image.min.js"></script>
-    <script src="/_lib/prism-python.min.js"></script>
-<script src="/_lib/docsify-sidebar-collapse.min.js"></script>
-<link rel="stylesheet" href="/_lib/darcula.min.css">
-<link rel="stylesheet" href="/_lib/prism-funky.min.css" />
-
 </body>

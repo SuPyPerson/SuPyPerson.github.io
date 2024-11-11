@@ -1,5 +1,4 @@
 - [Apresentação](README)
-- [Guia do Agente](https://bit.ly/SNCT_24_G)
 - [Início](inicial.md)
 - [Conhecendo os Biomas](biomas.md)
 - [Trilhando o Caminho](caminhos.md)

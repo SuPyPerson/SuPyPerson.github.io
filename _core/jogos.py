@@ -156,7 +156,7 @@ class Roteiro:
 
 
 class Sprite:
-    def __init__(self, img="", index=1, dx=1, dy=1, w=900, h=500, o=1, b=0, s=1, **kwargs):
+    def __init__(self, img="", index=1, dx=1, dy=1, w=900, h=500, o=1, b=0, s=1, **_):
         sty = dict(width=f"{w}px", height=f"{h}px", overflow="hidden", filter=f"blur({b}px)", scale=s, opacity=o)
 
         class Img:
@@ -443,8 +443,8 @@ class Associa:
         """
 
         def __init__(self, nome, tit, x, y, cena, jogo, caixa=160, borda=100,
-                     lacuna=VAZIO, legenda=VAZIO):
-            self.nome, self.tit, self.x, self.y, self.jogo, self.borda = nome, tit, x, y, jogo, borda
+                     lacuna=VAZIO, legenda=VAZIO, era="??????????"):
+            self.nome, self.tit, self.x, self.y, self.jogo, self.borda, self.era = nome, tit, x, y, jogo, borda, era
             titulo = f"n_{tit}"
             """Este título serve para marcar cada legenda. É usado pelo drop para conferir se é a legenda certa"""
             drop = {titulo: self.acertou}
@@ -452,7 +452,7 @@ class Associa:
             self.lacuna = J.a(lacuna, x=x, y=y, w=160, h=40, style=SF, cena=cena, drop=drop)
             """Cria um elemento que posiciona a lacuna e aceita um drop do elemento que tem o título correto"""
             self.o_nome = J.a(legenda, tit=titulo, x=x, y=y, w=caixa, h=40, style=SF, cena=cena, drag=True)
-            """Cria um elemento que posiciona a legenda e tem o título eceito pela lacuna e pode ser arrastado"""
+            """Cria um elemento que posiciona a legenda e tem o título aceito pela lacuna e pode ser arrastado"""
             self.o_nome.elt.html = f"{nome}"
             """Adiciona o nome no elemento que é a legenda"""
             set_timeout(self.inicia, 1500 + 300 * tit)
@@ -467,7 +467,7 @@ class Associa:
 
         def inicia(self, ev=None):
             """Quando inicia coloca interrogações na lacuna e posiciona a legenda à esquerda"""
-            self.lacuna.elt.html = "??????????"
+            self.lacuna.elt.html = self.era
             self.o_nome.x = self.borda
             self.o_nome.y = 50 + 40 * self.tit
 
@@ -482,9 +482,9 @@ class Associa:
         self.ribossomo = self.Nome(nome="ribossomo",  tit=3, x=560, y=40, jogo=self, cena=self.cena)
         #self.cena.vai()'''
 
-    def nome(self, nome, tit=0, x=650, y=150):
+    def nome(self, nome, tit=0, x=650, y=150, lacuna=VAZIO, legenda=VAZIO, era="??????????"):
         return self.Nome(nome=nome, tit=tit, x=x, y=y, caixa=self.caixa, borda=self.borda,
-                         jogo=self, cena=self.cena)
+                         jogo=self, cena=self.cena, lacuna=lacuna, legenda=legenda, era=era)
 
     def acerta(self):
         J.n(self.cena, "Você acertou tudo! Parabéns!").vai()
@@ -500,34 +500,39 @@ class Swap:
 
         As peças aparecem inicialmente embaralhadas e devem ser arrastadas para o local onde deveriam estar
 
-        :param    j: referência ao Jogo do Vitollino.
-        :param  img: a imagem que deve ser embaralhada
-        :param cena: a cena onde o jogo aparece
-        :param    x: a posição horizontal da imagem
-        :param    y: a posição vertical da imagem
-        :param    w: a largura da imagem
-        :param    h: a altura da imagem
-        :param   dw: quantidade de colunas que recortam a imagem
-        :param   dh: quantidade de linhas que recortam a imagem
+        :param    j: Referência ao Jogo do Vitollino.
+        :param  img: A imagem que deve ser embaralhada
+        :param cena: A cena onde o jogo aparece
+        :param    x: A posição horizontal da imagem
+        :param    y: A posição vertical da imagem
+        :param    w: A largura da imagem
+        :param    h: A altura da imagem
+        :param   dw: Quantidade de colunas que recortam a imagem
+        :param   dh: Quantidade de linhas que recortam a imagem
+        :param venceu: Fonção a ser chamada quando vence
+        :param   dim: (deslocamentos x e y do quadro e número de peças em uma linha)
     """
 
-    def __init__(self, j, img, cena, w=900, h=400, x=100, y=50, dw=3, dh=3, venceu=None):
+    def __init__(self, j, img, cena, w=900, h=400, x=100, y=50, dw=3, dh=3, venceu=None, dim=(0, 0, 1)):
         swap = self
+        ox, oy, factor = dim
+        factor = factor if factor >= 1 else 1
 
         class Peca(j.a):
             """ A Peça representa um recorte da imagem que vai ser embaralhada.
             """
 
-            def __init__(self, local, indice):
+            def __init__(self, local, indice, drag=True):
                 self.local, self.indice = local, indice
                 """ local em que a peça foi colocada; local onde a peça deveria estar"""
                 pw, ph = w // dw, h // dh
                 """largura e altura da peça"""
-                lx, ly = x + local % dw * pw, y + local // dw * ph
+                lx, ly = x + local % (dw * factor) * pw, y + local // (dw * factor) * ph
                 """posição horizontal e vertical em pixels onde a peça será desenhada"""
                 px, py = indice % dw * pw, indice // dw * ph
                 """posição horizontal e vertical em pixels onde o desenho da peça está na imagem"""
-                super().__init__(img, x=lx, y=ly, w=pw, h=ph, drag=True, cena=cena)
+                super().__init__(img, x=lx, y=ly, w=pw, h=ph, drag=drag, cena=cena,
+                                 vai=lambda ev, s=self, t=swap, *_: t.clica(ev=ev, parte=s))
                 """chama o construtor do Elemento Vitollino passando as informações necessárias"""
                 self.siz = (w, h)
                 """redimensiona a figura da imagem para o tamanho fornecido"""
@@ -537,6 +542,9 @@ class Swap:
                 """reposiciona a figura da imagem para o pedaço que vai aparecer na peça"""
                 self.elt.ondrop = lambda ev: self.drop(ev)
                 """captura o evento drop da peça para ser tratado pelo método self.drop"""
+
+            def delete(self):
+                self.elt.remove()
 
             def drop(self, ev):
                 ev.preventDefault()
@@ -548,29 +556,34 @@ class Swap:
                 self.dropped(ev, local)
 
             def dropped(self, ev, local):
-                # o_outro = swap.pecas[local].pra_la(self, self.x, self.y, local)
-                # o_local = swap.pecas[local].local
-
                 m, u = self, local  # swap.pecas[local]
-                # u.x, u.y, m.x, m.y = m.x, m.y, u.x, u.y
-                u.x, u.y, u.local, m.x, m.y, m.local = m.x, m.y, m.local, u.x, u.y, u.local
-                # swap.pecas[m.local], swap.pecas[u.local] = swap.pecas[u.local], swap.pecas[m.local]
-
-                # print(f"indice, o outro -> {self.indice} @ {self.local} <-> {o_outro} @ {o_local}")
+                u.x, u.y, u.local, m.x, m.y, m.local = m.x+ox, m.y+oy, m.local, u.x, u.y, u.local
                 swap.montou()
 
             def certo(self):
+                # print(self.indice, self.local)
                 return self.indice == self.local
 
             def __repr__(self):
                 return str(self.indice)
 
+        self.peca = Peca
+        self.pecas = []
+        self.locais = {}
+        self.dim = dim
+        self.monta(Peca, dh, dw)
+        self.venceu = venceu or J.n(cena, "Voce venceu!")
+
+    def clica(self, ev=None, parte=None):
+        ev.preventDefault()
+        ev.stopPropagation()
+
+    def monta(self, peca, dh, dw):
         from random import shuffle
         pecas = list(range(dw * dh))
         shuffle(pecas)
-        self.pecas = [Peca(local, indice) for local, indice in enumerate(pecas)]
-        self.locais ={peca.local: peca for peca in self.pecas}
-        self.venceu = venceu or J.n(cena, "Voce venceu!")
+        self.pecas = [peca(local, inx) for local, inx in enumerate(pecas)]
+        self.locais = {peca.local: peca for peca in self.pecas}
 
     def montou(self):
         resultado = [peca.certo() for peca in self.pecas]
@@ -579,65 +592,86 @@ class Swap:
         return all(resultado)
 
 
-class Sequencia:
-    """Usa um editor de imagem (/) e recorta a imagem em linhas geracionais.
+class Sequencia(Swap):
+    """ Jogo que embaralha as partes de um desenho e usa click para rearrumar.
+
+        As peças aparecem inicialmente embaralhadas e devem ser arrastadas para o local onde deveriam estar
        No game, o jogador terá que clicar nas linhas em ordem certa para montar a imagem corretamente.
+
+        :param    j: Referência ao Jogo do Vitollino.
+        :param  img: A imagem que deve ser embaralhada
+        :param cena: A cena onde o jogo aparece
+        :param    x: A posição horizontal da imagem
+        :param    y: A posição vertical da imagem
+        :param    w: A largura da imagem
+        :param    h: A altura da imagem
+        :param   dw: Quantidade de colunas que recortam a imagem
+        :param   dh: Quantidade de linhas que recortam a imagem
     """
+    # def __init__(self, esta_cena, chama_quando_acerta=lambda: True, dim=(200, 20, 200, 50), topo=(50, 100),
+    #              blocos=()): https://i.imgur.com/XkwPfk5.png
 
-    def __init__(self, esta_cena, chama_quando_acerta=lambda: True, dim=(200, 20, 200, 50), topo=(50, 100),
-                 blocos=()):
-        posiciona_proxima = self.posiciona_proxima
+    def __init__(self, j, img, cena, w=900, h=400, x=100, y=50, dw=3, dh=3, venceu=None, dim=(0, 0, 1)):
+        self.ox, self.oy, _ = dim
+        self.posiciona_atual = self.ox, self.oy, 0
+        super().__init__(j, img, cena, w, h, x, y, dw, dh, venceu, dim=dim)
+        self.dims = dw, w // dw, h // dh
+        self.montar = self.peca, dw, dh
 
-        class LinhaGeracional:
-            """Representa cada uma das linhas recortadas da imagem original"""
+    @property
+    def x(self):
+        return self.posiciona_atual[0]
 
-            def __init__(self, linha, posicao):
-                self.x, self.y, self.w, _ = x, y, w, h = dim
-                self.posicao = posicao  # posição original no topo da página
-                self.linha = Elemento(linha, x=x + posicao * w, y=y, w=w, h=h, cena=esta_cena)
-                self.linha.vai = self.clica_e_posiciona_a_linha  # quando clica, monta a imagem
+    @x.setter
+    def x(self, _):
+        pass
 
-            def zera(self):
-                self.linha.x = self.x + self.posicao * self.w  # posiciona cada peça com 200 pixels de distância
-                self.linha.y = self.y  # posiciona a peça no topo da página
-                self.linha.vai = self.clica_e_posiciona_a_linha
+    @property
+    def y(self):
+        return self.posiciona_atual[1]
 
-            def clica_e_posiciona_a_linha(self, *_):
-                x, y = posiciona_proxima(self.posicao)
-                if y:  # se o y retornou zero é porque o posiciona próxima detectou montagem errada
-                    self.linha.x, self.linha.y = x, y  # monta a linha na imagem
-                    self.linha.vai = lambda *_: None  # desativa o click da linha
+    @y.setter
+    def y(self, _):
+        pass
 
-        # coloca cada uma das linhas embaralhadas
-        self.x, self.y, w_, h_ = dim
-        blocos = blocos or [HERDO1, HERDO3, HERDO2, HERDO0]
-        self.linhas = [
-            LinhaGeracional(linha=uma_linha, posicao=uma_posicao)
-            for uma_posicao, uma_linha in enumerate(blocos)]
-        self.acertou = chama_quando_acerta
-        self.inicia, self.linha_inicial = topo
-        self.topo = self.linha_inicial
-        self.altura_da_linha = h_  # cada peça do herdograma tem esta altura
-        self.posicoes_montadas = []  # lista das linhas já montadas no herdograma
-        self.posicoes_corretas = [3, 0, 2, 1]  # lista das linhas montadas corretamente
+    @property
+    def local(self):
+        return self.posiciona_atual[2]-1
 
-    def posiciona_proxima(self, posicao):
-        """Chamado pelo clique (vai) de cada peça. Atualiza a próxima posição da peça.
-           Calcula se montou correto, comparando com a lista de posições corretas.
-           Se já montou quatro peças, e não acerto sinaliza com zero, para iniciar o jogo.
-        """
-        self.linha_inicial += self.altura_da_linha  # incrementa a posição para montar na linha de baixo
-        self.posicoes_montadas += [posicao]  # adiciona o índice desta peça na lista de peças montadas
-        if self.posicoes_montadas == self.posicoes_corretas:
-            self.acertou()  # invoca a ação acertou se montou nas posições corretas
-            return self.inicia, self.linha_inicial
-        else:
-            if len(self.posicoes_montadas) == 4:  # se montou quatro peças incorretas reinicia o game
-                [linha.zera() for linha in self.linhas]  # volta as peças para o topo
-                self.posicoes_montadas = []  # indica que nenhuma peça foi montada
-                self.linha_inicial = self.topo  # inicia a altura de montagem da primeira peça
-                return 0, 0  # retorna uma posição inválida para sinalizar a peça
-        return self.inicia, self.linha_inicial
+    @local.setter
+    def local(self, _):
+        pass
+
+    def monta(self, peca, dh, dw):
+        from random import shuffle
+        self.posiciona_atual = self.ox, self.oy, 0
+        pecas = list(range(dw * dh))
+        shuffle(pecas)
+        self.pecas = [peca(local, inx) for local, inx in enumerate(pecas)]
+        self.locais = {peca.local: self for peca in self.pecas}
+
+    def clica(self, ev=0, parte=None):
+        ev.preventDefault()
+        ev.stopPropagation()
+        self.montou_()
+        parte.dropped(ev, self)
+        parte.vai = lambda *_: None
+
+    def montou_(self):
+        x, y, local = self.posiciona_atual
+        dw, pw, ph = self.dims
+        self.posiciona_atual = self.ox + (local % dw) * pw, self.oy + (local // dw) * ph, local + 1
+        # print("yes", local, self.dims, (local % dw), (local // dw), self.posiciona_atual)
+
+    def montou(self):
+        resultado = [peca.certo() for peca in self.pecas]
+        # print(resultado, sum(resultado)+3, self.posiciona_atual[2])
+        if sum(resultado)+3 < self.posiciona_atual[2]:
+            # print("montou parte.delete()")
+            [parte.delete() for parte in self.pecas]
+            self.monta(*self.montar)
+        self.venceu.vai() if all(resultado) else None
+        return all(resultado)
 
 
 def main():
