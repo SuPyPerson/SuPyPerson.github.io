@@ -33,7 +33,7 @@ import tornado.web
 from tornado.ioloop import IOLoop
 from tornado.options import define, options
 from tornado.escape import xhtml_escape
-from _core.couch_facade import MF
+# from _core.couch_facade import MF
 
 # config options
 define('port', default=8585, type=int, help='port to run web server on')

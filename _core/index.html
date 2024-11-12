@@ -1,69 +1,25 @@
+<!--- 🔰  New version 24.11x0 main 🛡️ (10/15)
+Open Source program Pynoplia - Copyright © 2024  Carlo Oliveira** <carlo@nce.ufrj.br>,
+PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
+-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>SupyGirls - Editor de Aventuras</title>
+    <title>Pynoplia</title>
     <!-- stylesheets -->
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- fonts -->
-    <link rel="stylesheet" href="css/lecture.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-    <link rel="shortcut icon" href="../_media/pynoplia.png" type="image/x-icon"/>
-    <!-- script type="text/javascript" src="https://cdn.rawgit.com/brython-dev/brython/3.8.0/www/src/brython.js"></script -->
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.11/brython.min.js">
+    <link rel="shortcut icon" href="/_media/pynoplia.png" type="image/x-icon"/>
+    <script type=" text/javascript " src="/_lib/brython3.11.3.min.js"></script>
+    <script type=" text/javascript " src="/_lib/brython3.11.3_stdlib.js"></script>
+<!--    <script type="text/python" src="https://raw.githubusercontent.com/carlotolla/pyjr/refs/heads/main/pet/main.py"></script>-->
+    <script type="text/python">
+        import pet.main
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/brython@3.11/brython_stdlib.min.js">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ace.js"
-            integrity="sha512-JLIRlxWh96sND3uUgI2RVHZJpgkWHg3+xoUY8XkgTPKpqRaqdk7zD/ck/XHXFSMW84o6GrP67dlqN3b98NB/yA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/mode-python.min.js"
-        integrity="sha512-DUdq0nHbbCHQMqQNALNivk5tAdpFWOpm3mplXDwBqIpXD6/vfgXp8fESbfsnePQT3jZKVI3mCbEQumz/S4IHPA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/theme-gruvbox.min.js"
-            integrity="sha512-csAdQ+MAmg252+rlVpEgxnAzlzPBBEDzi8QSoaMyV1lJqMZuzASQUDyTpT1W2gGqrRLioKPaX0ylDwkMXxzDsw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.2/ext-language_tools.min.js"
-            integrity="sha512-22wocMmMcRBM2la/vRMi/ZkYQMCAYMGxh8H2unSWmsBo0zELkk1/nZeTbZ4rykAny3y43yM3x7MwuhrE0Lksxg=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <style>
-        .modal {
-          display: none; /* Hidden by default */
-          position: fixed; /* Stay in place */
-          z-index: 1; /* Sit on top */
-          left: 0;
-          top: 0;
-          width: 100%; /* Full width */
-          height: 100%; /* Full height */
-          overflow: auto; /* Enable scroll if needed */
-          background-color: rgb(0,0,0); /* Fallback color */
-          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    }
-    </style>
-</head>
-<body onload="brython()" bgcolor="black">
-    <script  type="text/javascript">
-    function decodeUnicode(str) {
-  // Going backwards: from bytestream, to percent-encoding, to original string.
-  return decodeURIComponent(atob(str).split('').map(function (c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
-}
-    </script>
-<script type="text/python">
-    import browser
-    from editor_widget import main
-    main(browser)
-</script>
-  <div id="pyparent" class="card">
-      <!-- about content -->
-      <div id="pycard"></div>
-      <div id="pydiv" class="card is-12by8" style="min-height:600px;">
-      </div>
-      <div id="pyedit"></div>
-  </div>
-  <div id="_modal_" class="modal"></div>
+ </head>
+<body onload="brython({cache:'browser', static_stdlib_import:true, debug:1, pythonpath:['./',
+'https://raw.githubusercontent.com/carlotolla/pyjr/refs/heads/main/']})">
+    <!--    'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_core',
+     'https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/refs/heads/main/_prog']})">-->
+    <div id="pydiv"></div>
 </body>
-</html>
