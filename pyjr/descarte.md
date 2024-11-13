@@ -7,7 +7,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 > Cena de cinema </br>
 
 <img src onerror="__did_got__('../../_prog/descarte.py')"></img>
-<div id="_editor_widget_" style="position:relative; left:50px; min-height: 500px">
+<div id="_jogo_" style="position:relative; left:50px; min-height: 500px">
 Aqui está um elemento identificado como '_jogo_'
 </div>
 

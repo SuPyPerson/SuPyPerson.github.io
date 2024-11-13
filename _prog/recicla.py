@@ -24,6 +24,7 @@ _SET1_ = {
 # _VIT_
 """Módulo rec.main"""
 from vitollino import Cena, Texto, Jogo, Elemento
+from cenario import Planilha, Paisagem
 ESCONDE = -4000
 Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
 
