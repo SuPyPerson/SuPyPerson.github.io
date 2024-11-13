@@ -25,6 +25,7 @@ Changelog
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
 import sys
+from pydoc import replace
 from urllib.request import urlopen
 
 # noinspection PyUnresolvedReferences
@@ -34,6 +35,7 @@ from browser.local_storage import storage as store
 from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
 from os import getenv
+from client_facade import MF
 # {i: "jaie24", o: "sbce", f: "guia", n: "snct", k: "pyjr", c: "snct/guia",
 # j: git + "jaie24/jaie24/", p: git + "sbce/sbce", g: git + "jaie24/guia", m: git + "snct/snct",l: git + "pyjr"
 SPR = "k"
@@ -200,6 +202,7 @@ class ScriptWidget:
         self.name_to_run = params.get("name", None)
         self.console_pre_id = "result_pre-%s" % main_div_id
         self.script_path = "_core/"
+        self.script_title = params.get("title", "main").replace(" ","_")+".py"
         self.main_div_id = main_div_id
         ScriptVito(did=mid, **params)
         self.code_text = COD[mid]
@@ -209,8 +212,9 @@ class ScriptWidget:
                    (self.run_script, lambda *_: self.paste_script(), self.clear_console))
         panes = {"caderno": self.widget_code(m, is_long=True)}
         panes.update({"guia": self.create_script_tag()}) if SPR in "nif" else None
-        functions = zip("rotate piggy-bank receipt".split(),
-                        (lambda *_: self.get_script(), lambda *_: self.save_script(), lambda *_: self.load_script()))
+        functions = zip("rotate piggy-bank receipt cloud-bolt cloud".split(),
+                        (lambda *_: self.get_script(), lambda *_: self.save_script(),
+                         lambda *_: self.load_script(), lambda *_: self.fetch_script(), lambda *_: self.push_script()))
         if "alignment" in params and params["alignment"] == 'left-right':
             main(browser, menu=menu, panes=panes, pane=document[main_div_id], functions=functions)
             if "editor_width" in params:
@@ -270,6 +274,31 @@ class ScriptWidget:
             alert(f"{PLB+module} não estava salvo")
         return ""
 
+    def fetch_script(self, getter=None):
+        def get_result(result):
+            from base64 import decodebytes as dcd
+            from base64 import b64decode as ecd
+            import base64
+
+            if "content" in result:
+                store[PLB + self.main_div_id] = self.editor.getValue()
+                result = result["content"]
+                while len(result) % 4:
+                    result += "="
+                # result  += "=" * ((4 - len(result) % 4) % 4)
+                # result  += '=' * (len(result) % 4)
+                # result = result + "============"
+                code = dcd(str.encode(result)).decode("utf-8")
+                # code = base64decode(result)
+                self.get_script(code)
+
+            else:
+                code = result["message"]
+            # print(code)
+        # src = PLB+self.guide_anchor if stor is store else ""
+        git_name = "/".join(self.script_name.split("-"))
+        MF().get(git_name, getter if getter is not None else get_result)
+
     def load_script(self, stor=store):
         # src = PLB+self.guide_anchor if stor is store else ""
         src = PLB+self.main_div_id if stor is store else ""
@@ -279,6 +308,15 @@ class ScriptWidget:
             alert(f"{self.main_div_id} não estava salvo")
         # stor[src] = self.editor.getValue()
         # alert(f"{self.guide_anchor} foi salvo temporariamente")
+
+    def push_script(self, src=None):
+        def getter(result):
+            # print("push_script getter", result)
+            MF().save(code=git_name, data=self.editor.getValue(), sha=result["sha"] if "sha" in result else None)
+
+        git_name = "/".join(self.script_name.split("-"))
+        # print("save_script", git_name)
+        MF().get(git_name, getter)
 
     def save_script(self, src=None):
         # store[PLB+self.guide_anchor] = self.editor.getValue()
