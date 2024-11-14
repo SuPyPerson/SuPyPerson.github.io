@@ -282,7 +282,8 @@ class ScriptWidget:
             return _code
         else:
             # alert(f"{PLB+module} não estava salvo")
-            self.console.write(f"Não estava salvo: {"/".join(self.script_name.split("-"))}")
+            git_name = "/".join(self.script_name.split("-"))
+            self.console.write(f"Não estava salvo: {git_name}")
 
         return ""
 
@@ -304,7 +305,8 @@ class ScriptWidget:
             self.get_script(stor[src])
         else:
             # alert(f"{self.main_div_id} não estava salvo")
-            self.console.write(f"Não estava salvo: {"/".join(self.script_name.split("-"))}")
+            git_name = "/".join(self.script_name.split("-"))
+            self.console.write(f"Não estava salvo: {git_name}")
 
         storage[src] = self.editor.getValue()
         self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
