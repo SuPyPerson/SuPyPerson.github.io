@@ -23,7 +23,6 @@ import json
 from datetime import datetime as dt
 
 from browser import ajax, alert
-from base64 import decodebytes as dcd
 from base64 import encodebytes as ecd
 from base64 import b64encode as ecd
 # FOX = "the quick brown fox jumps over the lazy dog".replace(" ", "_")
@@ -54,7 +53,7 @@ class RequestSender:
         blk = ord("0")
         roll = "".join(chr(r) for r in range(blk, ord("z")+1) if chr(r) not in r':;<=>?[\]^`!"'+"#$%&'()*+,-./'")
         tape = [roll.index(p) for p in tp]
-        lor = roll[::-1]
+        # lor = roll[::-1]
         "".join(chr((roll.index(r)+t)) for r, t in zip(msg, tape))
         # msg = "".join(lor[(roll.index(r) - t)] for r, t in zip(msg, tape))
         # print(">>", msg)
@@ -79,20 +78,24 @@ class RequestSender:
         url = f"https://api.github.com/repos/{owner}/{repo}/contents/{path}"
         return header, url, data
 
-    def save(self, code, data, sha=None):
-        # ajax.post(f"get_code/save/{self.user}/{code}", oncomplete=self.read)
+    def save(self, code, data, sha=None, hook=None):
         msg = f"Pynoplia-{code} @{dt.now().strftime('%Y-%m-%d %H:%M:%S')}"
         header, url, data = self._save(data, path=code, msg=msg, sha=sha)
-        print("save w sha header url", header, url)
+        # print("save w sha header url", header, url)
         req = ajax.Ajax()
-        req.bind('complete', self.on_complete)
+        req.bind('complete', hook or self.on_complete)
         # send a POST request to the url
         req.open('PUT', url, True)
         [req.set_header(key, value) for key, value in header.items()]
-        # req.set_header('content-type', 'application/x-www-form-urlencoded')
         # send data as a dictionary
         req.send(data)
-        # req.send({'message__': msg, 'code_name__': f"{self.user}/{code}", 'code_data__': data})
+
+    def raw_get(self, path, getter):
+        from urllib.request import urlopen
+        owner, repo = self.user, self.repo
+        url = f"https://raw.githubusercontent.com/{owner}/{repo}/refs/heads/main/{path}"
+        content = urlopen(url).read()
+        getter(content)
 
     def get(self, code, getter):
         self.getter = getter

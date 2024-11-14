@@ -24,14 +24,17 @@ Changelog
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
+import json
 import sys
 from pydoc import replace
+from urllib.error import HTTPError
 from urllib.request import urlopen
 
 # noinspection PyUnresolvedReferences
 from browser import window, ajax, document, html, alert, timer, aio, run_script as python_runner
 from browser.session_storage import storage
 from browser.local_storage import storage as store
+
 from vitollino import Cena, Elemento, Jogo, STYLE
 import vitollino
 from os import getenv
@@ -124,6 +127,10 @@ class ScriptStderr:
         document[self.__console_pre_id].style.color = "red"
         document[self.__console_pre_id].innerHTML = err
 
+    def warn(self, err):
+        document[self.__console_pre_id].style.color = "green"
+        document[self.__console_pre_id].innerHTML = err
+
 
 class ScriptBuilder:
 
@@ -201,6 +208,7 @@ class ScriptWidget:
         self.script_div_id = "script-%s" % main_div_id
         self.name_to_run = params.get("name", None)
         self.console_pre_id = "result_pre-%s" % main_div_id
+        self.console = ScriptStderr(self.console_pre_id)
         self.script_path = "_core/"
         self.script_title = params.get("title", "main").replace(" ","_")+".py"
         self.main_div_id = main_div_id
@@ -213,7 +221,7 @@ class ScriptWidget:
         panes = {"caderno": self.widget_code(m, is_long=True)}
         panes.update({"guia": self.create_script_tag()}) if SPR in "nif" else None
         functions = zip("rotate piggy-bank receipt cloud-bolt cloud".split(),
-                        (lambda *_: self.get_script(), lambda *_: self.save_script(),
+                        (lambda *_: self.reset_script(), lambda *_: self.save_script(),
                          lambda *_: self.load_script(), lambda *_: self.fetch_script(), lambda *_: self.push_script()))
         if "alignment" in params and params["alignment"] == 'left-right':
             main(browser, menu=menu, panes=panes, pane=document[main_div_id], functions=functions)
@@ -262,6 +270,8 @@ class ScriptWidget:
         self.get_script(clip)
         storage[src] = editor
         window.navigator.clipboard.writeText(editor)
+        self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
+
         # alert(f"{self.guide_anchor} foi salvo temporariamente")
 
     def exec_from_load(self, module, stor=store):
@@ -271,33 +281,21 @@ class ScriptWidget:
             _code = stor[src]
             return _code
         else:
-            alert(f"{PLB+module} não estava salvo")
+            # alert(f"{PLB+module} não estava salvo")
+            self.console.write(f"Não estava salvo: {"/".join(self.script_name.split("-"))}")
+
         return ""
 
     def fetch_script(self, getter=None):
         def get_result(result):
-            from base64 import decodebytes as dcd
-            from base64 import b64decode as ecd
-            import base64
-
-            if "content" in result:
-                store[PLB + self.main_div_id] = self.editor.getValue()
-                result = result["content"]
-                while len(result) % 4:
-                    result += "="
-                # result  += "=" * ((4 - len(result) % 4) % 4)
-                # result  += '=' * (len(result) % 4)
-                # result = result + "============"
-                code = dcd(str.encode(result)).decode("utf-8")
-                # code = base64decode(result)
-                self.get_script(code)
-
-            else:
-                code = result["message"]
-            # print(code)
-        # src = PLB+self.guide_anchor if stor is store else ""
+            storage[PLB] = self.editor.getValue()
+            self.get_script(result)
+            self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
         git_name = "/".join(self.script_name.split("-"))
-        MF().get(git_name, getter if getter is not None else get_result)
+        try:
+            MF().raw_get(git_name, getter if getter is not None else get_result)
+        except HTTPError as e:
+            self.console.write(f"Não encontrado: {git_name} - {e}")
 
     def load_script(self, stor=store):
         # src = PLB+self.guide_anchor if stor is store else ""
@@ -305,14 +303,26 @@ class ScriptWidget:
         if src in stor:
             self.get_script(stor[src])
         else:
-            alert(f"{self.main_div_id} não estava salvo")
-        # stor[src] = self.editor.getValue()
+            # alert(f"{self.main_div_id} não estava salvo")
+            self.console.write(f"Não estava salvo: {"/".join(self.script_name.split("-"))}")
+
+        storage[src] = self.editor.getValue()
+        self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
+
         # alert(f"{self.guide_anchor} foi salvo temporariamente")
 
     def push_script(self, src=None):
+
+        def on_complete(msg):
+            tag = json.loads(msg.read())
+            tag = f'{tag["content"]["path"]} salvo' if "content" in tag else "falhou ao salvar"
+            self.console.warn(f"Código {tag}, no repositório")
+
         def getter(result):
             # print("push_script getter", result)
-            MF().save(code=git_name, data=self.editor.getValue(), sha=result["sha"] if "sha" in result else None)
+            sha = result["sha"] if "sha" in result else None
+
+            r = MF().save(code=git_name, data=self.editor.getValue(), sha=sha, hook=on_complete)
 
         git_name = "/".join(self.script_name.split("-"))
         # print("save_script", git_name)
@@ -321,6 +331,8 @@ class ScriptWidget:
     def save_script(self, src=None):
         # store[PLB+self.guide_anchor] = self.editor.getValue()
         store[PLB+self.main_div_id] = self.editor.getValue()
+        git_name = "/".join(self.script_name.split("-"))
+        self.console.warn(f"Código {git_name} salvo, clique 🧾 (recibo) para ler de volta")
 
     def create_script_tag(self, src=None):
         def go_anchor():
@@ -391,6 +403,11 @@ class ScriptWidget:
                  dict(a_tarefa=tarefa, Kaiowa=kaiowa, __name__="__main__", __use__=self.exec_from_load))
         else:
             python_runner(editor.getValue(), self.name_to_run)
+
+    def reset_script(self, code=None):
+        storage[PLB] = self.editor.getValue()
+        self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
+        self.get_script(code)
 
     def get_script(self, code=None):
         code = code if code is not None else self.code_text
