@@ -22,6 +22,7 @@ from browser import window, document, alert, html, timer
 class Head:
     """Add all stuff to head section"""
     # SL = "editor lecture fa6.6.all.min darcula mermaid.min darcula.min prism-funky.min".split()
+    GM = None
     SL = "fa6.6.all.min darcula darcula.min prism-funky.min accordion_style lecture editor".split()
     STLIB = (f"/_core/css/{st}.css" for st in SL)
     HEAD = document.head
@@ -32,6 +33,7 @@ class Head:
     SCB = (f"/_lib/{st}.js" for st in J2.split())
     REL = dict(i="JAIE24", o="SBCE", f="JAIE Guia", n="SNCT", k="Py Jr.", c="SNCT Guia",
                j="JAIE24/", p="SBCE", g="JAIE Guia", m="SNCT", l="Py Jr.")
+    G = dict(a="Agentes da Escola", p="Help Pet", d="Descarte de Medicamentos", r="Recicla")
 
     def __init__(self, ln=html.LINK, st=html.SCRIPT):
         def append(child, node=self.HEAD):
@@ -42,9 +44,9 @@ class Head:
         [append(ln(rel="stylesheet", href=hr)) for hr in self.STLIB]
         append(st(src="/_lib/main_index.js"), self.BODY)
         # self.scripter()
-        timer.set_timeout(self.scripter, 100)
-        timer.set_timeout(self.pos_scripter, 200)
-        timer.set_timeout(self.poster_scripter, 400)
+        timer.set_timeout(self.scripter, 50)
+        timer.set_timeout(self.pos_scripter, 90)
+        timer.set_timeout(self.poster_scripter, 900)
 
     def scripter(self, st=html.SCRIPT, *_):
         def append(child, node=self.HEAD):
@@ -62,8 +64,28 @@ class Head:
 
         append(st(src="/_lib/prism-python.min.js"), self.BODY)
 
+    def game_page(self):
+        self.BODY.html=""
+        jogo = html.DIV(id="_jogo_")
+        _ = self.BODY<=jogo
+        _ = self.BODY<=html.DIV(html.SPAN("version:", Class="curversion"),
+                                style="position:absolute; top:650px; left:2px; height: 10px;")
 
-def initial():
+    def gamer(self):
+        self.game_page() if self.GM else None
+        match self.GM:
+            case "a":
+                from age.main import main
+                main()
+            case "p":
+                import pet.main
+            case "r":
+                import rec.main
+            case "d":
+                import des.main
+
+
+def initial(h):
     from browser import window, document, alert, html, timer
     from ScriptWidget import show, build, PLB
     import ScriptWidget as sw
@@ -79,14 +101,18 @@ def initial():
     except Exception as e:
         queryString = window.location.search
         urlParams = window.URLSearchParams.new(queryString)
-        sw.SPR = urlParams.get('rel') or "@"
+        sw.SPR = urlParams.get('rel') or "k"
+        Head.GM = urlParams.get('g') or None
         sw.HOST = window.location.origin
     print("urlParams.get('rel')", sw.SPR)
+    h.gamer() if Head.GM else None
 
     window.__widget__ = show
     window.__did_got__ = build
     window.__copy_clip__ = clipboard_show
-    document.title = f"Pynoplia {Head.REL[sw.SPR]}"
+    title = Head.REL[sw.SPR]
+    title = Head.G[Head.GM] if Head.GM is not None else title
+    document.title = f"Pynoplia {title}"
 
 
 def docsy():
@@ -142,8 +168,8 @@ def docsy():
 
 
 def main():
-    Head()
-    initial()
+    h = Head()
+    initial(h)
 
 
 if __name__ == '__main__':
