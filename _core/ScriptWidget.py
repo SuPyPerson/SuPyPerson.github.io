@@ -296,20 +296,20 @@ class ScriptWidget:
         try:
             MF().raw_get(git_name, getter if getter is not None else get_result)
         except HTTPError as e:
-            self.console.write(f"Não encontrado: {git_name} - {e}")
+            self.console.write(f"Não encontrado: {git_name} - {e}, salve na nuvem ☁️ primeiro")
 
     def load_script(self, stor=store):
         # src = PLB+self.guide_anchor if stor is store else ""
         src = PLB+self.main_div_id if stor is store else ""
         if src in stor:
             self.get_script(stor[src])
+            storage[PLB] = self.editor.getValue()
+            self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
         else:
             # alert(f"{self.main_div_id} não estava salvo")
             git_name = "/".join(self.script_name.split("-"))
-            self.console.write(f"Não estava salvo: {git_name}")
+            self.console.write(f"Não estava salvo: {git_name}, Salve localmente 🐖 primeiro")
 
-        storage[src] = self.editor.getValue()
-        self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
 
         # alert(f"{self.guide_anchor} foi salvo temporariamente")
 
@@ -318,7 +318,8 @@ class ScriptWidget:
         def on_complete(msg):
             tag = json.loads(msg.read())
             tag = f'{tag["content"]["path"]} salvo' if "content" in tag else "falhou ao salvar"
-            self.console.warn(f"Código {tag}, no repositório")
+            recover = ", clique 🌩️ (baixar da nuvem) para ler de volta" if "content" in tag else ""
+            self.console.warn(f"Código {tag}, no repositório{recover}")
 
         def getter(result):
             # print("push_script getter", result)
