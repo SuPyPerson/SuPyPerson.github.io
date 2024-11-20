@@ -31,8 +31,13 @@ class Head:
     J2 = "external-script.min docsify.min accordion.index docsify-sidebar-collapse.min"
     SCT = (f"/_lib/{st}.js" for st in J1.split())
     SCB = (f"/_lib/{st}.js" for st in J2.split())
+    git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/"
+    PATH = dict(i="jaie24", o="sbce", f="guia", n="snct", k="pyjr", c="snct/guia", q="pyjr/guia",
+                    j=git + "jaie24/jaie24/", p=git + "sbce/sbce", g=git + "jaie24/guia", m=git + "snct/snct",
+                    l=git + "pyjr"
+                    )
     REL = dict(i="JAIE24", o="SBCE", f="JAIE Guia", n="SNCT", k="Py Jr.", c="SNCT Guia",
-               j="JAIE24/", p="SBCE", g="JAIE Guia", m="SNCT", l="Py Jr.")
+               j="JAIE24/", p="SBCE", g="JAIE Guia", m="SNCT", l="Py Jr.", q="Agentes Guia")
     G = dict(a="Agentes da Escola", p="Help Pet", d="Descarte de Medicamentos", r="Recicla")
 
     def __init__(self, ln=html.LINK, st=html.SCRIPT):
@@ -51,11 +56,13 @@ class Head:
     def scripter(self, st=html.SCRIPT, *_):
         def append(child, node=self.HEAD):
             _ = node <= child
+
         append(st(src="/_lib/ga.min.js"), self.BODY)
 
     def pos_scripter(self, st=html.SCRIPT, *_):
         def append(child, node=self.HEAD):
             _ = node <= child
+
         [append(st(src=hr), self.BODY) for hr in self.SCB]
 
     def poster_scripter(self, st=html.SCRIPT, *_):
@@ -65,11 +72,11 @@ class Head:
         append(st(src="/_lib/prism-python.min.js"), self.BODY)
 
     def game_page(self):
-        self.BODY.html=""
+        self.BODY.html = ""
         jogo = html.DIV(id="_jogo_")
-        _ = self.BODY<=jogo
-        _ = self.BODY<=html.DIV(html.SPAN("version:", Class="curversion"),
-                                style="position:absolute; top:650px; left:2px; height: 10px;")
+        _ = self.BODY <= jogo
+        _ = self.BODY <= html.DIV(html.SPAN("version:", Class="curversion"),
+                                  style="position:absolute; top:650px; left:2px; height: 10px;")
 
     def gamer(self):
         self.game_page() if self.GM else None
@@ -104,6 +111,7 @@ def initial(h):
         sw.SPR = urlParams.get('rel') or "k"
         Head.GM = urlParams.get('g') or None
         sw.HOST = window.location.origin
+        window.__SP_RELEASE__ = Head.PATH[sw.SPR]
     print("urlParams.get('rel')", sw.SPR)
     h.gamer() if Head.GM else None
 

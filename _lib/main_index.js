@@ -4,20 +4,20 @@
     //var num = 0;
   //mermaid.initialize({ startOnLoad: false });
 
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  const release = urlParams.get('rel')
-
-  let url = window.location.hostname; // obter o dominio
-  let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
-  const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"snct", k:"pyjr", c:"snct/guia",
-  j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", m: git+"snct/snct", l: git+"pyjr"
-  };
-  let url_first = release //url[0];
-  let docBasePath = "pyjr";
+  // const queryString = window.location.search;
+  // const urlParams = new URLSearchParams(queryString);
+  // const release = urlParams.get('rel')
+  //
+  // let url = window.location.hostname; // obter o dominio
+  // let git = "https://raw.githubusercontent.com/SuPyPerson/SuPyPerson.github.io/";
+  // const thePaths ={i: "jaie24", o:"sbce", f:"guia", n:"snct", k:"pyjr", c:"snct/guia", q:"pyjr/guia",
+  // j: git+"jaie24/jaie24/", p: git+"sbce/sbce", g:git+"jaie24/guia", m: git+"snct/snct", l: git+"pyjr"
+  // };
+  // let url_first = release //url[0];
+  let docBasePath = window.__SP_RELEASE__;
     // let url_name = url_splt[url_splt.length - 2];
-  if ("cjklpgmiofn".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first]; window.__SP_RELEASE__ = release;}
-  console.log("got url to path", url_first, url, docBasePath, "cjklpgmiofn".indexOf(url_first) >= 0);
+  // if ("cjklpgmiofnq".indexOf(url_first) >= 0) {docBasePath = thePaths[url_first];}
+  console.log("got url to path", docBasePath);
 
 
   window.$docsify = {

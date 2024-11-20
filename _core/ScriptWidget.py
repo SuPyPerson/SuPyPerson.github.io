@@ -42,11 +42,9 @@ from client_facade import MF
 # {i: "jaie24", o: "sbce", f: "guia", n: "snct", k: "pyjr", c: "snct/guia",
 # j: git + "jaie24/jaie24/", p: git + "sbce/sbce", g: git + "jaie24/guia", m: git + "snct/snct",l: git + "pyjr"
 SPR = "k"
-GUIA = {k: v for k, v in zip("ionkjpml", "ffccggcf")}
+GUIDES = "nifk"
+GUIA = {k: v for k, v in zip("ionkjpml", "ffcqggcf")}
 HOST = "localhost:8080"
-GUIDE = getenv("GUIDE", "https://supyperson.github.io/?rel=g")
-# GUIDE = getenv("GUIDE","http://localhost:8080/?rel=f")
-# print("GUIDE:", GUIDE)
 PLB = "_PYNO_LOCAL_BOARD"
 vitollino.STYLE = {'position': "relative", 'width': 800, 'height': '150px', 'minHeight': '150px', 'left': 0, 'top': 0}
 COD = {}
@@ -219,7 +217,7 @@ class ScriptWidget:
         menu = zip("play paste xmark".split(),
                    (self.run_script, lambda *_: self.paste_script(), self.clear_console))
         panes = {"caderno": self.widget_code(m, is_long=True)}
-        panes.update({"guia": self.create_script_tag()}) if SPR in "nif" else None
+        panes.update({"guia": self.create_script_tag()}) if SPR in GUIDES else None
         functions = zip("rotate piggy-bank receipt cloud-bolt cloud".split(),
                         (lambda *_: self.reset_script(), lambda *_: self.save_script(),
                          lambda *_: self.load_script(), lambda *_: self.fetch_script(), lambda *_: self.push_script()))
@@ -282,7 +280,7 @@ class ScriptWidget:
             return _code
         else:
             # alert(f"{PLB+module} não estava salvo")
-            git_name = "/".join(self.script_name.split("-"))
+            git_name = self.get_git()
             self.console.write(f"Não estava salvo: {git_name}")
 
         return ""
@@ -292,11 +290,17 @@ class ScriptWidget:
             storage[PLB] = self.editor.getValue()
             self.get_script(result)
             self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
-        git_name = "/".join(self.script_name.split("-"))
+        git_name = self.get_git()
         try:
             MF().raw_get(git_name, getter if getter is not None else get_result)
         except HTTPError as e:
             self.console.write(f"Não encontrado: {git_name} - {e}, salve na nuvem ☁️ primeiro")
+
+    def get_git(self):
+        name = self.script_name.split("#") if "#" in self.script_name else self.script_name
+        name = name.split("-")
+        print("get git", name)
+        return "/".join(name)
 
     def load_script(self, stor=store):
         # src = PLB+self.guide_anchor if stor is store else ""
@@ -307,11 +311,8 @@ class ScriptWidget:
             self.console.warn("Código antigo substituído, clique 📋 (colar) para retornar")
         else:
             # alert(f"{self.main_div_id} não estava salvo")
-            git_name = "/".join(self.script_name.split("-"))
+            git_name = self.get_git()
             self.console.write(f"Não estava salvo: {git_name}, Salve localmente 🐖 primeiro")
-
-
-        # alert(f"{self.guide_anchor} foi salvo temporariamente")
 
     def push_script(self, src=None):
 
@@ -327,27 +328,22 @@ class ScriptWidget:
 
             r = MF().save(code=git_name, data=self.editor.getValue(), sha=sha, hook=on_complete)
 
-        git_name = "/".join(self.script_name.split("-"))
+        git_name = self.get_git()
         # print("save_script", git_name)
         MF().get(git_name, getter)
 
     def save_script(self, src=None):
         # store[PLB+self.guide_anchor] = self.editor.getValue()
         store[PLB+self.main_div_id] = self.editor.getValue()
-        git_name = "/".join(self.script_name.split("-"))
+        git_name = self.get_git()
         self.console.warn(f"Código {git_name} salvo, clique 🧾 (recibo) para ler de volta")
 
     def create_script_tag(self, src=None):
-        def go_anchor():
-            iframe = _tag  # hdoc.getElementById(f"oi-{oid}")
-            innerDoc = _tag.contentDocument or _tag.contentWindow.document if _tag.contentWindow else None
-            # innerDoc.getElementById(anchor).scrollIntoView() if innerDoc else None
-            innerDoc.getElementById(anchor).scrollTo(dict(behavior="smooth")) if innerDoc else None
-
         GUIDE = f"{HOST}?rel={GUIA[SPR]}#/"
         src = src or GUIDE
         # src += self.guide_anchor
         anchor = self.guide_anchor.split("#")
+        print("create_script_tag", anchor, GUIDE)
         src = f"{src}{anchor[1]}#{anchor[-1]}"
         oid, anchor = "_if_"+"-".join(anchor), anchor[-1]
 
