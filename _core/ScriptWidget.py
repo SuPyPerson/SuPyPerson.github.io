@@ -185,7 +185,7 @@ class ScriptBuilder:
 
 class ScriptWidget:
 
-    def __init__(self, script_name=None, main_div_id='', **params):
+    def __init__(self, script_name=None, code_name=None, main_div_id='', **params):
         """ Creates a widget in a given DIV
         @param params :
           - height: integer in pixels
@@ -201,7 +201,7 @@ class ScriptWidget:
         mid = main_div_id
         m = main_div_id = f"_{main_div_id}"
         document[mid].insertAdjacentElement("afterend", html.DIV(Id=m, Class="script-main-div_"))
-        self.script_name = script_name
+        self.script_name, self.code_name = script_name, code_name
         self.guide_anchor = f"#{script_name.split('_')[-1]}"
         self.script_div_id = "script-%s" % main_div_id
         self.name_to_run = params.get("name", None)
@@ -297,8 +297,8 @@ class ScriptWidget:
             self.console.write(f"Não encontrado: {git_name} - {e}, salve na nuvem ☁️ primeiro")
 
     def get_git(self):
-        name = self.script_name.split("#") if "#" in self.script_name else self.script_name
-        name = name.split("-")
+        name = self.script_name.split("#")[-1] if "#" in self.script_name else self.script_name
+        name = self.code_name.split("-") if self.code_name else name.split("-")
         print("get git", name)
         return "/".join(name)
 

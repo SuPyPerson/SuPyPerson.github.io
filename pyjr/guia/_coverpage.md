@@ -1,4 +1,4 @@
-[![logo](../_media/superpython_jogos.svg)](http://superpython_jogos.activufrj.nce.ufrj.br/)
+[![logo](../../_media/superpython_jogos.svg)](http://superpython_jogos.activufrj.nce.ufrj.br/)
 
 # GUIA DO AGENTE <small><span class="curversion"></span></small>
 

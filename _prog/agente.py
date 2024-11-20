@@ -17,7 +17,7 @@ Texto(cena, "Olá, Vamos construir o Jardim Radical!").vai()
 # cena = Cena(relogio).vai()
 "Descomente a linha acima, removendo o *# * inicial e execute"
 _SET1_ = {
-    "script_name": "caderno_agente#main.py", "script_div_id": "agente_main",
+    "script_name": "caderno_agente", "code_name": "age-main.py", "script_div_id": "agente_main",
     "height": 200, "title": "Mais Cenas", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
@@ -56,7 +56,7 @@ class UmaGarrafa:
 
 UmaGarrafa()
 _SET2_ = {
-    "script_name": "caderno_agente#aventura.py", "script_div_id": "agente_aventura",
+    "script_name": "caderno_agente", "code_name": "age-aventura.py", "script_div_id": "agente_aventura",
     "height": 200, "title": "Criando Salas", "show_scenario": False, "console_height": 45
 }  # _SEC_
 """Módulo age.aventura"""
@@ -127,7 +127,7 @@ class UmaGarrafa:
 
 UmaGarrafa()
 _SET3_ = {
-    "script_name": "caderno_agente#continua.py", "script_div_id": "agente_continua",
+    "script_name": "caderno_agente", "code_name": "age-continua.py", "script_div_id": "agente_continua",
     "height": 200, "title": "A Aventura Continua", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
@@ -148,7 +148,7 @@ class AventuraContinua:
 
 AventuraContinua()
 _SET4_ = {
-    "script_name": "caderno_agente#partes.py", "script_div_id": "agente_partes",
+    "script_name": "caderno_agente", "code_name": "age-partes.py", "script_div_id": "agente_partes",
     "height": 250, "title": "A Aventura Termina", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
@@ -168,7 +168,7 @@ class AventuraPartes:
 
 AventuraPartes()
 _SET5_ = {
-    "script_name": "caderno_agente#aprende.py", "script_div_id": "agente_aprende",
+    "script_name": "caderno_agente#aprende.py", "code_name": "age-aprende.py", "script_div_id": "agente_aprende",
     "height": 250, "title": "A Aventura Termina", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
@@ -188,7 +188,7 @@ class AventuraAprende:
 
 AventuraAprende()
 _SET6_ = {
-    "script_name": "caderno_agente#termina.py", "script_div_id": "agente_termina",
+    "script_name": "caderno_agente", "code_name": "age-termina.py", "script_div_id": "agente_termina",
     "height": 250, "title": "A Aventura Termina", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
