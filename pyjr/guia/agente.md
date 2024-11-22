@@ -10,25 +10,91 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
   
     Os Agentes da ESCOLA são chamados para investigar mistérios da Ciência.
   
-    Vamos aprender a usar uma planilha com imagens
+    Vamos aprender a usar uma planilha com imagens. Aqui podemos criar caminhos alternativos
+    para nossa história.
+  
     ```python
-    imagem_da_praia = "_ativo/agentes/praia.jpeg"
-    mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
-    p = Paisagem(mapa_praia.j[0]).vai()
+    """Módulo age.main"""
+    from vitollino import Cena, Texto, Jogo, Elemento
+    from cenario import Planilha, Paisagens
+    Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
+  
+    class Inicia:
+        def __init__(self):
+            i_praia, i_mapa = "_ativo/agentes/praia.jpeg", "_ativo/agentes/pergaminho.png"
+            mapa_praia = Planilha(i_praia, conta_lado=4.3)
+            self.p = p = Paisagens(mapa_praia.j)
+            p.norte.vai()
+            self.mapa = Elemento(i_mapa, x=200, y=350, h=20, cena=p.norte, vai=self.ve_mapa)
+            self.mapa.o, self.cena = 0.2 , p.norte
+        def ve_mapa(self, *_):
+            m= self.mapa
+            m.o, m.x, m.y, m.w, m.h = 1.0, 100, 10, 400, 400
+            self.icon(150, 50, "mountain-sun", "Aqui manda procurar uma caverna próxima", self.caverna)
+            self.icon(350, 50, "suitcase", "Existe um baú perdido na praia")
+            self.icon(150, 270, "mound", "Tem um artefato ancestral escondido em um sambaqui")
+            self.icon(350, 270, "church", "Acho que vamos encontrar algo em um templo")
+        def icon(self, x, y, ico, diz="", vai=lambda: None, cena=None):
+            cena = cena or self.cena
+            style = "font-size: 4em; color: peru;"
+            icon = Elemento("_ativo/kwarwp/vazio.png", texto=diz, x=x, y=y, cena=cena, foi=vai)
+            icon.elt.html = f'<i class="fa fa-{ico}" style="{style}"></i>'
+        def caverna(self):
+            from age.aventura import Aventura
+            Aventura()
+    if __name__ == "__main__":
+        Inicia()
     ```
 <button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
 + Aventuras dos Agentes +
    
-    Os agentes descobrem uma garrafa perdida na praia.
+    Os agentes descobrem uma caverna com pinturas rupestres.
+    Eles vão ter que encontrar pistas nesta caverna.
   
     Agora vamos aprender a usar paisagens e fazer um pequeno roteiro para esta história.
     ```python
-    imagem_da_praia = "_ativo/agentes/praia.jpeg"
-    mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
-    pg = Paisagens(mapa_praia.j)
-    p = pg.norte
-    p.vai()
+    """Módulo age.aventura"""
+    from vitollino import Cena, Texto, Jogo, Elemento
+    from cenario import Planilha, Mapa, Paisagens, Posiciona
+    Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
+    
+    class Aventura:
+        def __init__(self):
+            i_praia, i_mapa = "_cenas/cavernas.jpg", "_ativo/agentes/pergaminho.png"
+            mapa_praia = Planilha(i_praia, conta_lado=4.3)
+            # self.p = p = Mapa(mapa_praia.j, conta_lado=4.3)
+            self.p = p = Paisagens(mapa_praia.j[8:]) #, conta_lado=4.3)
+            # p = p.salas[0]
+            p.norte.vai()
+            self.mapa = Elemento(i_mapa, x=60, y=218, h=60, w=50, cena=p.leste, vai=self.ve_mapa)
+            self.mapa.o, self.cena = 0.3 , p.norte
+            # Posiciona(i_mapa, cena=p.leste)
+        def rota(self, mapa_praia):
+            conta, lado = 4, 3
+            conta_sala = conta // 4
+            self.salas = [Paisagens(mapa_praia.j[k:]) for k in range(0, conta*lado, 4)]
+            linhas = [self.salas[k: k+conta_sala] for k in range(0, conta_sala*lado, conta_sala)]
+            linhas = [list(zip(lon, lon[1:], lon[2:]))  for lon in zip(*linhas)]
+            l = [Labirinto(c=c, n=n, s=s) for lin in linhas for n, c, s in lin]
+
+        def ve_mapa(self, *_):
+            m= self.mapa
+            m.o, m.x, m.y, m.w, m.h = 1.0, 100, 10, 400, 400
+            self.icon(150, 50, "mountain-sun", "Aqui manda procurar uma caverna próxima", self.caverna)
+            self.icon(350, 50, "suitcase", "Existe um baú perdido na praia")
+            self.icon(150, 270, "mound", "Tem um artefato ancestral escondido em um sambaqui")
+            self.icon(350, 270, "church", "Acho que vamos encontrar algo em um templo")
+        def icon(self, x, y, ico, diz="", vai=lambda: None, cena=None):
+            cena = cena or self.cena
+            style = "font-size: 4em; color: peru;"
+            icon = Elemento("_ativo/kwarwp/vazio.png", texto=diz, x=x, y=y, cena=cena, foi=vai)
+            icon.elt.html = f'<i class="fa fa-{ico}" style="{style}"></i>'
+        def caverna(self):
+            from age.aventura import Aventura
+            Aventura()
+    if __name__ == "__main__":
+        Aventura()    
     ```
 <button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 

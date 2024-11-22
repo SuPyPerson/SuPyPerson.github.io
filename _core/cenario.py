@@ -2,13 +2,19 @@
 
 Classes neste módulo:
     - :py:class:`Planilha` Vitollino scenes from a SpriteSheet.
-    - :py:class:`ScriptWidget` Display Dojo elements in a window.
+    - :py:class:`Paisagem` A single scene from a SpriteSheet.
+    - :py:class:`Paisagens` A single room from a SpriteSheet.
+    - :py:class:`Labirinto` Five rooms disposed ina cross from a SpriteSheet.
+    - :py:class:`Mapa` A cartesian collection of rooms from a SpriteSheet.
+    - :py:class:`Posiciona` A movable marker that returns chosen coordinates.
 
 .. codeauthor:: Carlo Oliveira <carlo@nce.ufrj.br>
-.. codeauthor:: Dominik Gront <dgront@gmail.com>
 
 Changelog
 ---------
+.. versionadded::    24.11
+   |br| Classe  Mapa redefined (22).
+
 .. versionadded::    24.09
    |br| Classes Planilha, Mapa (09).
    |br| Classes Paisagem, Paisagens, Labirinto, PaisagemNula, Typer (16).
@@ -18,7 +24,7 @@ Changelog
 |   **SPDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.gd/3Udt>`_.
 |   `Labase <http://labase.selfip.org/>`_ - `NCE <https://portal.nce.ufrj.br>`_ - `UFRJ <https://ufrj.br/>`_.
 """
-from vitollino import NoEv, ISTYLE, CURSOR_STYLE, _PATTERN, CURSOR_ELEMENT, JOGO, Elemento
+from vitollino import NoEv, _PATTERN, JOGO, Elemento
 from vitollino import Sala, Cena, NADA, Point
 
 ROSA = ["n", "l", "s", "o"]
@@ -106,6 +112,7 @@ class Labirinto:
 
     def lb(self):
         for indica, sala in enumerate(self.salas[1:]):
+            if sala == NADA: continue
             self.centro.cenas[indica].meio = sala.cenas[indica]# if sala != NADA else None
             indica_oposto = (indica + 2) % 4
             sala.cenas[indica_oposto].meio = self.centro.cenas[indica_oposto]# if sala != NADA else None
@@ -123,13 +130,33 @@ class Mapa(Planilha):
         super().__init__(imagem, conta_lado=conta_lado, locais=locais, tela=tela)
 
     def inicia(self):
+        # self.conta_lado = self.conta_lado // 4 if self.conta_lado >= 1 else 1
+        _conta, _lado = int(self.conta_lado), self.lado
+        super().inicia()
+        conta_sala = _conta // 4
+        self.salas = [Paisagens(self.j[k:]) for k in range(0, _conta*_lado, 4)]
+        linhas = [self.salas[k: k+conta_sala] for k in range(0, conta_sala*_lado, conta_sala)]
+        linhas = [list(zip(lon, lon[1:], lon[2:]))  for lon in zip(*linhas)]
+        l=[Labirinto(c=c, n=n, s=s) for lin in linhas for n, c, s in lin]
+        print(linhas, l)
+
+
+class MapaNot(Planilha):
+    def __init__(self, imagem, conta_lado=1.1, locais="", salas="", tela=None):
+        self.salas = self.s = self.n = self.img = []
+        self.nome_salas, self.nome_locais = salas, locais
+        self.tela = tela
+        self.sala = self.local = {}
+        super().__init__(imagem, conta_lado=conta_lado, locais=locais, tela=tela)
+
+    def inicia(self):
         def nomeia(oid, ojd, ponto):
             return nome if (nome := ponto.nome) else f"s{ojd}:{oid}"
 
         def renomeia(oid, ojd, ponto):
             return nome if (nome := ponto.nome) else f"s{ojd}:{oid}"
         self.conta_lado = self.conta_lado // 4 if self.conta_lado >= 1 else 1
-        super(Mapa, self).inicia()
+        super().inicia()
         nula, self.salas = PaisagensNula(0), self._check_sala()
         self.imagem = [[nula]*self.conta_lado] + self.salas + [[nula]*self.conta_lado]
         self.img = imagem = list(zip(self.imagem, self.imagem[1:], self.imagem[2:]))
@@ -175,7 +202,7 @@ class PaisagensNula(Paisagens):
             def meio(self, meio):
                 pass
 
-        self.cenas = [PaisagemNula("", tela=self.tela) for img in range(self.conta_lado)]
+        self.cenas = [PaisagemNula("", tela=self.tela) for _ in range(self.conta_lado)]
 
 
 class Typer:
@@ -205,6 +232,7 @@ class Typer:
 class Posiciona(Elemento):
     def __init__(self, img, **kwargs):
         super().__init__(img, **kwargs)
+        self.o = 0.6
         # self.elemento, alvo = alvo, alvo.elt
         # self.alvo, self.cena, self._ponto = alvo, cena, Point(self.elemento.x, self.elemento.y)
         self.co = {k: kwargs[k] for k in ("x", "y") if k in kwargs}
@@ -216,7 +244,7 @@ class Posiciona(Elemento):
         outer = self
 
         class Noop:
-            def __init__(self, outer_=self):
+            def __init__(self):
                 self.outer = outer
 
             def change(self, ev):
@@ -292,8 +320,8 @@ class Posiciona(Elemento):
                 client = Point(ev.clientX, ev.clientY)
                 # client = Point(ev.x, ev.y)
                 rect = self.outer.elt.getBoundingClientRect()
-                origin = Point(rect.left, rect.top)
-                origin = origin + Point(outer.w//2, outer.w//2)
+                # origin = Point(rect.left, rect.top)
+                # origin = origin + Point(outer.w//2, outer.w//2)
                 delta = outer.ponto - client
                 delta = Point(outer.w//2, outer.w//2) - delta
                 outer.w, outer.h = outer.w + delta.x, outer.h-delta.y
@@ -345,6 +373,3 @@ class Posiciona(Elemento):
     @ponto.setter
     def ponto(self, ponto):
         self._ponto = ponto
-        x, y = ponto
-        # self.elemento.x, self.elemento.y = x, y
-        # self.elt.style.left, self.elt.style.top = x, y
