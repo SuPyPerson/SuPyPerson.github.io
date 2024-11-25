@@ -113,16 +113,13 @@ class Labirinto:
     def lb(self):
         for indica, sala in enumerate(self.salas[1:]):
             if sala == NADA: continue
-            self.centro.cenas[indica].meio = sala.cenas[indica]# if sala != NADA else None
+            self.centro.cenas[indica].meio = sala.cenas[indica]
             indica_oposto = (indica + 2) % 4
-            sala.cenas[indica_oposto].meio = self.centro.cenas[indica_oposto]# if sala != NADA else None
-            # self.centro.cenas[indica].portal(N=sala.cenas[indica]) if sala != NADA else None
-            # indica_oposto = (indica + 2) % 4
-            # sala.cenas[indica_oposto].portal(N=self.centro.cenas[indica_oposto]) if sala != NADA else None
+            sala.cenas[indica_oposto].meio = self.centro.cenas[indica_oposto]
 
 
 class Mapa(Planilha):
-    def __init__(self, imagem, conta_lado=1.1, locais="", salas="", tela=None):
+    def __init__(self, imagem, conta_lado=1.1, locais=(), salas=(), tela=None):
         self.salas = self.s = self.n = self.img = []
         self.nome_salas, self.nome_locais = salas, locais
         self.tela = tela
@@ -136,56 +133,9 @@ class Mapa(Planilha):
         conta_sala = _conta // 4
         self.salas = [Paisagens(self.j[k:]) for k in range(0, _conta*_lado, 4)]
         linhas = [self.salas[k: k+conta_sala] for k in range(0, conta_sala*_lado, conta_sala)]
-        linhas = [list(zip(lon, lon[1:], lon[2:]))  for lon in zip(*linhas)]
-        l=[Labirinto(c=c, n=n, s=s) for lin in linhas for n, c, s in lin]
-        print(linhas, l)
-
-
-class MapaNot(Planilha):
-    def __init__(self, imagem, conta_lado=1.1, locais="", salas="", tela=None):
-        self.salas = self.s = self.n = self.img = []
-        self.nome_salas, self.nome_locais = salas, locais
-        self.tela = tela
-        self.sala = self.local = {}
-        super().__init__(imagem, conta_lado=conta_lado, locais=locais, tela=tela)
-
-    def inicia(self):
-        def nomeia(oid, ojd, ponto):
-            return nome if (nome := ponto.nome) else f"s{ojd}:{oid}"
-
-        def renomeia(oid, ojd, ponto):
-            return nome if (nome := ponto.nome) else f"s{ojd}:{oid}"
-        self.conta_lado = self.conta_lado // 4 if self.conta_lado >= 1 else 1
-        super().inicia()
-        nula, self.salas = PaisagensNula(0), self._check_sala()
-        self.imagem = [[nula]*self.conta_lado] + self.salas + [[nula]*self.conta_lado]
-        self.img = imagem = list(zip(self.imagem, self.imagem[1:], self.imagem[2:]))
-        [Labirinto(c=c, n=n, s=s) for linha in imagem for n, c, s in zip(*linha)]
-        self.nome_salas = self.nome_salas or [
-            nomeia(i, j, sala) for j, linha in enumerate(self.salas) for i, sala in enumerate(linha)]
-        self.nome_locais = self.nome_locais or [f"{s}.{r}" for s in self.nome_salas for r in ROSA]
-        # self.sala = {f"l{ln}:{legenda}": sala.rename(f"l{ln}:{legenda}")
-        self.sala = {renomeia(ln, legenda, sala): sala.rename(renomeia(ln, legenda, sala))
-                     for ln, linha in enumerate(self.salas) for legenda, sala in zip(self.nome_salas, linha)}
-        self.local = {f"{sala.nome}.{legenda}": cena.rename(f"{sala.nome}.{legenda}")
-                      for linha in self.salas for sala in linha for legenda, cena in zip(ROSA, sala.cenas)}
-
-    def _check_sala(self):
-        _map = self
-
-        class NType(Typer):
-            def list(self):
-                # return NType(self.ref[0])() #_map.imagem
-                return self.ref #_map.imagem
-
-            def paisagens(self):
-                return self.ref
-
-            def paisagem(self):
-                paisagens = [[Paisagens(imagem)] for linha in self.ref for imagem in linha]
-                return paisagens
-        # return NType(self.imagem[0][0])(self.imagem[0][0])()
-        return NType(self.imagem)()
+        linhas = [list(zip(lon, lon[1:], lon[2:])) for lon in zip(*linhas)]
+        _ = [Labirinto(c=c, n=n, s=s) for lin in linhas for n, c, s in lin]
+        # print(linhas, l)
 
 
 class PaisagensNula(Paisagens):

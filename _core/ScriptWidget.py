@@ -299,7 +299,7 @@ class ScriptWidget:
     def get_git(self):
         name = self.script_name.split("#")[-1] if "#" in self.script_name else self.script_name
         name = self.code_name.split("-") if self.code_name else name.split("-")
-        print("get git", name)
+        # print("get git", name)
         return "/".join(name)
 
     def load_script(self, stor=store):
@@ -343,7 +343,7 @@ class ScriptWidget:
         src = src or GUIDE
         # src += self.guide_anchor
         anchor = self.guide_anchor.split("#")
-        print("create_script_tag", anchor, GUIDE)
+        # print("create_script_tag", anchor, GUIDE)
         src = f"{src}{anchor[1]}#{anchor[-1]}"
         oid, anchor = "_if_"+"-".join(anchor), anchor[-1]
 
@@ -354,9 +354,9 @@ class ScriptWidget:
         def paste(*_):
             # async def do_paste():
             async def do_paste(*_):
-                print("widget_code before")
+                # print("widget_code before")
                 text = await window.navigator.clipboard.readText()
-                print("widget_code", text[100:])
+                # print("widget_code", text[100:])
 
                 self.get_script(text)
 

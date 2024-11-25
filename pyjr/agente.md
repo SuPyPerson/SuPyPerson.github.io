@@ -17,8 +17,9 @@ Aqui está um elemento identificado como '_jogo_'
  
     Os Agentes da ESCOLA são chamados para investigar mistérios da Ciência.
   
-    Vamos aprender a usar uma planilha com imagens
+    Os pescadores chamam os agentes para investigar um objeto estranho na praia.
     ```python
+    from cenario import Planilha, Paisagem
     imagem_da_praia = "_ativo/agentes/praia.jpeg"
     mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
     p = Paisagem(mapa_praia.j[0]).vai()
@@ -32,6 +33,7 @@ Aqui está um elemento identificado como '_jogo_'
   
     Agora vamos aprender a usar paisagens e fazer um pequeno roteiro para esta história.
     ```python
+    from cenario import Planilha, Paisagem
     imagem_da_praia = "_ativo/agentes/praia.jpeg"
     mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
     pg = Paisagens(mapa_praia.j)

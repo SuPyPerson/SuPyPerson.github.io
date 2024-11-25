@@ -62,22 +62,12 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     class Aventura:
         def __init__(self):
             i_praia, i_mapa = "_cenas/cavernas.jpg", "_ativo/agentes/pergaminho.png"
-            mapa_praia = Planilha(i_praia, conta_lado=4.3)
-            # self.p = p = Mapa(mapa_praia.j, conta_lado=4.3)
-            self.p = p = Paisagens(mapa_praia.j[8:]) #, conta_lado=4.3)
-            # p = p.salas[0]
+            self.p = p = Mapa(i_praia, conta_lado=4.3)
+            p = p.salas[0]
             p.norte.vai()
             self.mapa = Elemento(i_mapa, x=60, y=218, h=60, w=50, cena=p.leste, vai=self.ve_mapa)
             self.mapa.o, self.cena = 0.3 , p.norte
-            # Posiciona(i_mapa, cena=p.leste)
-        def rota(self, mapa_praia):
-            conta, lado = 4, 3
-            conta_sala = conta // 4
-            self.salas = [Paisagens(mapa_praia.j[k:]) for k in range(0, conta*lado, 4)]
-            linhas = [self.salas[k: k+conta_sala] for k in range(0, conta_sala*lado, conta_sala)]
-            linhas = [list(zip(lon, lon[1:], lon[2:]))  for lon in zip(*linhas)]
-            l = [Labirinto(c=c, n=n, s=s) for lin in linhas for n, c, s in lin]
-
+ 
         def ve_mapa(self, *_):
             m= self.mapa
             m.o, m.x, m.y, m.w, m.h = 1.0, 100, 10, 400, 400
@@ -90,6 +80,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
             style = "font-size: 4em; color: peru;"
             icon = Elemento("_ativo/kwarwp/vazio.png", texto=diz, x=x, y=y, cena=cena, foi=vai)
             icon.elt.html = f'<i class="fa fa-{ico}" style="{style}"></i>'
+  
         def caverna(self):
             from age.aventura import Aventura
             Aventura()

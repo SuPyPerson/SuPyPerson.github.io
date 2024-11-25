@@ -83,23 +83,23 @@ class UmaGarrafa:
         local_carta = locais.pop()
 
         self.garrafa = Elemento(img="/_ativo/agentes/carta_garrafa.png", w=30, h=10,
-             x=100, y=300, cena=p, o=0.5, vai=self.acha_garrafa)
+                                x=100, y=300, cena=p, o=0.5, vai=self.acha_garrafa)
         self.garrafa.o = 0.3 #deixa a garrafa transparente
         self.carta = Elemento(img="/_ativo/agentes/carta_velha.jpg", w=250, h=400,
-             x=ESCONDIDO, y=50, cena=p, texto="Mas o que está escrito aqui?", foi=self.aparece_kayke)
+                              x=ESCONDIDO, y=50, cena=p, texto="Mas o que está escrito aqui?", foi=self.aparece_kayke)
         self.kayke = Elemento(img="/_ativo/agentes/kayke.png", w=250, h=400,
-             x=ESCONDIDO, y=50, cena=p, texto="Deixa que eu vou decifrar")
+                              x=ESCONDIDO, y=50, cena=p, texto="Deixa que eu vou decifrar")
 
         self.bau = Elemento(img="/_ativo/agentes/bau.png", w=50, h=40,
-                       x=ESCONDIDO, y=250, cena=locais.pop(),
-                       texto="O que tem dentro do baú? Precisa de chave!", foi=self.precisa_chave)
+                            x=ESCONDIDO, y=250, cena=locais.pop(),
+                            texto="O que tem dentro do baú? Precisa de chave!", foi=self.precisa_chave)
         self.bau.o = 0.4
         self.chave = Elemento(img="/_ativo/agentes/chave.png", w=50, h=40,
-                         x=ESCONDIDO, y=250, cena=locais.pop(), texto="Achamos a chave!", foi=self.tem_chave)
+                              x=ESCONDIDO, y=250, cena=locais.pop(), texto="Achamos a chave!", foi=self.tem_chave)
         self.chave.o = 0.4
 
     def tem_bau(self, *_):
-        self.kayke.foi = lambda *_: INV.some(self.kayke) # kayke sai de cena
+        self.kayke.foi = lambda *_: INV.some(self.kayke)  # kayke sai de cena
         # troque o _  e invente a explicação que o Kayke viu na carta
         self.kayke.texto = "_"
         # troque _ por randint para o baú aparecer em um lugar qualquer
@@ -107,8 +107,8 @@ class UmaGarrafa:
         self.bau.y = _
 
     def acha_garrafa(self, *_):
-        self.carta.x = 100 # tras a carta para a cena
-        self.garrafa.vai = self.nada_faz # não clica depois da carta
+        self.carta.x = 100  # tras a carta para a cena
+        self.garrafa.vai = self.nada_faz  # não clica depois da carta
 
     def nada_faz(self, *_):
         pass
