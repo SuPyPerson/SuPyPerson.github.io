@@ -484,7 +484,7 @@ class Elemento_:
         self._auto_score = self.score if score else self._auto_score
         self._img = img
         self.vai = vai if vai else lambda _=0: None
-        self.cena = cena
+        self._cena = cena
         self.nome = tit
         self.opacity = 0
         self.style = dict(**PSTYLE)
@@ -496,7 +496,7 @@ class Elemento_:
         self.scorer.update(score)
         if img:
             self._img = html.IMG(src=img, title=tit, alt=alt, style=EIMGSTY)  # width=self.style["width"])
-            self.elt <= self._img
+            _ = self.elt <= self._img
         self.elt.onclick = self._click
         self.c(**kwargs)
         # _ = Dragger(self.elt) if drag else None
@@ -508,9 +508,9 @@ class Elemento_:
 
     def __le__(self, other):
         if hasattr(other, 'elt'):
-            self.elt <= other.elt
+            _ = self.elt <= other.elt
         else:
-            self.elt <= other
+            _ = self.elt <= other
 
     def _click(self, ev=NoEv()):
         self.xy = (ev.x, ev.y)
@@ -521,12 +521,12 @@ class Elemento_:
         styler = dict(self.style)
         styler.update(style)
         self.elt.style = styler
-        self.cena = cena
+        self._cena = cena
         nome = cena.nome if isinstance(cena, Cena) and hasattr(cena, "nome") else "_NADA_"
         self.scorer.update(valor=nome, move=self.xy,
                            casa=(styler["left"], styler["top"] if "top" in styler else 0))
         self._auto_score(**self.scorer)
-        cena <= self
+        _ = cena <= self
 
     def score(self, **kwargs):
         score = {key: kwargs[key] if key in kwargs else value for key, value in self.scorer.items()}
@@ -574,7 +574,7 @@ class Elemento(Elemento_):
         self._img, self.title, self.dropper, self.alt = img, tit, drop, alt
         self._drag = self._over = self._drop = self._dover = self.vai = lambda *_: None
         self._foi = foi if foi else lambda *_: None
-        self.cena = cena
+        self._cena = cena
         self.nome = tit
         self.opacity = 0
         self._texto = Texto(self.cena, texto, foi=self._foi) if texto else None
@@ -615,6 +615,8 @@ class Elemento(Elemento_):
         # self._img.onmousedown = self._img_prevent
         self.do_drag(drag)
         self.do_drop(drop)
+        self.o = o
+
         # Elemento._scorer_()
 
     def do_score(self, tit):
@@ -654,6 +656,11 @@ class Elemento(Elemento_):
         clone_mic = Elemento(self._img, tit=self.title, drag=True, style=style, cena=INVENTARIO)
         clone_mic.entra(INVENTARIO)
         self._do_foi = lambda *_: None
+
+    @property
+    def cena(self):
+        """Recupera o objeto texto falado pelo objeto"""
+        return self._cena
 
     @property
     def texto(self):

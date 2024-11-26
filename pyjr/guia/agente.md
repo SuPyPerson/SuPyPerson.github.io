@@ -57,35 +57,71 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     """Módulo age.aventura"""
     from vitollino import Cena, Texto, Jogo, Elemento
     from cenario import Planilha, Mapa, Paisagens, Posiciona
-    Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
+    j = Jogo(style=dict(height="500px", width="650px"), did="_jogo_")
     
     class Aventura:
         def __init__(self):
-            i_praia, i_mapa = "_cenas/cavernas.jpg", "_ativo/agentes/pergaminho.png"
-            self.p = p = Mapa(i_praia, conta_lado=4.3)
-            p = p.salas[0]
-            p.norte.vai()
-            self.mapa = Elemento(i_mapa, x=60, y=218, h=60, w=50, cena=p.leste, vai=self.ve_mapa)
-            self.mapa.o, self.cena = 0.3 , p.norte
- 
+            self.da = da = "_ativo/agentes/"
+            i_c, self.i_p, i_p = "_cenas/cavernas.jpg", da+"pergaminho.png", da+"praia.jpeg"
+            p = Mapa(i_c, conta_lado=4.3)
+            self.c0, self.c1, self.c2 = p.salas[0], p.salas[1], p.salas[2]
+            p = Mapa(i_p, conta_lado=4.3)
+            self.p0, self.p1, self.p2 = p.salas[0], p.salas[1], p.salas[2]
+            self.aves()
+    
+        def caverna(self, *_):
+            self.c0.norte.vai()
+            diz = "No bilhete dizia que temos que encontrar o desenho de um homem"
+            Texto(self.c0.norte, diz).vai()
+            self.mapa = Elemento(self.i_p, x=60, y=218, h=60, w=50, o=0.3,
+                                cena=self.c2.leste, vai=self.ve_mapa)
+    
         def ve_mapa(self, *_):
+            from jogos import Swap
+            cena = self.c1.norte
+            cena.vai()
+            i_imagem = "_ativo/agentes/rupestre.jpg"
+            t = Texto(cena, "Temos que encontrar umas aves próximas do mar", foi=self.aves)
+            Swap(j, i_imagem, cena, 400, 400, 10, 10, 3, 3, venceu=t)
             m= self.mapa
-            m.o, m.x, m.y, m.w, m.h = 1.0, 100, 10, 400, 400
-            self.icon(150, 50, "mountain-sun", "Aqui manda procurar uma caverna próxima", self.caverna)
-            self.icon(350, 50, "suitcase", "Existe um baú perdido na praia")
-            self.icon(150, 270, "mound", "Tem um artefato ancestral escondido em um sambaqui")
-            self.icon(350, 270, "church", "Acho que vamos encontrar algo em um templo")
-        def icon(self, x, y, ico, diz="", vai=lambda: None, cena=None):
-            cena = cena or self.cena
-            style = "font-size: 4em; color: peru;"
-            icon = Elemento("_ativo/kwarwp/vazio.png", texto=diz, x=x, y=y, cena=cena, foi=vai)
-            icon.elt.html = f'<i class="fa fa-{ico}" style="{style}"></i>'
-  
-        def caverna(self):
+
+        def aves(self):
+            def anel(x=20, y=20, s=400, o=1):
+                m.o, m.x, m.y, m.w, m.h = o, x, y, s, s
+    
+            i_a, i_s, i_g = self.da+"aves.png", self.da+"sinal.png", self.da+"graus.png"
+            self.i_s, a, b = i_s, self.p1.leste, self.p1.sul
+            self.p0.norte.vai()
+            siga = "Siga as pegadas, você vai atintir a sua 'META'"
+            pt = "Achamos uma parte do relógio de sol"
+            m = Elemento(i_g, h=20, w=20, x=-1000, y=337, o=0.2, texto=pt, foi=anel, cena=b)
+            Elemento(i_a, x=493, y=219, cena=a, texto=siga, foi=lambda:anel(512,337,20,0.2))
+            self.sinal("PRAIA ➤➤➤", self.p1.norte, self.praia)
+            self.sinal("SAMBA\nQUI➤➤", self.p1.oeste, self.sambaqui)
+            self.sinal("CAVER\nNA➤➤", self.p2.norte, self.caverna)
+            self.sinal("Templo ➤➤➤➤", self.p2.norte, self.caverna)
+        def sinal(self, texto, cena, vai):
+            pr = Elemento(self.i_s, x=10, y=319, cena=cena, vai=vai)
+            style = "font-size: 1.5em; color: saddlebrown; margin:6px; pointer-events: none;"
+            pr.elt.html = f'<h6 style="{style}">{texto}</h1>'
+        def sambaqui(self, *_):
+            self.p2.norte.vai()
+            return
+            from age.aventura import Aventura
+            Aventura()
+        def sambaqui(self, *_):
+            self.p2.norte.vai()
+            return
+            from age.aventura import Aventura
+            Aventura()
+    
+        def praia(self, *_):
+            self.p2.norte.vai()
+            return
             from age.aventura import Aventura
             Aventura()
     if __name__ == "__main__":
-        Aventura()    
+        Aventura()         
     ```
 <button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
@@ -95,11 +131,65 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
   
     Agora vamos aprender a usar paisagens e fazer um pequeno roteiro para esta história.
     ```python
-    imagem_da_praia = "_ativo/agentes/praia.jpeg"
-    mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
-    pg = Paisagens(mapa_praia.j[4:])
-    p = pg.norte
-    p.vai()
+    """Módulo age.continua"""
+    from vitollino import Cena, Texto, Jogo, Elemento
+    from cenario import Planilha, Mapa, Paisagens, Posiciona
+    j = Jogo(style=dict(height="500px", width="650px"), did="_jogo_")
+    
+    class Continua:
+        def __init__(self):
+            self.da = da = "_ativo/agentes/"
+            i_c, self.i_s, i_p = "_cenas/cavernas.jpg", da+"sinal.png", da+"praia.jpeg"
+            p = Mapa(i_c, conta_lado=4.3)
+            self.c0, self.c1, self.c2 = p.salas[0], p.salas[1], p.salas[2]
+            p = Mapa(i_p, conta_lado=4.3)
+            self.p0, self.p1, self.p2, self.grau = p.salas[0], p.salas[1], p.salas[2], None
+            self.sinais()
+            self.aves()
+    
+        def sinais(self):
+            self.sinal("PRAIA ➤➤➤", self.p1.norte, self.praia)
+            self.sinal("SAMBA\nQUI➤➤", self.p1.oeste, self.sambaqui)
+            self.sinal("CAVER\nNA➤➤", self.p2.leste, self.caverna)
+            self.sinal("PIRA\nTAS➤➤", self.p2.oeste, self.caverna)
+            self.sinal("Templo\n➤➤", self.p0.sul, self.templo)
+    
+        def templo(self, *_):
+            self.p1.oeste.vai()
+    
+        def caverna(self, *_):
+            self.p0.norte.vai()
+    
+        def anel(self, x=20, y=20, s=400, o=1, vai=lambda *_: None):
+            m= self.grau
+            m.o, m.x, m.y, m.w, m.h = o, x, y, s, s
+            vai()
+    
+        def aves(self):
+            i_a, i_s, i_g = self.da+"aves.png", self.da+"sinal.png", self.da+"graus.png"
+            self.i_s, a, b, a_a = i_s, self.p1.leste, self.p1.sul, self.anel
+            self.p0.norte.vai()
+            siga = "Siga as pegadas, você vai atingir a sua 'META'"
+            pt = Texto(b, "Achamos uma parte do relógio de sol", foi=lambda:a_a(-4000)).vai
+            self.grau = Elemento(i_g, h=20, w=20, x=-4000, y=337, o=0.2, vai=lambda *_: a_a(vai=pt), cena=b)
+            Elemento(i_a, x=493, y=219, cena=a, texto=siga, foi=lambda:self.anel(512,337,20,0.2))
+        def sinal(self, texto, cena, vai):
+            pr = Elemento(self.i_s, x=10, y=319, cena=cena, vai=vai)
+            style = "font-size: 1.5em; color: saddlebrown; margin:6px; pointer-events: none;"
+            pr.elt.html = f'<h6 style="{style}">{texto}</h1>'
+        def sambaqui(self, *_):
+            self.p2.norte.vai()
+            return
+            from age.aventura import Aventura
+            Aventura()
+    
+        def praia(self, *_):
+            self.p2.norte.vai()
+            return
+            from age.aventura import Aventura
+            Aventura()
+    if __name__ == "__main__":
+        Continua()         
     ```
 <button class="btn btn-primary" onclick="__copy_clip__(this)">Copia o código</button>
 
