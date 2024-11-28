@@ -63,11 +63,11 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
         def __init__(self):
             self.da = da = "_ativo/agentes/"
             i_c, self.i_p, i_p = "_cenas/cavernas.jpg", da+"pergaminho.png", da+"praia.jpeg"
-            p = Mapa(i_c, conta_lado=4.3)
-            self.c0, self.c1, self.c2 = p.salas[0], p.salas[1], p.salas[2]
+            c = Mapa(i_c, conta_lado=4.3)
+            self.c0, self.c1, self.c2 = c.salas[0], c.salas[1], c.salas[2]
             p = Mapa(i_p, conta_lado=4.3)
             self.p0, self.p1, self.p2 = p.salas[0], p.salas[1], p.salas[2]
-            self.aves()
+            self.caverna()
     
         def caverna(self, *_):
             self.c0.norte.vai()

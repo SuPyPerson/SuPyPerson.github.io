@@ -75,6 +75,7 @@ class Paisagem(Cena):
     def vai(self, ev=NoEv()):
         super().vai()
         self._foi(ev)
+        return self
 
     @property
     def foi(self):
