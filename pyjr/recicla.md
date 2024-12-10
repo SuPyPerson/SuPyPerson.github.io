@@ -54,6 +54,34 @@ Aqui está um elemento identificado como '_jogo_'
     p.vai()
     ```
 
++ Fase Extra +
+  
+  <img id="recicla_extra" src onerror="__widget__(this.id)"/>
+ 
+    Vejam o que mais pode ser feito para evitar o descarte indevido.
+  
+    ```python
+    imagem_da_praia = "_ativo/agentes/praia.jpeg"
+    mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
+    pg = Paisagens(mapa_praia.j[4:])
+    p = pg.norte
+    p.vai()
+    ```
+
++ Fase Complementar +
+  
+  <img id="recicla_complemento" src onerror="__widget__(this.id)"/>
+ 
+    Uma ação complementar para evitar o descarte indevido.
+  
+    ```python
+    imagem_da_praia = "_ativo/agentes/praia.jpeg"
+    mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
+    pg = Paisagens(mapa_praia.j[4:])
+    p = pg.norte
+    p.vai()
+    ```
+
 + Mundo mais Limpo +
   
   <img id="recicla_termina" src onerror="__widget__(this.id)"/>

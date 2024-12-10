@@ -17,7 +17,7 @@ Texto(cena, "Olá, Vamos construir o Jardim Radical!").vai()
 # cena = Cena(relogio).vai()
 "Descomente a linha acima, removendo o *# * inicial e execute"
 _SET1_ = {
-    "script_name": "des-main.py", "script_div_id": "descarte_main",
+    "script_name": "caderno_descarte", "code_name": "des-main.py", "script_div_id": "descarte_main",
     "height": 200, "title": "Mais Cenas", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
@@ -56,7 +56,7 @@ class UmaGarrafa:
 
 UmaGarrafa()
 _SET2_ = {
-    "script_name": "des-aventura.py", "script_div_id": "descarte_aventura",
+    "script_name": "caderno_descarte", "code_name": "des-aventura.py", "script_div_id": "descarte_aventura",
     "height": 200, "title": "Criando Salas", "show_scenario": False, "console_height": 45
 }  # _SEC_
 """Módulo des.aventura"""
@@ -127,7 +127,7 @@ class UmaGarrafa:
 
 UmaGarrafa()
 _SET3_ = {
-    "script_name": "des-continua.py", "script_div_id": "descarte_continua",
+    "script_name": "caderno_descarte", "code_name": "des-continua.py", "script_div_id": "descarte_continua",
     "height": 200, "title": "A Aventura Continua", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
@@ -148,7 +148,7 @@ class AventuraContinua:
 
 AventuraContinua()
 _SET4_ = {
-    "script_name": "des-termina.py", "script_div_id": "descarte_termina",
+    "script_name": "caderno_descarte", "code_name": "des-termina.py", "script_div_id": "descarte_termina",
     "height": 250, "title": "A Aventura Termina", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
@@ -165,5 +165,25 @@ class AventuraTermina:
         pg = Paisagens(mapa_praia.j[4:])
         p = pg.norte
         p.vai()
-
-AventuraTermina()
+_SET5_ = {
+    "script_name": "caderno_descarte", "code_name": "des-extra.py", "script_div_id": "descarte_extra",
+    "height": 250, "title": "A Aventura Extra", "show_scenario": False, "console_height": 45
+}  # _SEC_
+# document["_so0_"].remove()
+# _VIT_
+"""Módulo des.extra"""
+from vitollino import Cena, Texto, Jogo, Elemento
+from cenario import Planilha, Paisagens
+Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
+"""Coloque uma fase extra da aventura aqui"""
+_SET6_ = {
+    "script_name": "caderno_descarte", "code_name": "des-complemento.py", "script_div_id": "descarte_complemento",
+    "height": 250, "title": "A Aventura Complemento", "show_scenario": False, "console_height": 45
+}  # _SEC_
+# document["_so0_"].remove()
+# _VIT_
+"""Módulo des.complemento"""
+from vitollino import Cena, Texto, Jogo, Elemento
+from cenario import Planilha, Paisagens
+Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
+"""Coloque uma fase complemento da aventura aqui"""

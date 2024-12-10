@@ -17,7 +17,7 @@ Texto(cena, "Olá, Vamos construir o Jardim Radical!").vai()
 # cena = Cena(relogio).vai()
 "Descomente a linha acima, removendo o *# * inicial e execute"
 _SET1_ = {
-    "script_name": "pet-main.py", "script_div_id": "help-pet_main",
+    "script_name": "caderno_help-pet", "code_name": "pet-main.py", "script_div_id": "help-pet_main",
     "height": 200, "title": "Mais Cenas", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
@@ -56,7 +56,7 @@ class UmaGarrafa:
 
 UmaGarrafa()
 _SET2_ = {
-    "script_name": "pet-aventura.py", "script_div_id": "help-pet_aventura",
+    "script_name": "caderno_help-pet", "code_name": "pet-aventura.py", "script_div_id": "help-pet_aventura",
     "height": 200, "title": "Criando Salas", "show_scenario": False, "console_height": 45
 }  # _SEC_
 """Módulo pet.aventura"""
@@ -127,8 +127,8 @@ class UmaGarrafa:
 
 UmaGarrafa()
 _SET3_ = {
-    "script_name": "pet-continua.py", "script_div_id": "help-pet_continua",
-    "height": 200, "title": "Povoando o Jardim", "show_scenario": False, "console_height": 45
+    "script_name": "caderno_help-pet", "code_name": "pet-continua.py", "script_div_id": "help-pet_continua",
+    "height": 200, "title": "A Aventura Continua", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
 # _VIT_
@@ -138,7 +138,7 @@ from cenario import Planilha, Paisagens
 ESCONDE = -4000
 Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
 
-class UmaAventura:
+class AventuraContinua:
     def __init__(self):
         imagem_da_praia = "_ativo/agentes/praia.jpeg"
         mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
@@ -146,32 +146,44 @@ class UmaAventura:
         p = pg.norte
         p.vai()
 
-UmaAventura()
+AventuraContinua()
 _SET4_ = {
-    "script_name": "pet-termina.py", "script_div_id": "help-pet_termina",
-    "height": 250, "title": "Conversas no Jardim", "show_scenario": False, "console_height": 45
+    "script_name": "caderno_help-pet", "code_name": "pet-termina.py", "script_div_id": "help-pet_termina",
+    "height": 250, "title": "A Aventura Termina", "show_scenario": False, "console_height": 45
 }  # _SEC_
 # document["_so0_"].remove()
 # _VIT_
 """Módulo pet.termina"""
-from vitollino import Sala, Elemento, Texto, Jogo
-from vitollino import Roteiro, Ator, Fala, A
-
+from vitollino import Cena, Texto, Jogo, Elemento
+from cenario import Planilha, Paisagens
 Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
-cenas = "japones relogio mirante tomjobim".split()
-jardim = Sala(*[f"/_ativo/jardim/{cena}.jpg" for cena in cenas])
-cena = jardim.oeste.vai()
-local = "/_ativo/jardim/"
-personagens = ("narciso", 450), ("ossanha", 250), ("tetis", 50)
-narciso, ossanha, tetis = [Elemento(f"{local}{nome}.png", x=x, y=200, h=300, w=200, cena=cena)
-                           for nome, x in personagens]
-elenco = (Ator(tetis, "Tetis", 0.4, A.e), Ator(ossanha, "Ossanha", 0.4, A.m),
-          Ator(narciso, "Narciso", 0.4, A.d))
-falas = [
-    Fala(tetis, "Olá, Ossanha você por aqui?", narciso, None),
-    Fala(narciso, "Tetis, voce devia falar primeiro comigo", ossanha, None),
-    Fala(ossanha, "Rapaz, você se acha o centro do mundo!", narciso, None),
-    Fala(narciso, "Do Universo, que eu realmente sou!", tetis, None),
-    Fala(tetis, "Eita, não pode ter mais de um deus que dá briga!", tetis, None),
-]
-Roteiro(cena, falas, elenco)
+
+class AventuraTermina:
+    def __init__(self):
+        imagem_da_praia = "_ativo/agentes/praia.jpeg"
+        mapa_praia = Planilha(imagem_da_praia, conta_lado=4.3)
+        pg = Paisagens(mapa_praia.j[4:])
+        p = pg.norte
+        p.vai()
+_SET5_ = {
+    "script_name": "caderno_help-pet", "code_name": "pet-extra.py", "script_div_id": "help-pet_extra",
+    "height": 250, "title": "A Aventura Extra", "show_scenario": False, "console_height": 45
+}  # _SEC_
+# document["_so0_"].remove()
+# _VIT_
+"""Módulo pet.extra"""
+from vitollino import Cena, Texto, Jogo, Elemento
+from cenario import Planilha, Paisagens
+Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
+"""Coloque uma fase extra da aventura aqui"""
+_SET6_ = {
+    "script_name": "caderno_help-pet", "code_name": "pet-complemento.py", "script_div_id": "help-pet_complemento",
+    "height": 250, "title": "A Aventura Complemento", "show_scenario": False, "console_height": 45
+}  # _SEC_
+# document["_so0_"].remove()
+# _VIT_
+"""Módulo pet.complemento"""
+from vitollino import Cena, Texto, Jogo, Elemento
+from cenario import Planilha, Paisagens
+Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
+"""Coloque uma fase complemento da aventura aqui"""
