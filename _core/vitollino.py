@@ -1171,7 +1171,7 @@ class Cena:
 
     @property
     def esquerda(self):
-        return self._direita
+        return self._esquerda
 
     @esquerda.setter
     def esquerda(self, esquerda):

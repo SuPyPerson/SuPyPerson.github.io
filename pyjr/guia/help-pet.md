@@ -11,31 +11,37 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
     Os Agentes da ESCOLA são chamados para investigar o cuidado com animais.
   
     Vamos aprender a usar uma planilha com imagens. Aqui podemos criar caminhos alternativos
-    para nossa história.
+    para nossa história. Os métodos (def "um nome") aventura, continua e termina importam outros
+    módulos do projeto usando o import. No método alternativas temos três maneiras de mudar de fase.
+    Usando o vai de um elemento: quando clica no elemento ele vai chamar o método aventura que importa pet.aventura.
+    Usando o foi de um texto: quando fecha o texto ele vai chamar o método continua que importa pet.continua.
+    Com o vai de cena falsa: cria uma cena falsa e usa o vai dela para chamar o método termina.
+    Para isso troca a navegação da cena atual com a dessa cena falsa: self.cena.direita = cena_fase.
   
     ```python
     """Módulo pet.main"""
     from vitollino import Cena, Texto, Jogo, Elemento
     from cenario import Planilha, Paisagens
     Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
-  
+    
     class Inicia:
         def __init__(self):
             i_praia, self.pr = "_ativo/agentes/praia.jpeg", "_ativo/agentes/pergaminho.png"
             mapa_praia = Planilha(i_praia, conta_lado=4.3)
             self.p = p = Paisagens(mapa_praia.j)
             p.norte.vai()
+            self.cena = p.norte
             self.alternativas()
-            self.mapa.o, self.cena = 0.2 , p.norte
         def alternativas(self, *_):
             Elemento(self.pr, x=200, y=350, h=20, cena=self.cena, vai=self.aventura)
-            Texto(self.cena,"E aqui a aventura continua", vai=self.continua)
-            self.cena.direita.vai = self.termina
-        def aventura(self):
+            Texto(self.p.oeste,"E aqui a aventura continua", foi=self.continua).vai()
+            cena_fase = Cena("", vai=self.termina)
+            self.cena.direita = cena_fase
+        def aventura(self, *_):
             import pet.aventura
-        def continua(self):
+        def continua(self, *_):
             import pet.continua
-        def termina(self):
+        def termina(self, *_):
             import pet.termina
     if __name__ == "__main__":
         Inicia()
