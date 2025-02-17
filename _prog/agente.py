@@ -232,3 +232,60 @@ class AventuraTermina:
         p.vai()
 
 AventuraTermina()
+
+"""Módulo age.main"""
+from vitollino import Cena, Texto, Jogo, Elemento
+from cenario import Planilha, Paisagens
+Jogo(style=dict(height="500px", width="650px"), did="_jogo_").z()
+
+
+class Inicia:
+    """ Esta é a classe principal que deve ficar na aba que começa coma palavra 'Central'"""
+    def __init__(self):
+        """Neste exemplo você encontra um mapa jogado na areia da praia"""
+        i_praia, i_mapa = "_ativo/agentes/praia.jpeg", "_ativo/agentes/pergaminho.png"
+        mapa_praia = Planilha(i_praia, conta_lado=4.3)
+        self.p = p = Paisagens(mapa_praia.j)
+        p.norte.vai()
+        self.mapa = Elemento(i_mapa, x=200, y=350, h=20, cena=p.norte, vai=self.ve_mapa)
+        """Quando clica no pergaminho perdido ele chama o self.ve_mapa"""
+        self.mapa.o, self.cena = 0.2, p.norte
+
+    def ve_mapa(self, *_):
+        """Aqui mostra quatro ícones que quando clica leva para as fases"""
+        m = self.mapa
+        m.o, m.x, m.y, m.w, m.h = 1.0, 100, 10, 400, 400
+        self.icon(150, 50, "mountain-sun", "Aqui manda procurar uma caverna próxima", self.caverna)
+        self.icon(350, 50, "suitcase", "Existe um baú perdido na praia", self.praia_piratas)
+        self.icon(150, 270, "mound", "Tem um artefato ancestral escondido em um sambaqui", self.sambaqui)
+        self.icon(350, 270, "church", "Acho que vamos encontrar algo em um templo")
+
+    def icon(self, x, y, ico, diz="", vai=lambda: None, cena=None):
+        """Aqui coloca elementos que são ícones que podem ser buscados em
+        https://fontawesome.com/search?o=r&m=free """
+        cena = cena or self.cena
+        style = "font-size: 4em; color: peru;"
+        icon = Elemento("_ativo/kwarwp/vazio.png", texto=diz, x=x, y=y, cena=cena, foi=vai)
+        """O desenho do elemento é uma figura vazia"""
+        icon.elt.html = f'<i class="fa fa-{ico}" style="{style}"></i>'
+        """Esta linha bota um ícone da coleção awesome no elemento"""
+        """Você pode usar uma imagem no elemento, não precisa usar um ícone"""
+
+    def caverna(self):
+        """No caso da caverna, a fase está montada em uma classe semelhante a esta aqui, a Inicia"""
+        from age.continua import Aventura
+        Aventura()
+
+    def praia_piratas(self):
+        """Aqui o código não está dentro duma classe"""
+        import age.continua
+        pass
+
+    def sambaqui(self):
+        """Aqui o código está dentro duma função fase3"""
+        from age.parte import fase3
+        fase3()
+
+
+if __name__ == "__main__":
+    Inicia()
