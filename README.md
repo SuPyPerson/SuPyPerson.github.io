@@ -25,12 +25,12 @@ do Pajé. Ela lembra da magia da cobra de fogo, a Python Boitatá.
 **Homepage:** [Pynoplia Aprenda Python com Jogos]</br>
 **Changelog:** [CHANGELOG](CHANGELOG.md)</br>
 
-[![python](https://img.shields.io/github/languages/top/kwarwp/kwarwp)](https://www.python.org/downloads/release/python-383/)
+[![python](https://img.shields.io/github/languages/top/kwarwp/kwarwp)](https://www.python.org/downloads/release/python-3122/)
 [![licence](https://img.shields.io/github/license/labase/supyplay)](https://raw.githubusercontent.com/labase/supyplay/main/LICENSE)
 [![github](https://img.shields.io/badge/release-24.11-blue)](https://github.com/SuPyPerson/SuPyPerson.github.io/releases)
 
 [![UFRJ](https://labase.github.io/image/ufrj-logo-8.png)](https://ufrj.br/)
 [![NCE](https://labase.github.io/image/nce-logo-8.png)](http://www.nce.ufrj.br/)
-[![LABASE](https://labase.github.io/image/labase-logo-8.png)](http://labase.selfip.org/)
+[![LABASE](https://labase.github.io/image/labase-logo-8.png)](http://labase.activufrj.nce.ufrj.br/)
 
 [Pynoplia Aprenda Python com Jogos]: http://activufrj.nce.ufrj.br/wiki/labase/Pynoplia_-_Aprenda_Python_com_Jogos

@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Current Version - Milestone ️ ⚔️ Xiphos - <span class="curversion"></span>
 
+# Xiphos ⚔️, SME 2025, Revisão do texto para SME [25.04x1]
+### ADDED
+- ⛲ Nova logo inicial🔰
+- ⛲ Alterações para menciona SME🔰
+
 # Xiphos ⚔️, SNCT 2024, Nova interface com tabs e guia interno [24.10x0]
 ### ADDED
 
