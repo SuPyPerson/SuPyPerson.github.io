@@ -36,8 +36,8 @@ class Head:
                     j=git + "jaie24/jaie24/", p=git + "sbce/sbce", g=git + "jaie24/guia", m=git + "snct/snct",
                     l=git + "pyjr"
                     )
-    REL = dict(i="JAIE24", o="SBCE", f="JAIE Guia", n="SNCT", k="Py Jr.", c="SNCT Guia",
-               j="JAIE24/", p="SBCE", g="JAIE Guia", m="SNCT", l="Py Jr.", q="Agentes Guia")
+    REL = dict(i="JAIE24", o="SBCE", f="JAIE Guia", n="SME", k="Py Jr.", c="SME Guia",
+               j="JAIE24/", p="SBCE", g="JAIE Guia", m="SME", l="Py Jr.", q="Agentes Guia")
     G = dict(a="Agentes da Escola", p="Help Pet", d="Descarte de Medicamentos", r="Recicla")
 
     def __init__(self, ln=html.LINK, st=html.SCRIPT):

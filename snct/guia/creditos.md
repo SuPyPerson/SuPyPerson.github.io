@@ -1,6 +1,6 @@
 # Pynoplia - Jogue e Aprenda <br/> Agentes da E.S.C.O.L.A.
 
-## Temporada - SNCT 2024 - Biomas Brasileiros
+## Temporada - SME 25 - Biomas Brasileiros
 Os Agentes são chamados para conhecer, prevenir e remediar os problemas referentes aos biomas brasileiros.
 
 ## Orientação Acadêmica
@@ -49,7 +49,7 @@ Carla Verônica Machado Marques D.Sc. [¹](#contatos) Ana Paula Cavadas Rodrigue
 
 ## Contatos
 
-#### 1 carlaveronica@nce.ufrj.br, clrmotta@nce.ufrj.br, carlo@nce.ufrj.br
+#### 1 carlaveronica@nce.ufrj.br, claudiam@nce.ufrj.br, carlo@nce.ufrj.br
 #### 2 apcavadas@gmail.com
 #### [SuperPython-Jogos](http://Superpython_Jogos.activufrj.nce.ufrj.br)
 #### [Apresentação](https://supyperson.github.io/_media/talk/macae.sozi.html)
