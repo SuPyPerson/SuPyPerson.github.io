@@ -3,10 +3,10 @@ version: '3.1'
 services:
   pynoplia:
     build: .
-    command: python3 -m wsgi --port=8695
+    command: python3 -m wsgi --port=8595
     restart: always
     environment:
-      - VIRTUAL_HOST=pynora.ydns.eu
-      - VIRTUAL_PORT=8695
+      - VIRTUAL_HOST=pynoplia.ydns.eu.ydns.eu
+      - VIRTUAL_PORT=8595
     ports:
-      - "8695:8695"
+      - "8595:8595"
