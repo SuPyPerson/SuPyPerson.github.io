@@ -9,4 +9,4 @@ services:
       - VIRTUAL_HOST=pynora.ydns.eu
       - VIRTUAL_PORT=8695
     ports:
-      - "8595:8595"
+      - "8695:8695"
