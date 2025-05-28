@@ -12,6 +12,9 @@ Classes neste módulo:
 Changelog
 ---------
 
+.. versionadded::    25.05
+        Conserta pega a cerca(28).
+
 .. versionadded::    24.10
         Move aparatos do imgur para o diretório local (11).
 
@@ -382,6 +385,9 @@ class Indio:
             vaga = taba[destino]
             """Recupera na taba a vaga para a qual o índio irá se transferir"""
             vaga.empurrar(self, self.azimute)
+
+    def pegar(self):
+        self.fala("ugh!")
 
     def pega(self):
         """Tenta pegar o objeto que está diante dele"""
