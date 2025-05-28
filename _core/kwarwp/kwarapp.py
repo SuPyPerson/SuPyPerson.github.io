@@ -386,7 +386,7 @@ class Indio:
             """Recupera na taba a vaga para a qual o índio irá se transferir"""
             vaga.empurrar(self, self.azimute)
 
-    def pegar(self):
+    def pegar(self, *_):
         self.fala("ugh!")
 
     def pega(self):
