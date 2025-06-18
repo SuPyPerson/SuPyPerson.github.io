@@ -284,7 +284,9 @@ class Indio:
         self.ocupante = NULO
         self.posicao = (x // lado, y // lado)
         name = self.nome or self.__class__.__name__
-        self.indio = self.vitollino.e(imagem, tit=f"{name}_{Vazio.ob()}", w=lado, h=lado, x=x, y=y, cena=cena)
+        #@@@@@@@ ATENÇÃO: O PROXIMO CÓDIGO É UM TRABALHO EM ANDAMENTO, NÃO É UM PROBLEMA DE PROGRAMAÇÃO @@@@@@@@
+        # self.indio = self.vitollino.e(imagem, tit=f"{name}_{Vazio.ob()}", w=lado, h=lado, x=x, y=y, cena=cena)
+        self.indio = self.vitollino.a(imagem, tit=f"{name}_{Vazio.ob()}", w=lado, h=lado, x=x, y=y, cena=cena)
         self.x = x
         """Este x provisoriamente distingue o índio de outras coisas construídas com esta classe"""
         if x:
@@ -384,7 +386,7 @@ class Indio:
         if destino in taba:
             vaga = taba[destino]
             """Recupera na taba a vaga para a qual o índio irá se transferir"""
-            vaga.empurrar(self, self.azimute)
+            vaga.empurrar(self, self.azimute, lambda *_:self.pega)
 
     def pegar(self, *_):
         self.fala("ugh!")
@@ -596,7 +598,8 @@ class Kwarwp:
     def inicia(self):
         self.v._ativa = False
         self._inicia()
-        self.v.ativa()
+        #@@@@@@@@ ATENÇÃO @@@@@@@@@@@
+        # self.v.ativa()
 
     def _inicia(self):
         """ O Kwarwp é aqui usado para falar algo que ficará escrito no céu.

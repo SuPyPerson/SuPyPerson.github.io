@@ -94,7 +94,7 @@ PDX-License-Identifier:** `GNU General Public License v3.0 or later <http://is.g
 
 + Pajé - O Caminho Árduo +
 
-  <img id="al9" src="../_media/em_construcao.png" onerror="__widget__(this.id)"></img>
+  <img id="al9" src onerror="__widget__(this.id)"></img>
 
   Ache um caminho até uma oca.
   Use os comando ***def e while*** do Python.

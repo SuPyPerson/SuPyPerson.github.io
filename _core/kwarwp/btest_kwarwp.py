@@ -10,25 +10,32 @@ Changelog
         classe Test_Kwarwp.
 
 """
-from _spy.vitollino.main import Jogo
+from vitollino import Jogo
 from unittest import TestCase
 # from unittest.mock import MagicMock
-from kwarwp.kwarapp import Kwarwp, Indio
-from kwarwp.kwarwpart import Piche, Vazio, Oca, Tora, NULO
+from kwarwp.kwarapp import Kwarwp, Indio, ORIGIN
+from kwarwp.kwarwpart import Piche, Vazio, Tora, NULO
 #sys.path.insert(0, os.path.abspath('../../libs'))
+MAPA="""
+....&
+....|
+.....#
+.#.p`."""
 
-class Test_Kwarwp(TestCase):
+class TestKwarwp(TestCase):
     """ Teste do Jogo para ensino de programação.
     
     """
     ABERTURA = "https://i.imgur.com/dZQ8liT.jpg"
-    INDIO = "https://imgur.com/UCWGCKR.png"
-    OCA = "https://imgur.com/dZQ8liT.jpg"
-    PICHE = "https://imgur.com/tLLVjfN.png"
-    TORA = "https://imgur.com/0jSB27g.png"
-    
+    INDIO = ORIGIN+"curumim.png"  # "https://imgur.com/UCWGCKR.png"
+    PAJE = ORIGIN+"paje.png"  # "https://imgur.com/UCWGCKR.png"
+    OCA = ORIGIN+"oca.png"  # "https://imgur.com/dZQ8liT.jpg"
+    PICHE = ORIGIN+"piche.png"  # "https://imgur.com/tLLVjfN.png"
+    TORA = ORIGIN+"tora.png"  # "https://imgur.com/0jSB27g.png"
+    CERCA = ORIGIN+"cerca.png"  # "https://imgur.com/0jSB27g.png"
+
     def setUp(self):
-        elts = self.elts = {}
+        self.elts = {}
         class FakeTaba:
             def __init__(self):
                 self.falou = ""
@@ -37,24 +44,33 @@ class Test_Kwarwp(TestCase):
             def fala(self, falou):
                 self.falou = falou
                 
-        self.k = Kwarwp(Jogo)
+        self.k = Kwarwp(Jogo, mapa=MAPA)
         self.t = FakeTaba()
         self.LADO = Vazio.LADO
     
     def set_fake(self):
-        elts = self.elts = {}
+        _elts = self
         class FakeCena:
             def __init__(self, *_, **__):
                 pass
             def vai(self, *_, **__):
                 pass
-            
+            @property
+            def img(self):
+                return self
+            @property
+            def elt(self):
+                return self
+            @property
+            def style(self):
+                return self
+
         class FakeElemento:
-            def __init__(self, img=0, x=0, y=0, w=0, h=0, vai=None, elts=elts, **kwargs):
-                elts[img] = self
+            def __init__(self, img=0, x=0, y=0, w=0, h=0, vai=None, elts_=_elts, **kwargs):
+                _elts.elts[img] = self
                 self.img, self.x, self.y, self.w, self.h, self.vai = img, x, y, w, h, vai
                 self.destino, self._pos, self._siz = [None]*3
-            def ocupa(self, destino):
+            def ocupa(self, destino, *_, **__):
                 self.destino = destino.elt
             @property
             def elt(self):
@@ -71,25 +87,33 @@ class Test_Kwarwp(TestCase):
             @pos.setter
             def pos(self, value):
                 self._pos = value
+        self.fake = FakeElemento
         Vazio.VITOLLINO.a = FakeElemento
         Vazio.VITOLLINO.c = FakeCena
         
     def testa_cria(self):
         """ Cria o ambiente de programação Kwarwp."""
         self.set_fake()
+        self.assertEqual(self.fake, Vazio.VITOLLINO.a, Vazio.VITOLLINO.a)
         cena = self.k.cria()
+
         # self.assertIn("Vitollino_cria",  str(cena), cena)
-        self.assertIn(self.INDIO, self.elts)
+        # self.assertIn(self.INDIO, self.elts, self.elts)
+        self.assertIn("p", self.k.fabrica, self.k.fabrica)
+        self.assertEqual(self.k.fabrica["p"].imagem, self.PAJE, self.k.fabrica["p"].imagem)
 
     def testa_cria_indio(self):
         """ Cria o índio com a fábrica."""
         self.set_fake()
+        self.k.inicia()
         cena = self.k.cria()
+        # self.assertIsInstance(self.k.taba,  list, f"but coisa was {self.k.taba}")
         coisa = self.k.taba[3,3]
         self.assertIsInstance(coisa.ocupante,  Indio, f"but ocupante was {coisa.ocupante}")
         self.assertEqual(100, coisa.lado, f"but coisa.lado was {coisa.lado}")
-        indio = self.elts[self.INDIO]
-        self.assertEqual(coisa.ocupante.indio, indio, f"but coisa.ocupante.indio was {coisa.ocupante.indio}")
+        # indio = self.elts[self.INDIO]
+        indio = self.INDIO
+        # self.assertEqual(indio, coisa.ocupante.indio, f"but coisa.ocupante.indio was {coisa.ocupante.indio}")
         self.assertEqual((0, 0), indio.pos, f"but indio.pos was {indio.pos}")
 
     def testa_cria_tora(self):

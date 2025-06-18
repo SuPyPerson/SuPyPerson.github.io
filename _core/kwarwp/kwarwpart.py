@@ -73,6 +73,7 @@ class Nulo:
 
     def __init__(self):
         self.pegar = self.ocupa = self.ocupou = self.elt = self.fala = self.corrente = self.nulo
+        self.empurrar = self.nulo
         self.nome = "NULO"
 
     def nulo(self, *_, **__):
@@ -158,13 +159,14 @@ class Vazio:
         """
         self.ocupante.pegar(requisitante)
 
-    def empurrar(self, requisitante, azimute):
+    def empurrar(self, requisitante, azimute, empurrou):
         """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
             :param azimute: Direção que vai empurrar o objeto.
             :param requisitante: O ator querendo pegar o objeto.
+            :param empurrou: O ator podendo empurrar o objeto.
         """
-        self.ocupante.empurrar(requisitante, azimute)
+        self.ocupante.empurrar(requisitante, azimute, empurrou)
 
     def _valida_acessa(self, ocupante):
         """ Consulta o ocupante atual se há permissão para substituí-lo pelo novo ocupante.
@@ -202,6 +204,9 @@ class Vazio:
     def _pede_sair(self):
         """Objeto tenta sair e consulta o ocupante para seguir"""
         self.ocupante.sair()
+
+    def empurrou(self, ocupante, pos=(0, 0)):
+        self.ocupou(ocupante, pos)
 
     def ocupou(self, ocupante, pos=(0, 0)):
         """ O candidato à vaga decidiu ocupá-la e efetivamente entra neste espaço.
@@ -334,15 +339,20 @@ class Tora(Piche):
         vaga.ocupou(self)
         self.vaga = vaga
 
-    def empurrar(self, empurrante, azimute):
+    def empurrou(self, vaga, pos=(0,0)):
+        self.ocupa(vaga)
+
+    def empurrar(self, empurrante, azimute, empurrou):
         """ Consulta o ocupante atual se há permissão para pegar e entregar ao requisitante.
 
             :param azimute:
             :param empurrante: O ator querendo empurrar o objeto.
+            :param empurrou: O ator podendo empurrar o objeto.
         """
         self.empurrante = empurrante
         vaga = self.taba.vizinho(self.posicao, azimute)
-        vaga.empurrar(self, azimute) if vaga else None
+        vaga.empurrar(self, azimute, self.empurrou) if vaga else None
+        empurrou(vaga)
         self.empurrante = NULO
 
     def ocupa(self, vaga, *_):
