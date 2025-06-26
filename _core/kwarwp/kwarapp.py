@@ -386,7 +386,7 @@ class Indio:
         if destino in taba:
             vaga = taba[destino]
             """Recupera na taba a vaga para a qual o índio irá se transferir"""
-            vaga.empurrar(self, self.azimute, lambda *_:self.pega)
+            vaga.empurrar(self, self.azimute, lambda *_:self.anda)
 
     def pegar(self, *_):
         self.fala("ugh!")
